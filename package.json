@@ -1,0 +1,33 @@
+{
+  "name": "tekram",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
+    "axios": "^1.9.0",
+    "formik": "^2.4.6",
+    "js-cookie": "^3.0.5",
+    "next": "15.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20",
+    "@types/qs": "^6.9.18",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}
