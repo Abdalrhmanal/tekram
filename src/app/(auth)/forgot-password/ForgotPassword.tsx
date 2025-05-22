@@ -1,51 +1,34 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Box,
-  Button,
-  Typography,
-  Alert,
-  CircularProgress,
-  TextField,
-  Grid,
+  Box, Button, Typography, Alert, CircularProgress, TextField,
 } from "@mui/material";
+import useForgetPassword from "../hooks/forgot-password";
+import { useRouter } from "next/navigation"; // ✅ استيراد router
 
 const ForgotPasswordPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
   const [email, setEmail] = useState("");
+  const { forgetPassword, loading, error, success } = useForgetPassword();
+  const router = useRouter(); // ✅ تهيئة router
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-
-    try {
-      // Simulate API call for password reset request
-      console.log("Forgot password form submitted", { email });
-
-      // Example: simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Assuming password reset request is successful
-      setSuccess("A password reset link has been sent to your email.");
-    } catch (err) {
-      setError(
-        "An error occurred while processing your request. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
+    await forgetPassword({ email });
   };
+
+  // ✅ عند نجاح الطلب، الانتقال إلى صفحة reset-password
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        router.push("/reset-password");
+      }, 1500); // مهلة صغيرة لعرض رسالة النجاح قبل الانتقال
+    }
+  }, [success, router]);
 
   return (
     <Box
       component="form"
       onSubmit={handleSubmit}
-      justifyContent="center"
-      alignItems="center"
       sx={{
         maxWidth: "400px",
         width: "100%",
@@ -55,7 +38,7 @@ const ForgotPasswordPage = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        margin: "auto", // Added to center the form horizontally
+        margin: "auto",
       }}
     >
       <Typography
@@ -63,24 +46,23 @@ const ForgotPasswordPage = () => {
         component="h1"
         align="center"
         gutterBottom
-        sx={{ marginBottom: 10 }}
+        sx={{ marginBottom: 4 }}
       >
         Enter your email so we send you a verification code
       </Typography>
 
       {error && (
-        <Alert severity="error" sx={{ marginBottom: 400 }}>
+        <Alert severity="error" sx={{ marginBottom: 2, width: "100%" }}>
           {error}
         </Alert>
       )}
 
       {success && (
-        <Alert severity="success" sx={{ marginBottom: "10px" }}>
+        <Alert severity="success" sx={{ marginBottom: 2, width: "100%" }}>
           {success}
         </Alert>
       )}
 
-      {/* Email input field */}
       <TextField
         label="Email"
         type="email"
@@ -89,7 +71,7 @@ const ForgotPasswordPage = () => {
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        sx={{ marginBottom: "20px" }}
+        sx={{ marginBottom: 2 }}
       />
 
       <Button
