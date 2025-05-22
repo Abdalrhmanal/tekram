@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useRegister } from "../hooks/register";
 import Link from "next/link";
 import PersonLod from "@/components/lodeing-poupup/person-lod";
+import VerifyMail from "./verify-mail/verify-mail";
 
 const RegisterClientPage: React.FC = () => {
   const { register, loading, error, success } = useRegister();
@@ -220,7 +221,7 @@ const RegisterClientPage: React.FC = () => {
                   <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} />
                   Loading...
                 </>
-              ) : "Next"}
+              ) : "Register"}
             </Button>
           </Box>
 
@@ -239,7 +240,7 @@ const RegisterClientPage: React.FC = () => {
           bgcolor: "background.paper", boxShadow: 24, p: 4, borderRadius: 2,
           textAlign: "center", minWidth: 300, maxWidth: "90%",
         }}>
-          <PersonLod messag={"Please wait, the developer team is configuring your account"} />
+          <VerifyMail open={openModal} onClose={() => setOpenModal(false)} />
           <Button onClick={() => setOpenModal(false)} variant="contained" sx={{ mt: 2 }}>OK</Button>
         </Box>
       </Modal>
