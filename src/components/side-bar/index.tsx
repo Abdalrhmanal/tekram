@@ -28,7 +28,7 @@ interface MenuData {
   parent_id?: string | null;
   title: string;
   url?: string;
-  logo?: string;
+  logo?: React.ReactNode;
   children?: MenuData[];
 }
 
@@ -49,9 +49,9 @@ const Sidebar = () => {
      dataSourceName: "api/menu-links",
    });
   */
-   //setMenuItems(menuItemsAll);
-  console.log("menuResponse",menuItems);
-  
+  //setMenuItems(menuItemsAll);
+  console.log("menuResponse", menuItems);
+
   const { deleteData, isLoading: isDeleting } = useDeleteData({
     dataSourceName: "api/menu-links",
   });
@@ -84,7 +84,7 @@ const Sidebar = () => {
       const isExpanded = expandedItems[item.id] || false;
       const hasChildren = item.children && item.children.length > 0;
       const isActive = activeItem === item.url;
-      
+
       return (
         <Box
           key={item.id}
@@ -125,7 +125,7 @@ const Sidebar = () => {
                   height: 32,
                 }}
               >
-               {/*  {item.logo && (
+                {/*  {item.logo && (
                   <Image
                     src={getFullImageUrl(item.logo)}
                     alt={item.title}
@@ -138,6 +138,7 @@ const Sidebar = () => {
                     }}
                   />
                 )} */}
+                {item.logo}
               </ListItemIcon>
 
               {open && <ListItemText primary={item.title} />}
@@ -229,25 +230,74 @@ const Sidebar = () => {
             <CircularProgress />
           </Box>
         ) : (
-          renderMenu(menuItemsAll.map((item, index) => ({
-                                id: `generated-id-${index}`,
-                                title: item.text,
-                                url: item.href,
-                                logo: item.icon ? String(item.icon) : undefined,
-                                children: item.children?.map((child, childIndex) => ({
-                                  id: `generated-id-${index}-${childIndex}`,
-                                  title: child.text,
-                                  url: child.href,
-                                  logo: child.icon ? String(child.icon) : undefined,
-                                  children: child.children?.map((grandChild, grandChildIndex) => ({
-                                    id: `generated-id-${index}-${childIndex}-${grandChildIndex}`,
-                                    title: grandChild.text,
-                                    url: grandChild.href,
-                                    logo: grandChild.icon ? String(grandChild.icon) : undefined,
-                                    children: [],
-                                  })) || [],
-                                })) || [],
-                              })))
+          renderMenu(
+            menuItemsAll.map(
+              (
+                item: {
+                  text: string;
+                  href?: string;
+                  logo?: React.ReactNode;
+                  children?: {
+                    text: string;
+                    href?: string;
+                    logo?: React.ReactNode;
+                    children?: {
+                      text: string;
+                      href?: string;
+                      logo?: React.ReactNode;
+                      children?: unknown[];
+                    }[];
+                  }[];
+                },
+                index: number
+              ): MenuData => ({
+                id: `generated-id-${index}`,
+                title: item.text,
+                url: item.href,
+                logo: item.logo,
+                children:
+                  item.children?.map(
+                    (
+                      child: {
+                        text: string;
+                        href?: string;
+                        logo?: React.ReactNode;
+                        children?: {
+                          text: string;
+                          href?: string;
+                          logo?: React.ReactNode;
+                          children?: unknown[];
+                        }[];
+                      },
+                      childIndex: number
+                    ): MenuData => ({
+                      id: `generated-id-${index}-${childIndex}`,
+                      title: child.text,
+                      url: child.href,
+                      logo: child.logo,
+                      children:
+                        child.children?.map(
+                          (
+                            grandChild: {
+                              text: string;
+                              href?: string;
+                              logo?: React.ReactNode;
+                              children?: unknown[];
+                            },
+                            grandChildIndex: number
+                          ): MenuData => ({
+                            id: `generated-id-${index}-${childIndex}-${grandChildIndex}`,
+                            title: grandChild.text,
+                            url: grandChild.href,
+                            logo: grandChild.logo,
+                            children: [],
+                          })
+                        ) || [],
+                    })
+                  ) || [],
+              })
+            )
+          )
         )}
       </List>
 
