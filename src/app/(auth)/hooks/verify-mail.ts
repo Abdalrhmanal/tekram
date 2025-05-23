@@ -20,7 +20,7 @@ const useVerifyMail = (): UseVerifyMailResult => {
     setSuccess(null);
 
     try {
-      const token = Cookies.get("token");
+      const token = Cookies.get("a_user");
 
       if (!token) {
         throw new Error("الرمز غير موجود. قم بتسجيل الدخول أولاً.");
@@ -34,7 +34,7 @@ const useVerifyMail = (): UseVerifyMailResult => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Accept-Language": "en",
+            "Accept-Language": "ar",
           },
         }
       );

@@ -24,21 +24,27 @@ const VerifyMail: React.FC<VerifyMailProps> = ({ open, onClose }) => {
   const { verifyCode, loading, error, success } = useVerifyMail();
 
   const handleVerify = async () => {
-    await verifyCode(code);
+    if (!code.trim()) return;
+    await verifyCode(code.trim());
   };
 
   useEffect(() => {
     if (success) {
-      router.push("/");
+      const timer = setTimeout(() => {
+        router.push("/");
+      }, 1500);
+      return () => clearTimeout(timer);
     }
   }, [success, router]);
 
   return (
-    <Modal open={open} onClose={onClose} disableEscapeKeyDown>
+    <Modal open={open} disableEscapeKeyDown>
       <Box
+        dir="rtl"
         sx={{
           position: "absolute",
-          top: "50%", left: "50%",
+          top: "50%",
+          left: "50%",
           transform: "translate(-50%, -50%)",
           bgcolor: "background.paper",
           boxShadow: 24,
@@ -49,10 +55,12 @@ const VerifyMail: React.FC<VerifyMailProps> = ({ open, onClose }) => {
           maxWidth: "90%",
         }}
       >
-        <Typography variant="h6" mb={2}>Verify your Email</Typography>
+        <Typography variant="h6" mb={2}>
+          تحقق من بريدك الإلكتروني
+        </Typography>
 
         <TextField
-          label="Verification Code"
+          label="رمز التحقق"
           value={code}
           onChange={(e) => setCode(e.target.value)}
           fullWidth
@@ -61,6 +69,7 @@ const VerifyMail: React.FC<VerifyMailProps> = ({ open, onClose }) => {
         />
 
         {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+        {success && <Alert severity="success" sx={{ mt: 2 }}>{success}</Alert>}
 
         <Button
           onClick={handleVerify}
@@ -70,11 +79,7 @@ const VerifyMail: React.FC<VerifyMailProps> = ({ open, onClose }) => {
           disabled={loading || !code}
           sx={{ mt: 2 }}
         >
-          {loading ? <CircularProgress size={24} /> : "Verify"}
-        </Button>
-
-        <Button onClick={onClose} fullWidth sx={{ mt: 1 }}>
-          Cancel
+          {loading ? <CircularProgress size={24} /> : "تحقق"}
         </Button>
       </Box>
     </Modal>

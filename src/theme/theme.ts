@@ -20,80 +20,59 @@ declare module "@mui/material/styles" {
   }
 }
 
-// دالة إنشاء الثيم حسب اللون والوضع
 const getTheme = (
   color: "blue" | "green" | "red" | "yellow" | "purple" | "darkBlue",
   mode: "light" | "dark"
 ) => {
-  // الألوان الأساسية حسب اللون المختار
   const colors = {
     blue: {
-      main: "#2196f8",
-      light: "#ddecff",
-      dark: "#1565c0",
-      contrastText: "#fdfdfd",
+      main: "#2196f3",
+      light: "#bbdefb",
+      dark: "#1976d2",
+      contrastText: "#ffffff",
     },
     green: {
       main: "#4caf50",
-      light: "#81c784",
+      light: "#c8e6c9",
       dark: "#388e3c",
-      contrastText: "#fdfdfd",
+      contrastText: "#ffffff",
     },
     red: {
       main: "#f44336",
-      light: "#e57373",
+      light: "#ffcdd2",
       dark: "#d32f2f",
-      contrastText: "#fdfdfd",
+      contrastText: "#ffffff",
     },
     yellow: {
       main: "#ffeb3b",
-      light: "#fff176",
+      light: "#fff9c4",
       dark: "#fbc02d",
       contrastText: "#212121",
     },
     purple: {
       main: "#673ab7",
-      light: "#9575cd",
-      dark: "#4527a0",
-      contrastText: "#fdfdfd",
+      light: "#d1c4e9",
+      dark: "#512da8",
+      contrastText: "#ffffff",
     },
     darkBlue: {
-      main: "#1976d2",
-      light: "#42a5f5",
-      dark: "#115293",
-      contrastText: "#fdfdfd",
+      main: "#1565c0",
+      light: "#90caf9",
+      dark: "#0d47a1",
+      contrastText: "#ffffff",
     },
   };
 
-  // ألوان الخلفية حسب اللون والوضع
   const backgroundByColor: Record<
     keyof typeof colors,
     { light: string; dark: string }
   > = {
-    blue: {
-      light: "#DDECFF",
-      dark: "#102A43",
-    },
-    green: {
-      light: "#E6F4EA",
-      dark: "#1B3C2E",
-    },
-    red: {
-      light: "#FFE8E8",
-      dark: "#3B1F1F",
-    },
-    yellow: {
-      light: "#FFFDE7",
-      dark: "#3B3700",
-    },
-    purple: {
-      light: "#EDE7F6",
-      dark: "#2D1A47",
-    },
-    darkBlue: {
-      light: "#E3F2FD",
-      dark: "#0D1B2A",
-    },
+    blue: { light: "#e3f2fd", dark: "#0a1929" },
+    green: { light: "#e8f5e9", dark: "#1b3c2e" },
+    red: { light: "#ffebee", dark: "#3b1f1f" },
+    yellow: { light: "#fffde7", dark: "#3b3700" },
+    purple: { light: "#ede7f6", dark: "#2d1a47" },
+    darkBlue: { light: "#e3f2fd", dark: "#0d1b2a" },
   };
 
   const baseTheme: ThemeOptions = {
@@ -101,29 +80,35 @@ const getTheme = (
       mode,
       primary: colors[color],
       error: {
-        main: "#f54646",
-        light: "#fddada",
-        dark: "#9a0007",
-        contrastText: "#fdfdfd",
+        main: "#e53935",
+        light: "#ffcdd2",
+        dark: "#b71c1c",
+        contrastText: "#ffffff",
       },
       success: {
-        main: "#34c759",
-        light: "#c9ffd6",
-        dark: "#2E7D32",
+        main: "#43a047",
+        light: "#c8e6c9",
+        dark: "#2e7d32",
+        contrastText: "#ffffff",
       },
       grey: {
-        100: "#eeeeee",
-        200: "#d5d7da",
-        300: "#a0a0a0",
-        400: "#717680",
+        100: "#f5f5f5",
+        200: "#eeeeee",
+        300: "#e0e0e0",
+        400: "#bdbdbd",
+        500: "#9e9e9e",
+        600: "#757575",
+        700: "#616161",
+        800: "#424242",
+        900: "#212121",
       },
       text: {
-        primary: mode === "light" ? "#212121" : "#fdfdfd",
-        secondary: mode === "light" ? "#757575" : "#BDBDBD",
+        primary: mode === "light" ? "#212121" : "#ffffff",
+        secondary: mode === "light" ? "#616161" : "#bdbdbd",
       },
       background: {
         default: backgroundByColor[color][mode],
-        paper: mode === "light" ? "#fdfdfd" : "#424242",
+        paper: mode === "light" ? "#ffffff" : "#1e1e1e",
       },
       blueShadow: colors.blue,
       greenShadow: colors.green,
