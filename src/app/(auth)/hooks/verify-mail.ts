@@ -34,6 +34,7 @@ const useVerifyMail = (): UseVerifyMailResult => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Accept-Language": "en",
           },
         }
       );

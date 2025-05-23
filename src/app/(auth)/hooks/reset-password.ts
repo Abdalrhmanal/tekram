@@ -32,6 +32,7 @@ const useResetPassword = (): UseResetPasswordResult => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Accept-Language": "en",
           },
         }
       );

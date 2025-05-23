@@ -28,7 +28,8 @@ const useChangePassword = (): UseChangePasswordResult => {
             const response = await axios.post("http://145.223.116.44:9993/api/change-password", data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    "Accept-Language": "en",
                 },
             });
 
