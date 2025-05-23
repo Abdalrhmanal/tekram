@@ -163,7 +163,7 @@ const RegisterClientPage: React.FC = () => {
 
             <TextField
               fullWidth margin="normal" size="small"
-              label="Company Email" name="email" id="email" type="email"
+              label="Email" name="email" id="email" type="email"
               value={formData.email}
               onChange={handleChange}
               error={!!formErrors.email}
@@ -174,7 +174,7 @@ const RegisterClientPage: React.FC = () => {
 
             <TextField
               fullWidth margin="normal" size="small"
-              label="Company Phone Number" name="phone" id="phone" type="tel"
+              label="Phone Number" name="phone" id="phone" type="tel"
               value={formData.phone}
               onChange={handleChange}
               error={!!formErrors.phone}
