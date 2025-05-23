@@ -89,7 +89,7 @@ const HeroSection = ({ title, description, imageUrl }: ContactProps) => {
 
                             {/* Email Address */}
                             <Typography variant="body1">
-                                admin.Templeat@Templeat.com
+                                admin.Tekram@Tekram.com
                             </Typography>
 
                             {/* Social Media Icons */}

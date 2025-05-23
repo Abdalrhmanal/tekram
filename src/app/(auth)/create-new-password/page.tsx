@@ -3,7 +3,7 @@ import React from "react";
 import CreateNewPasswordClientPage from "./CreateNewPasswordClientPage";
 
 export const metadata: Metadata = {
-  title: "Templeat | Create New Password",
+  title: "Tekram | Create New Password",
 };
 function CreateNewPassword() {
   return <CreateNewPasswordClientPage />;

@@ -4,7 +4,7 @@ import ChangePasswordClientPage from "./ChangePasswordClientPage2";
 import { Box } from "@mui/material";
 
 export const metadata: Metadata = {
-  title: "Templeat | Change Password",
+  title: "Tekram | Change Password",
 };
 function ChangePassword() {
   return (<Box >

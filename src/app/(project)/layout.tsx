@@ -10,10 +10,10 @@ interface MainLayoutProps {
 
 export const metadata = {
   title: {
-    template: "%s | Templeat",
-    default: "Templeat",
+    template: "%s | Tekram",
+    default: "Tekram",
   },
-  description: "Main layout for the Templeat",
+  description: "Main layout for the Tekram",
 };
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {

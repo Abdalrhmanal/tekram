@@ -4,7 +4,7 @@ import ForgotPasswordPage from './ForgotPassword';
 
 
 export const metadata: Metadata = {
-    title: "Templeat | Forgot Password",
+    title: "Tekram | Forgot Password",
 };
 function ForgotPassword() {
     return <ForgotPasswordPage />

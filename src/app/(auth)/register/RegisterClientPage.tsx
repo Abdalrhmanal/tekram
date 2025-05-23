@@ -168,7 +168,7 @@ const RegisterClientPage: React.FC = () => {
               onChange={handleChange}
               error={!!formErrors.email}
               helperText={formErrors.email}
-              placeholder="admin.Templeat@Templeat.com"
+              placeholder="admin.Tekram@Tekram.com"
               InputLabelProps={{ shrink: true }}
             />
 

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import ConfirmPasswordClientPage from "./ConfirmPasswordClientPage";
 
 export const metadata: Metadata = {
-  title: "Templeat | Confirm Password",
+  title: "Tekram | Confirm Password",
 };
 const ConfirmPassword = () => <ConfirmPasswordClientPage />;
 

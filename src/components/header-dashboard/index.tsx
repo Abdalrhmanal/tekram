@@ -60,7 +60,7 @@ const Header: FC = () => {
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               <Image
-                src="/images/logo/logo.png"
+                src="/images/logo.png"
                 alt="logo"
                 width={50}
                 height={50}
@@ -70,7 +70,7 @@ const Header: FC = () => {
                 component="div"
                 sx={{ color: "primary.main", whiteSpace: "nowrap" }}
               >
-                Templeat
+                Tekram
               </Typography>
             </Box>
           </Grid>
@@ -108,8 +108,8 @@ const Header: FC = () => {
                     opacity: 1,
                   },
                 }}
-                placeholder="Search in Templeat"
-                inputProps={{ "aria-label": "search in Templeat" }}
+                placeholder="Search in Tekram"
+                inputProps={{ "aria-label": "search in Tekram" }}
               />
               <IconButton
                 type="button"

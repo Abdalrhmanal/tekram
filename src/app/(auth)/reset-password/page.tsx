@@ -3,7 +3,7 @@ import React from "react";
 import ResetPasswordClientPage from "./ResetPasswordClientPage";
 
 export const metadata: Metadata = {
-  title: "Templeat | ResetPassword",
+  title: "Tekram | ResetPassword",
 };
 const ResetPassword = () => <ResetPasswordClientPage />;
 

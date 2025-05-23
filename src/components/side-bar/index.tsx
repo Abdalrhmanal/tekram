@@ -46,7 +46,10 @@ const Sidebar = () => {
   };
 
   const toggleExpand = (id: string) => {
-    setExpandedItems({ [id]: true }); // فتح واحد فقط
+    setExpandedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   const renderMenu = (items: MenuData[], level = 0, parentId?: string) => {
@@ -66,14 +69,15 @@ const Sidebar = () => {
               sx={{
                 borderRadius: 2,
                 mb: "4px",
-                bgcolor:
-                  isActive || isParentHighlighted || expandedItems[parentId || ""]
-                    ? theme.palette.action.selected
-                    : "transparent",
-                color:
-                  isActive || isParentHighlighted || expandedItems[parentId || ""]
-                    ? theme.palette.primary.main
-                    : theme.palette.text.primary,
+                position: "relative",
+                bgcolor: isActive
+                  ? theme.palette.primary.light
+                  : isParentHighlighted || expandedItems[parentId || ""]
+                  ? theme.palette.action.selected
+                  : "transparent",
+                color: isActive
+                  ? theme.palette.primary.contrastText
+                  : theme.palette.text.primary,
                 p: 1,
                 justifyContent: open ? "flex-start" : "center",
                 "&:hover": {
@@ -82,6 +86,19 @@ const Sidebar = () => {
                   cursor: "pointer",
                 },
                 minHeight: 48,
+                ...(isActive && {
+                  "&::before": {
+                    content: '""',
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: "4px",
+                    backgroundColor: theme.palette.primary.main,
+                    borderTopLeftRadius: "8px",
+                    borderBottomLeftRadius: "8px",
+                  },
+                }),
               }}
             >
               <ListItemIcon
@@ -93,6 +110,9 @@ const Sidebar = () => {
                   alignItems: "center",
                   width: 32,
                   height: 32,
+                  color: isActive
+                    ? theme.palette.primary.main
+                    : theme.palette.text.primary,
                 }}
               >
                 {item.logo}
