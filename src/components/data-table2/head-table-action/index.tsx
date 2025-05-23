@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Button, Box, IconButton, Tooltip } from "@mui/material";
+import { Button, Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import PrintIcon from "@mui/icons-material/Print";
@@ -25,6 +25,7 @@ interface HeardTabelActionsProps {
 const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onDeselectAll }) => {
   const router = useRouter();
   const selectedCount = selectedRows.length;
+  const theme = useTheme();
 
   const actions: ActionType[] = [
     {
@@ -43,7 +44,7 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
       text: "Relationship map",
       icon: <MapIcon fontSize="small" />,
       onClick: () => console.log("Map Action"),
-      visible: (count) => count > 1, 
+      visible: (count) => count > 1,
     },
     {
       text: "Generate link",
@@ -55,7 +56,7 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
       text: "Duplicate",
       icon: <FileCopyIcon fontSize="small" />,
       onClick: () => console.log("Duplicate Action"),
-      visible: (count) => count === 1, 
+      visible: (count) => count === 1,
     },
     {
       text: "Delete",
@@ -74,51 +75,63 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
           bottom: 20,
           left: "50%",
           transform: "translateX(-50%)",
-          backgroundColor: "#F5F5F5",
+          width: "60%",
           padding: "8px 16px",
           display: "flex",
           alignItems: "center",
           gap: 1.5,
-          borderRadius: "8px",
-          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+          borderRadius: "12px",
+          backgroundColor: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+          boxShadow: `0px 6px 20px ${theme.palette.mode === "light" ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.4)"}`,
+          zIndex: 1300,
         }}
       >
-        <Box
-          sx={{
-            backgroundColor: "#1E6153",
-            color: "white",
-            padding: "4px 12px",
-            borderRadius: "6px",
-            fontSize: "16px",
-            fontWeight: "bold",
-          }}
-        >
-          {selectedCount}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.primary.contrastText,
+              padding: "4px 12px",
+              borderRadius: "6px",
+              fontSize: "16px",
+              fontWeight: "bold",
+            }}
+          >
+            {selectedCount}
+          </Box>
+
+          <Button
+            variant="text"
+            color="inherit"
+            onClick={onDeselectAll}
+            sx={{
+              textTransform: "none",
+              fontWeight: "bold",
+              color: theme.palette.text.secondary,
+            }}
+          >
+            Deselect all
+          </Button>
         </Box>
 
-        <Button
-          variant="text"
-          color="inherit"
-          onClick={onDeselectAll}
-          sx={{ textTransform: "none", fontWeight: "bold", color: "#666" }}
-        >
-          Deselect all
-        </Button>
-
-        {actions
-          .filter((action) => action.visible?.(selectedCount)) 
-          .map((action, index) => (
-            <Tooltip title={action.text} key={index}>
-              <IconButton color={action.color || "inherit"} onClick={action.onClick}>
-                {action.icon}
-              </IconButton>
-            </Tooltip>
-          ))}
-
-        <IconButton color="inherit" onClick={onDeselectAll}>
-          <CloseIcon />
-        </IconButton>
-      </Box>
+        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
+          {actions
+            .filter((action) => action.visible?.(selectedCount))
+            .map((action, index) => (
+              <Tooltip title={action.text} key={index}>
+                <IconButton color={action.color || "inherit"} onClick={action.onClick}>
+                  {action.icon}
+                </IconButton>
+              </Tooltip>
+            ))}
+        </Box>
+        <Box sx={{ ml: "auto" }}>
+          <IconButton color="inherit" onClick={onDeselectAll}>
+            <CloseIcon />
+          </IconButton>
+        </Box >
+      </Box >
     )
   );
 };

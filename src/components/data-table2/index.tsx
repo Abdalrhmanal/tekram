@@ -22,6 +22,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn"; // أيقونة الأعمدة
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import useGlobalData from "@/hooks/git-global";
+import { useTheme } from "@mui/material/styles";
 
 interface GridTableProps {
   dataSourceName: string;
@@ -41,7 +42,7 @@ const GridTable: React.FC<GridTableProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
+  const theme = useTheme();
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [sortItem, setSortItem] = useState({
@@ -203,9 +204,9 @@ const GridTable: React.FC<GridTableProps> = ({
   if (!GlobalData) return <p>No Data Available</p>;
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: theme.palette.background.paper, borderRadius: 2, padding: 2 }}>
       <Grid container spacing={2} sx={{ pl: 3, pr: 3 }}>
-        <Grid size={10}>
+        <Grid size={9.4}>
           <TextField
             label="Search in Table"
             variant="outlined"
@@ -216,20 +217,28 @@ const GridTable: React.FC<GridTableProps> = ({
             sx={{ mb: 2 }}
           />
         </Grid>
-        <Grid size={1}>
+        <Grid size={1.3}>
           <Box display="flex" justifyContent="space-between" mb={2}>
             <Badge badgeContent={filterData.length} color="secondary">
               <IconButton onClick={handleOpenFilter} color="primary">
                 <FilterListIcon fontSize="large" />
+                <Typography variant="body2" color="textSecondary">
+                  Filters
+                </Typography>
               </IconButton>
+
             </Badge>
           </Box>
         </Grid>
-        <Grid size={1}>
+        <Grid size={1.3}>
           <Box display="flex" justifyContent="flex-end" mb={2}>
             <IconButton onClick={handleOpenColumnMenu} color="primary">
               <ViewColumnIcon fontSize="large" />
+              <Typography variant="body2" color="textSecondary">
+                Columns
+              </Typography>
             </IconButton>
+
           </Box>
         </Grid>
       </Grid>

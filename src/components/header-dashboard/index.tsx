@@ -6,7 +6,7 @@ import {
   Avatar,
   Box,
   Button,
-  Grid ,
+  Grid,
   IconButton,
   InputBase,
   Toolbar,
@@ -19,10 +19,11 @@ import SelectLanguage from "../language-select";
 import UserProfile from "../user-profile";
 import { useThemeContext } from "@/theme/context-them";
 import Cookies from "js-cookie";
+import { useTheme } from "@mui/material/styles";
 
 const Header: FC = () => {
   const [userData, setUserData] = useState<any>(null);
-
+  const theme = useTheme();
   useEffect(() => {
     const userCookie = Cookies.get("user_data");
     if (userCookie) {
@@ -35,6 +36,7 @@ const Header: FC = () => {
     <AppBar
       color="inherit"
       sx={{
+        backgroundColor: theme.palette.background.paper,
         boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.05)",
         padding: "0 16px",
       }}
@@ -133,8 +135,8 @@ const Header: FC = () => {
           >
             <Notification />
             <SelectLanguage />
-            
-             <UserProfile data={userData} />
+
+            <UserProfile data={userData} />
           </Grid>
         </Grid>
       </Toolbar>
