@@ -28,7 +28,7 @@ const useCreateData = function <T>({
         setSuccess(false);
 
         try {
-            const token = Cookies.get("auth_user");
+            const token = Cookies.get("a_user");
             if (!token) {
                 throw new Error("رمز المصادقة مفقود.");
             }

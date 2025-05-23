@@ -20,8 +20,8 @@ export function middleware(request: NextRequest) {
   // Check if the route is protected (not public and not guest-viewable)
   const isFullyProtectedRoute = !publicRoutes.includes(path);
 
-  // Get the 'user_auth' cookie (which holds the token or user info)
-  const authCookie = request.cookies.get("user_auth")?.value;
+  // Get the 'a_user' cookie (which holds the token or user info)
+  const authCookie = request.cookies.get("a_user")?.value;
 
   let isAuthenticated = !!authCookie; // Consider the user authenticated if the cookie exists
 

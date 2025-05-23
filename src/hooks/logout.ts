@@ -22,7 +22,9 @@ const useLogout = (): UseLogoutResult => {
     setSuccess(null);
 
     try {
-      const token = Cookies.get("auth_user");
+      const token = Cookies.get("a_user");
+      console.log("Token ogout:", token);
+      
       if (token) {
         const response = await axios.post(
           "http://145.223.116.44:9993/api/logout",
@@ -31,12 +33,13 @@ const useLogout = (): UseLogoutResult => {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
+              "Accept-Language": "en",
             },
           }
         );
 
         if (response.status === 200) {
-          Cookies.remove("auth_user");
+          Cookies.remove("a_user");
           Cookies.remove("user_data");
 
           setSuccess("Successfully logged out!");
@@ -46,7 +49,7 @@ const useLogout = (): UseLogoutResult => {
         }
       } else {
         // إذا لم يتم العثور على التوكن
-        Cookies.remove("auth_user");
+        Cookies.remove("a_user");
         Cookies.remove("user_data");
         setSuccess("Session cleared locally.");
         router.push("/login");

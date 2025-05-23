@@ -28,7 +28,7 @@ const useDeleteData = function ({
         setSuccess(false);
 
         try {
-            const token = Cookies.get("auth_user");
+            const token = Cookies.get("a_user");
             if (!token) {
                 throw new Error("Authentication token is missing.");
             }

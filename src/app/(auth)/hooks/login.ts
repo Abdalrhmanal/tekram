@@ -82,7 +82,7 @@ const useLogin = () => {
       console.log("Extracted Token:", token);
       console.log("Extracted User Data:", extractedUser);
 
-      Cookies.set("auth_user", token, { expires: 7 });
+      Cookies.set("a_user", token, { expires: 7 });
       Cookies.set("user_data", JSON.stringify(extractedUser), { expires: 7 });
 
       setSuccess("تم تسجيل الدخول بنجاح");
