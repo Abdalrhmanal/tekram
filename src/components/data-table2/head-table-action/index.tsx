@@ -8,6 +8,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import MapIcon from "@mui/icons-material/Map";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import CloseIcon from "@mui/icons-material/Close";
+import useDeleteData from "@/hooks/delete-global";
 
 interface ActionType {
   text: string;
@@ -26,6 +27,10 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
   const router = useRouter();
   const selectedCount = selectedRows.length;
   const theme = useTheme();
+
+  const { isLoading, isError, success, deleteData } = useDeleteData({
+    dataSourceName: "api/customers",
+  });
 
   const actions: ActionType[] = [
     {
@@ -61,7 +66,17 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
     {
       text: "Delete",
       icon: <DeleteIcon fontSize="small" />,
-      onClick: () => console.log("Delete Action"),
+      onClick: async () => {
+        const confirmed = window.confirm("هل أنت متأكد من حذف الزبائن المحددين؟");
+        if (!confirmed) return;
+
+        await Promise.all(selectedRows.map((row) => deleteData(row.id)));
+
+        if (success) {
+          onDeselectAll();
+          router.refresh(); // إعادة تحميل الصفحة أو البيانات
+        }
+      },
       visible: (count) => count > 0,
       color: "error",
     },
@@ -83,10 +98,12 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
           borderRadius: "12px",
           backgroundColor: theme.palette.background.paper,
           color: theme.palette.text.primary,
-          boxShadow: `0px 6px 20px ${theme.palette.mode === "light" ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.4)"}`,
+          boxShadow: `0px 6px 20px ${
+            theme.palette.mode === "light" ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.4)"} `,
           zIndex: 1300,
         }}
       >
+        {/* العداد وزر إلغاء التحديد */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Box
             sx={{
@@ -115,23 +132,26 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
           </Button>
         </Box>
 
+        {/* الأكشنات في المنتصف */}
         <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
           {actions
             .filter((action) => action.visible?.(selectedCount))
             .map((action, index) => (
               <Tooltip title={action.text} key={index}>
-                <IconButton color={action.color || "inherit"} onClick={action.onClick}>
+                <IconButton color={action.color || "inherit"} onClick={action.onClick} disabled={isLoading}>
                   {action.icon}
                 </IconButton>
               </Tooltip>
             ))}
         </Box>
+
+        {/* زر الإغلاق في أقصى اليمين */}
         <Box sx={{ ml: "auto" }}>
           <IconButton color="inherit" onClick={onDeselectAll}>
             <CloseIcon />
           </IconButton>
-        </Box >
-      </Box >
+        </Box>
+      </Box>
     )
   );
 };
