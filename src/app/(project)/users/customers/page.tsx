@@ -14,7 +14,7 @@ function Customers() {
    
     return (
         <>
-            <GridTable dataSourceName={dataSourceName} columns={columns} />
+            <GridTable dataSourceName={dataSourceName} columns={columns} isCreated={true} toCreateURLPage='/users/customers/create'/>
         </>
     )
 }

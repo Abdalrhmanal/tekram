@@ -16,7 +16,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { renderCell } from "../renderCell/renderCell";
-import HeardTabelActions from "../head-table-action";
+import HeardTabelActions from "../action-table";
 
 interface Column {
   field: string;
