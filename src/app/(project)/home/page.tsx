@@ -1,4 +1,6 @@
+import Calendar from '@/components/calendar';
 import GridTable from '@/components/data-table2';
+import { Container } from '@mui/material';
 import React from 'react'
 
 function HomePage() {
@@ -14,6 +16,9 @@ function HomePage() {
         <>
             HomePage
             {/* <GridTable dataSourceName={dataSourceName} columns={columns} /> */}
+            <Container maxWidth="lg" sx={{ mt: 4 }}>
+                <Calendar />
+            </Container>
         </>
     )
 }
