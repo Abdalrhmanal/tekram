@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { renderCell } from "../renderCell/renderCell";
 import HeardTabelActions from "../action-table";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Column {
   field: string;
@@ -41,6 +42,7 @@ interface StructureTableProps {
   onActionClick?: (row: RowData) => void;
   onDelete?: (id: string | number) => void;
   isDeleting?: boolean;
+  isShowDetailse?: boolean;
 }
 
 const StructureTable: React.FC<StructureTableProps> = ({
@@ -55,11 +57,13 @@ const StructureTable: React.FC<StructureTableProps> = ({
   onActionClick,
   onDelete,
   isDeleting = false,
+  isShowDetailse = false,
 }) => {
   const [orderBy, setOrderBy] = useState<string | null>("created_at");
   const [orderDirection, setOrderDirection] = useState<"asc" | "desc">("desc");
   const [selectedRows, setSelectedRows] = useState<RowData[]>([]);
-
+  const router = useRouter();
+  const pathname = usePathname();
   const hasActions = !!onActionClick || !!onDelete;
 
   const handleSort = (field: string) => {
@@ -126,11 +130,23 @@ const StructureTable: React.FC<StructureTableProps> = ({
                   onChange={() => handleSelectRow(row)}
                 />
               </TableCell>
-              {columns.map((column) => (
-                <TableCell key={`${row.id}-${column.field}`}>
-                  {renderCell(column.field, row[column.field], row)}
-                </TableCell>
-              ))}
+              {columns.map((column) => (<>
+                {isShowDetailse ? (<>
+                  <TableCell key={`${row.id}-${column.field}`} onClick={(e) => {
+                    const target = e.target as HTMLElement;
+                    if (target.closest("button") || target.closest("svg")) return;
+
+                    router.push(`${pathname}/${row.id}`);
+                  }}>
+                    {renderCell(column.field, row[column.field], row)}
+                  </TableCell>
+                </>) : (<>
+                  <TableCell key={`${row.id}-${column.field}`} >
+                    {renderCell(column.field, row[column.field], row)}
+                  </TableCell>
+                </>)}
+
+              </>))}
               {hasActions && (
                 <TableCell>
                   <Box display="flex" gap={1}>

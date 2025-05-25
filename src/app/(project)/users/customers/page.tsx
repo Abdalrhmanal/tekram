@@ -11,10 +11,13 @@ function Customers() {
         { headerName: "Status", field: "is_active", sortable: true },
         { headerName: "wallet", field: "walletId", sortable: true },
     ];
-   
+
     return (
         <>
-            <GridTable dataSourceName={dataSourceName} columns={columns} isCreated={true} toCreateURLPage='/users/customers/create'/>
+            <GridTable dataSourceName={dataSourceName}
+                columns={columns} isCreated={true}
+                toCreateURLPage='/users/customers/create'
+                isShowDetailse={false} />
         </>
     )
 }

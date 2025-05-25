@@ -19,9 +19,22 @@ interface GridTableProps {
   onDelete?: (id: number | string) => void;
   isDeleting?: boolean;
   isCreated?: boolean;
-  toCreateURLPage?: string; // رابط إنشاء جديد
+  toCreateURLPage?: string; 
+  isShowDetailse?: boolean; 
 }
-
+export enum ComparisonOperator {
+  Equals = "Equals",
+  GreaterThan = "GreaterThan",
+  LessThan = "LessThan",
+  NotEquals = "NotEquals",
+  Contains = "Contains",
+  StartsWith = "StartsWith",
+  EndsWith = "EndsWith",
+  In = "In",
+  NotIn = "NotIn",
+  GreaterThanOrEqual = "GreaterThanOrEqual",
+  LessThanOrEqual = "LessThanOrEqual",
+}
 const GridTable: React.FC<GridTableProps> = ({
   dataSourceName,
   columns,
@@ -29,7 +42,8 @@ const GridTable: React.FC<GridTableProps> = ({
   onDelete,
   isDeleting,
   isCreated,
-  toCreateURLPage
+  toCreateURLPage,
+  isShowDetailse
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -55,9 +69,8 @@ const GridTable: React.FC<GridTableProps> = ({
 
   const [visibleColumns, setVisibleColumns] = useState<{
     [key: string]: boolean;
-  }>(columns.reduce((acc, col) => ({ ...acc, [col.field]: true }), {})); // حالة الأعمدة المرئية
+  }>(columns.reduce((acc, col) => ({ ...acc, [col.field]: true }), {}));
 
-  const filterOperators = ["=", "!=", ">", "<", "LIKE"];
 
   useEffect(() => {
     const field = searchParams.get("field");
@@ -187,9 +200,9 @@ const GridTable: React.FC<GridTableProps> = ({
   const toggleColumnVisibility = (field: string) => {
     setVisibleColumns((prev) => ({ ...prev, [field]: !prev[field] }));
   };
-const handleOpenCreateNew = () => {
+  const handleOpenCreateNew = () => {
     setColumnAnchorEl(null);
-    router.push(`${toCreateURLPage}`); 
+    router.push(`${toCreateURLPage}`);
   };
 
   useEffect(() => {
@@ -324,7 +337,7 @@ const handleOpenCreateNew = () => {
           />
 
           <Autocomplete
-            options={filterOperators}
+            options={Object.values(ComparisonOperator)}
             value={selectedOperator}
             onChange={(event, newValue) => setSelectedOperator(newValue)}
             renderInput={(params) => (
@@ -402,6 +415,7 @@ const handleOpenCreateNew = () => {
         onActionClick={onActionClick}
         onDelete={onDelete}
         isDeleting={isDeleting}
+        isShowDetailse={isShowDetailse}
       />
     </Box>
   );
