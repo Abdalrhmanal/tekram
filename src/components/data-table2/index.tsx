@@ -12,6 +12,7 @@ import useGlobalData from "@/hooks/git-global";
 import { useTheme } from "@mui/material/styles";
 import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
 import { ComparisonOperator, FilterType, GlobalDataType, GridTableProps } from "./type/type";
+import Loding from "./loading";
 
 const GridTable: React.FC<GridTableProps> = ({
   dataSourceName,
@@ -203,7 +204,7 @@ const GridTable: React.FC<GridTableProps> = ({
     refetch();
   }, [sortItem, pageNumber, pageSize, searchParams]);
 
-  if (GlobalLoading) return <p>Loading...</p>;
+  if (GlobalLoading) return <Loding/>;
   if (!GlobalData) return <p>No Data Available</p>;
 
   // Get totalCount from GlobalData or fallback to filteredRows length
