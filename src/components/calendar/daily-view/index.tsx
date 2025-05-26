@@ -37,7 +37,9 @@ const DailyView: React.FC<DailyViewProps> = ({ date, events = [] }) => {
   const handleFormatChange = (_: any, newFormat: '12' | '24') => {
     if (newFormat) setTimeFormat(newFormat);
   };
+
   const current = new Date();
+
   return (
     <Box>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -50,11 +52,11 @@ const DailyView: React.FC<DailyViewProps> = ({ date, events = [] }) => {
 
       <Grid container spacing={1}>
         {hours.map((hour) => {
-          const isCurrentHour =
-            isSameDay(date, current) && current.getHours() === hour;
+          const isCurrentHour = isSameDay(date, current) && current.getHours() === hour;
+          const hourEvents = events.filter(e => e.startTime.startsWith(hour.toString().padStart(2, '0')));
 
           return (
-            <Grid key={hour} size={4}>
+            <Grid size={4} key={hour}>
               <Paper
                 elevation={1}
                 variant="outlined"
@@ -67,8 +69,8 @@ const DailyView: React.FC<DailyViewProps> = ({ date, events = [] }) => {
                 <Typography variant="subtitle2" fontWeight={500} gutterBottom>
                   {formatHour(hour)}
                 </Typography>
-                {events
-                  .filter((e) => e.startTime.startsWith(hour.toString().padStart(2, '0')))
+
+                {hourEvents.length > 0 ? hourEvents
                   .sort((a, b) => a.startTime.localeCompare(b.startTime))
                   .map((event) => (
                     <Box
@@ -83,15 +85,17 @@ const DailyView: React.FC<DailyViewProps> = ({ date, events = [] }) => {
                         color: '#fff',
                       }}
                     >
-                      <Typography variant="body2" mt={1}>{event.title || 'no title'}</Typography>
+                      <Typography variant="body2" mt={1}>
+                        {event.title || 'no title'}
+                      </Typography>
                     </Box>
-                  ))}
-                <Typography variant="body2" mt={1}>No Events</Typography>
+                  )) : (
+                    <Typography variant="body2" mt={1}>No Events</Typography>
+                  )}
               </Paper>
             </Grid>
           );
         })}
-
       </Grid>
     </Box>
   );
