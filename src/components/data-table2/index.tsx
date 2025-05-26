@@ -206,6 +206,9 @@ const GridTable: React.FC<GridTableProps> = ({
   if (GlobalLoading) return <p>Loading...</p>;
   if (!GlobalData) return <p>No Data Available</p>;
 
+  // Get totalCount from GlobalData or fallback to filteredRows length
+  const totalCount = GlobalData?.pagination?.totalCount ?? filteredRows.length;
+
   return (
     <Box sx={{ backgroundColor: theme.palette.background.paper, borderRadius: 2, padding: 2 }}>
       <Grid container spacing={2} sx={{ pl: 3, pr: 3 }}>
@@ -395,7 +398,7 @@ const GridTable: React.FC<GridTableProps> = ({
       <StructureTable
         rows={filteredRows}
         columns={columns.filter((col) => visibleColumns[col.field])}
-        totalCount={filteredRows.length}
+        totalCount={totalCount}
         pageNumber={pageNumber - 1}
         pageSize={pageSize}
         onPageChange={(newPage, newPageSize) => {

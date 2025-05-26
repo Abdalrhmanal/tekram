@@ -1,4 +1,5 @@
 import GridTable from '@/components/data-table2'
+import { ComparisonOperator } from '@/components/data-table2/type/type';
 import React from 'react'
 
 function Customers() {
@@ -17,7 +18,12 @@ function Customers() {
             <GridTable dataSourceName={dataSourceName}
                 columns={columns} isCreated={true}
                 toCreateURLPage='/users/customers/create'
-                isShowDetailse={false} />
+                isShowDetailse={false}
+                fixedFilter={{
+                    field: "role.name",
+                    operator: ComparisonOperator.Equals,
+                    value: "user"
+                }} />
         </>
     )
 }
