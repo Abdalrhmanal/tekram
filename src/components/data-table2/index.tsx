@@ -11,30 +11,8 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import useGlobalData from "@/hooks/git-global";
 import { useTheme } from "@mui/material/styles";
 import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
+import { ComparisonOperator, FilterType, GlobalDataType, GridTableProps } from "./type/type";
 
-interface GridTableProps {
-  dataSourceName: string;
-  columns: { field: string; headerName: string; sortable?: boolean }[];
-  onActionClick?: (row: any) => void;
-  onDelete?: (id: number | string) => void;
-  isDeleting?: boolean;
-  isCreated?: boolean;
-  toCreateURLPage?: string; 
-  isShowDetailse?: boolean; 
-}
-export enum ComparisonOperator {
-  Equals = "Equals",
-  GreaterThan = "GreaterThan",
-  LessThan = "LessThan",
-  NotEquals = "NotEquals",
-  Contains = "Contains",
-  StartsWith = "StartsWith",
-  EndsWith = "EndsWith",
-  In = "In",
-  NotIn = "NotIn",
-  GreaterThanOrEqual = "GreaterThanOrEqual",
-  LessThanOrEqual = "LessThanOrEqual",
-}
 const GridTable: React.FC<GridTableProps> = ({
   dataSourceName,
   columns,
@@ -43,7 +21,8 @@ const GridTable: React.FC<GridTableProps> = ({
   isDeleting,
   isCreated,
   toCreateURLPage,
-  isShowDetailse
+  isShowDetailse,
+  fixedFilter
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -62,9 +41,7 @@ const GridTable: React.FC<GridTableProps> = ({
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [selectedOperator, setSelectedOperator] = useState<string | null>(null);
   const [filterValue, setFilterValue] = useState<string>("");
-  const [filterData, setFilterData] = useState<
-    { field: string; operator: string; value: string }[]
-  >([]);
+  const [filterData, setFilterData] = useState<FilterType[]>([]);
   const [filterLogic, setFilterLogic] = useState("AND");
 
   const [visibleColumns, setVisibleColumns] = useState<{
@@ -77,22 +54,32 @@ const GridTable: React.FC<GridTableProps> = ({
     const operator = searchParams.get("operator");
     const value = searchParams.get("value");
 
+    const dynamicFilters = [];
+
     if (field && operator && value) {
+      dynamicFilters.push({ field, operator, value });
       setSelectedField(field);
       setSelectedOperator(operator);
       setFilterValue(value);
-      setFilterData([{ field, operator, value }]);
+    } else {
+      setSelectedField(null);
+      setSelectedOperator(null);
+      setFilterValue("");
     }
-  }, [searchParams]);
 
-  interface GlobalDataType {
-    data: any[];
-    pagination?: {
-      totalCount: number;
-      next_page_url?: string | null;
-      prev_page_url?: string | null;
-    };
-  }
+    setFilterData(
+      [fixedFilter, ...dynamicFilters]
+        .filter((f): f is FilterType => !!f && typeof f === "object" && "field" in f && "operator" in f && "value" in f)
+    );
+  }, [searchParams]);
+  useEffect(() => {
+    if (filterData.length > 1) {
+      setFilterLogic("OR");
+    } else {
+      setFilterLogic("AND");
+    }
+  }, [filterData]);
+
 
   const { data: GlobalData, isLoading: GlobalLoading, refetch, isError } = useGlobalData<GlobalDataType>({
     dataSourceName,
@@ -147,25 +134,31 @@ const GridTable: React.FC<GridTableProps> = ({
       newParams.set("operator", selectedOperator);
       newParams.set("value", filterValue);
 
-      router.push(`${pathname}?${newParams.toString()}`);
-
-      setFilterData([
+      const newFilterData = [
+        fixedFilter,
         {
           field: selectedField,
           operator: selectedOperator,
           value: filterValue,
         },
-      ]);
+      ];
+
+      router.push(`${pathname}?${newParams.toString()}`);
+      setFilterData(newFilterData.filter((f): f is FilterType => !!f && typeof f === "object" && "field" in f && "operator" in f && "value" in f));
+      setFilterLogic(newFilterData.length > 2 ? "OR" : "AND");
+
       refetch();
       handleCloseFilter();
     }
   };
 
+
+
   const clearFilter = () => {
     setSelectedField(null);
     setSelectedOperator(null);
     setFilterValue("");
-    setFilterData([]);
+    setFilterData([fixedFilter].filter((f): f is FilterType => !!f && typeof f === "object" && "field" in f && "operator" in f && "value" in f));
 
     const newParams = new URLSearchParams(searchParams);
     newParams.delete("field");
@@ -173,9 +166,10 @@ const GridTable: React.FC<GridTableProps> = ({
     newParams.delete("value");
 
     router.push(`${pathname}?${newParams.toString()}`);
-
+    setFilterLogic("AND");
     refetch();
   };
+
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [columnAnchorEl, setColumnAnchorEl] =
@@ -231,7 +225,7 @@ const GridTable: React.FC<GridTableProps> = ({
             </Grid>
             <Grid size={1.3}>
               <Box display="flex" justifyContent="space-between" mb={2}>
-                <Badge badgeContent={filterData.length} color="secondary">
+                <Badge badgeContent={filterData.length > 1 ? filterData.length - 1 : 0} color="secondary">
                   <IconButton onClick={handleOpenFilter} color="primary">
                     <FilterListIcon fontSize="large" />
                     <Typography variant="body2" color="textSecondary">
@@ -398,10 +392,9 @@ const GridTable: React.FC<GridTableProps> = ({
         </List>
       </Popover>
 
-      {/* 🏷️ جدول البيانات مع بيانات البحث */}
       <StructureTable
         rows={filteredRows}
-        columns={columns.filter((col) => visibleColumns[col.field])} // عرض الأعمدة المرئية فقط
+        columns={columns.filter((col) => visibleColumns[col.field])}
         totalCount={filteredRows.length}
         pageNumber={pageNumber - 1}
         pageSize={pageSize}
