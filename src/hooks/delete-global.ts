@@ -10,7 +10,7 @@ type UseDeleteDataResult = {
   isLoading: boolean;
   isError: string | null;
   success: boolean;
-  deleteData: (id: string | number) => Promise<void>;
+  deleteData: (ids: string | number) => Promise<void>;
 };
 
 const BASE_URL = "http://145.223.116.44:9993";

@@ -20,7 +20,7 @@ function Customers() {
                 toCreateURLPage='/users/customers/create'
                 isShowDetailse={false}
                 fixedFilter={{
-                    field: "role.name",
+                    field: "roles.name",
                     operator: ComparisonOperator.Equals,
                     value: "user"
                 }} />

@@ -32,7 +32,7 @@ const GridTable: React.FC<GridTableProps> = ({
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [sortItem, setSortItem] = useState({
-    field: "created_at",
+    field: "is_active",
     sort: "desc",
   });
 
@@ -115,6 +115,21 @@ const GridTable: React.FC<GridTableProps> = ({
 
     setFilteredRows(filteredData || []);
   }, [searchQuery, GlobalData]);
+
+  useEffect(() => {
+    const handleUsersDeleted = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const deletedIds = customEvent.detail.ids;
+      console.log("استقبال حدث الحذف:", deletedIds);
+      refetch();
+    };
+
+    window.addEventListener("usersDeleted", handleUsersDeleted);
+
+    return () => {
+      window.removeEventListener("usersDeleted", handleUsersDeleted);
+    };
+  }, []);
 
   const handleActionClick = (row: any) => {
     if (onActionClick) {
@@ -204,7 +219,7 @@ const GridTable: React.FC<GridTableProps> = ({
     refetch();
   }, [sortItem, pageNumber, pageSize, searchParams]);
 
-  if (GlobalLoading) return <Loding/>;
+  if (GlobalLoading) return <Loding />;
   if (!GlobalData) return <p>No Data Available</p>;
 
   // Get totalCount from GlobalData or fallback to filteredRows length

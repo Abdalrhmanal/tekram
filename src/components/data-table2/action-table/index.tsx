@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -9,6 +9,7 @@ import MapIcon from "@mui/icons-material/Map";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import CloseIcon from "@mui/icons-material/Close";
 import useDeleteData from "@/hooks/delete-global";
+import useOffUsersData from "@/hooks/off-users";
 
 interface ActionType {
   text: string;
@@ -25,11 +26,23 @@ interface HeardTabelActionsProps {
 
 const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onDeselectAll }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const selectedCount = selectedRows.length;
   const theme = useTheme();
 
-  const { isLoading, isError, success, deleteData } = useDeleteData({
-    dataSourceName: "api/customers",
+  let sourceName = "";
+  switch (pathname) {
+    case '/users/customers':
+      sourceName = "api/customers";
+      break;
+    case '/users/service-providers':
+      sourceName = "api/hosts";
+      break;
+    default:
+      sourceName = "";
+  }
+  const { isLoading, isError, success, deleteData } = useOffUsersData({
+    dataSourceName: sourceName,
   });
 
   const actions: ActionType[] = [
@@ -70,17 +83,18 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
         const confirmed = window.confirm("هل أنت متأكد من حذف الزبائن المحددين؟");
         if (!confirmed) return;
 
-        await Promise.all(selectedRows.map((row) => deleteData(row.id)));
+        const ids = selectedRows.map((row) => row.id);
+        const wasDeleted = await deleteData(ids); // ✅ استخدم النتيجة مباشرة
 
-        if (success) {
+        if (wasDeleted) {
+          window.dispatchEvent(new CustomEvent("usersDeleted", { detail: { ids } }));
           onDeselectAll();
-          router.refresh(); // إعادة تحميل الصفحة أو البيانات
+          router.refresh();
         }
       },
       visible: (count) => count > 0,
       color: "error",
-    },
-  ];
+    }];
 
   return (
     selectedCount > 0 && (
@@ -98,8 +112,7 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
           borderRadius: "12px",
           backgroundColor: theme.palette.background.paper,
           color: theme.palette.text.primary,
-          boxShadow: `0px 6px 20px ${
-            theme.palette.mode === "light" ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.4)"} `,
+          boxShadow: `0px 6px 20px ${theme.palette.mode === "light" ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.4)"} `,
           zIndex: 1300,
         }}
       >
