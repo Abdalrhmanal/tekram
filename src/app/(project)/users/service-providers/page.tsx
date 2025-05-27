@@ -21,7 +21,7 @@ function ServiceProviders() {
                 toCreateURLPage='/users/service-providers/create'
                 isShowDetailse={false}
                 fixedFilter={{
-                    field: "role",
+                    field: "roles.name",
                     operator: ComparisonOperator.Equals,
                     value: "host"
                 }}
