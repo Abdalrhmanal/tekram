@@ -1,26 +1,11 @@
-// components/Loding.tsx
+// components/LodingBody.tsx
 import React from "react";
 import { Box, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, TablePagination } from "@mui/material";
 
-const Loding = ({ rowCount = 10 }: { rowCount?: number }) => {
-  const columnCount = 6; // عدد الأعمدة بدون الـ checkbox
+const LodingBody = ({ rowCount = 7 }: { rowCount?: number }) => {
   return (
     <Box>
       <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell padding="checkbox">
-              <Skeleton variant="circular" width={20} height={20} />
-            </TableCell>
-            <TableCell><Skeleton variant="text" width={100} /></TableCell> {/* Name */}
-            <TableCell><Skeleton variant="text" width={80} /></TableCell>  {/* City */}
-            <TableCell><Skeleton variant="text" width={120} /></TableCell> {/* Phone */}
-            <TableCell><Skeleton variant="text" width={150} /></TableCell> {/* Address */}
-            <TableCell><Skeleton variant="text" width={70} /></TableCell>  {/* Status */}
-            <TableCell><Skeleton variant="text" width={60} /></TableCell>  {/* Wallet */}
-          </TableRow>
-        </TableHead>
-
         <TableBody>
           {[...Array(rowCount)].map((_, index) => (
             <TableRow key={index}>
@@ -47,13 +32,8 @@ const Loding = ({ rowCount = 10 }: { rowCount?: number }) => {
           ))}
         </TableBody>
       </Table>
-
-      {/* Pagination Skeleton */}
-      <Box display="flex" justifyContent="flex-end" mt={1} px={2}>
-        <Skeleton variant="rectangular" width={200} height={36} />
-      </Box>
     </Box>
   );
 };
 
-export default Loding;
+export default LodingBody;

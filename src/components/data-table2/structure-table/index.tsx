@@ -12,12 +12,15 @@ import {
   Typography,
   IconButton,
   CircularProgress,
+  Skeleton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { renderCell } from "../renderCell/renderCell";
 import HeardTabelActions from "../action-table";
 import { usePathname, useRouter } from "next/navigation";
+import LodingBody from "../loading/loding-body";
+import LodingHead from "../loading/loding-head";
 
 interface Column {
   field: string;
@@ -43,6 +46,7 @@ interface StructureTableProps {
   onDelete?: (id: string | number) => void;
   isDeleting?: boolean;
   isShowDetailse?: boolean;
+  isLoading?: boolean;
 }
 
 const StructureTable: React.FC<StructureTableProps> = ({
@@ -58,6 +62,7 @@ const StructureTable: React.FC<StructureTableProps> = ({
   onDelete,
   isDeleting = false,
   isShowDetailse = false,
+  isLoading = false,
 }) => {
   const [orderBy, setOrderBy] = useState<string | null>("created_at");
   const [orderDirection, setOrderDirection] = useState<"asc" | "desc">("desc");
@@ -85,41 +90,42 @@ const StructureTable: React.FC<StructureTableProps> = ({
   return (
     <Box p={1}>
       <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell padding="checkbox">
-              <Checkbox
-                indeterminate={
-                  selectedRows.length > 0 && selectedRows.length < rows.length
-                }
-                checked={selectedRows.length === rows.length && rows.length > 0}
-                onChange={() =>
-                  setSelectedRows(
-                    selectedRows.length === rows.length ? [] : rows
-                  )
-                }
-              />
-            </TableCell>
-            {columns.map((column) => (
-              <TableCell key={column.field}>
-                {column.sortable ? (
-                  <TableSortLabel
-                    active={orderBy === column.field}
-                    direction={orderDirection}
-                    onClick={() => handleSort(column.field)}
-                  >
-                    {column.headerName}
-                  </TableSortLabel>
-                ) : (
-                  column.headerName
-                )}
+        {isLoading ? (<LodingHead />) : (
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  indeterminate={
+                    selectedRows.length > 0 && selectedRows.length < rows.length
+                  }
+                  checked={selectedRows.length === rows.length && rows.length > 0}
+                  onChange={() =>
+                    setSelectedRows(
+                      selectedRows.length === rows.length ? [] : rows
+                    )
+                  }
+                />
               </TableCell>
-            ))}
-            {hasActions && <TableCell>Actions</TableCell>}
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
+              {columns.map((column) => (
+                <TableCell key={column.field}>
+                  {column.sortable ? (
+                    <TableSortLabel
+                      active={orderBy === column.field}
+                      direction={orderDirection}
+                      onClick={() => handleSort(column.field)}
+                    >
+                      {column.headerName}
+                    </TableSortLabel>
+                  ) : (
+                    column.headerName
+                  )}
+                </TableCell>
+              ))}
+              {hasActions && <TableCell>Actions</TableCell>}
+            </TableRow>
+          </TableHead>
+        )}
+        {isLoading ? (<LodingBody />) : (<TableBody>
           {rows.map((row, index) => (
             <TableRow key={row.id || `row-${index}`}>
               <TableCell padding="checkbox">
@@ -176,20 +182,26 @@ const StructureTable: React.FC<StructureTableProps> = ({
               )}
             </TableRow>
           ))}
-        </TableBody>
-      </Table>
+        </TableBody>)}
 
-      <TablePagination
-        rowsPerPageOptions={pageSizeOptions}
-        component="div"
-        count={totalCount}
-        rowsPerPage={pageSize}
-        page={pageNumber}
-        onPageChange={(event, newPage) => onPageChange?.(newPage, pageSize)}
-        onRowsPerPageChange={(event) =>
-          onPageChange?.(0, parseInt(event.target.value, 10))
-        }
-      />
+      </Table>
+      {isLoading ? (
+        <Box display="flex" justifyContent="flex-end" mt={1} px={2}>
+          <Skeleton variant="rectangular" width={200} height={36} />
+        </Box>
+      ) : (
+        <TablePagination
+          rowsPerPageOptions={pageSizeOptions}
+          component="div"
+          count={totalCount}
+          rowsPerPage={pageSize}
+          page={pageNumber}
+          onPageChange={(event, newPage) => onPageChange?.(newPage, pageSize)}
+          onRowsPerPageChange={(event) =>
+            onPageChange?.(0, parseInt(event.target.value, 10))
+          }
+        />
+      )}
 
       {selectedRows.length > 0 && (
         <HeardTabelActions

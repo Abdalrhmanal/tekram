@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import StructureTable from "./structure-table";
 import {
   TextField, Box, Button, Autocomplete, Popover, IconButton, Grid, Checkbox, List, ListItem, ListItemText, ListItemIcon, Typography, Badge,
+  ListItemButton,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -12,7 +13,7 @@ import useGlobalData from "@/hooks/git-global";
 import { useTheme } from "@mui/material/styles";
 import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
 import { ComparisonOperator, FilterType, GlobalDataType, GridTableProps } from "./type/type";
-import Loding from "./loading";
+import Loding from "./loading/loding-body";
 
 const GridTable: React.FC<GridTableProps> = ({
   dataSourceName,
@@ -81,12 +82,14 @@ const GridTable: React.FC<GridTableProps> = ({
     }
   }, [filterData]);
 
+console.log(searchQuery, "searchQuery");
 
   const { data: GlobalData, isLoading: GlobalLoading, refetch, isError } = useGlobalData<GlobalDataType>({
     dataSourceName,
     enabled: true,
     pageNumber,
     pageSize,
+    keyword: searchQuery,
     sort_SortBy: sortItem.field,
     sort_Ascending: sortItem.sort === "asc",
     filter_Conditions: filterData,
@@ -97,24 +100,10 @@ const GridTable: React.FC<GridTableProps> = ({
   useEffect(() => {
     if (GlobalData?.data) {
       setFilteredRows(GlobalData.data);
+    } else {
+      setFilteredRows([]);
     }
   }, [GlobalData]);
-
-  useEffect(() => {
-    if (!searchQuery) {
-      setFilteredRows(GlobalData?.data || []);
-      return;
-    }
-
-    const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData = GlobalData?.data.filter((row) =>
-      Object.values(row).some((value) =>
-        value?.toString().toLowerCase().includes(lowerCaseQuery)
-      )
-    );
-
-    setFilteredRows(filteredData || []);
-  }, [searchQuery, GlobalData]);
 
   useEffect(() => {
     const handleUsersDeleted = (event: Event) => {
@@ -130,18 +119,6 @@ const GridTable: React.FC<GridTableProps> = ({
       window.removeEventListener("usersDeleted", handleUsersDeleted);
     };
   }, []);
-
-  const handleActionClick = (row: any) => {
-    if (onActionClick) {
-      onActionClick(row);
-    }
-  };
-
-  const handleDelete = (id: number | string) => {
-    if (onDelete) {
-      onDelete(id);
-    }
-  };
 
   const applyFilter = () => {
     if (selectedField && selectedOperator && filterValue) {
@@ -217,10 +194,10 @@ const GridTable: React.FC<GridTableProps> = ({
 
   useEffect(() => {
     refetch();
-  }, [sortItem, pageNumber, pageSize, searchParams]);
+  }, [sortItem, pageNumber, pageSize, searchQuery, searchParams]);
 
-  if (GlobalLoading) return <Loding />;
-  if (!GlobalData) return <p>No Data Available</p>;
+  //if (GlobalLoading) return <Loding />;
+ // if (!GlobalData) return <p>No Data Available</p>;
 
   // Get totalCount from GlobalData or fallback to filteredRows length
   const totalCount = GlobalData?.pagination?.totalCount ?? filteredRows.length;
@@ -312,103 +289,64 @@ const GridTable: React.FC<GridTableProps> = ({
           </>)}
       </Grid>
 
-      {/* Popover القائمة المنسدلة للفلتر */}
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={handleCloseFilter}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        PaperProps={{ sx: { width: 600, padding: 2 } }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6">Filter Data</Typography>
-          <Button
-            variant="contained"
-            color="error"
-            startIcon={<ClearIcon />}
-            onClick={clearFilter}
-            disabled={filterData.length === 0}
-          >
-            Clear Filter
-          </Button>
-        </Box>
-        <hr />
-        <Box display="flex" flexDirection="column" gap={2}>
+        <Box p={2} width={300}>
           <Autocomplete
             options={columns.map((col) => col.field)}
             value={selectedField}
-            onChange={(event, newValue) => setSelectedField(newValue)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Column"
-                variant="outlined"
-                size="small"
-              />
-            )}
+            onChange={(_, newValue) => setSelectedField(newValue)}
+            renderInput={(params) => <TextField {...params} label="Field" size="small" fullWidth />}
+            sx={{ mb: 2 }}
           />
-
           <Autocomplete
             options={Object.values(ComparisonOperator)}
             value={selectedOperator}
-            onChange={(event, newValue) => setSelectedOperator(newValue)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Operator"
-                variant="outlined"
-                size="small"
-              />
-            )}
+            onChange={(_, newValue) => setSelectedOperator(newValue)}
+            renderInput={(params) => <TextField {...params} label="Operator" size="small" fullWidth />}
+            sx={{ mb: 2 }}
           />
-
           <TextField
-            label="Filter Value"
-            variant="outlined"
+            label="Value"
             size="small"
+            fullWidth
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
+            sx={{ mb: 2 }}
           />
-
-          <Button
-            variant="contained"
-            onClick={applyFilter}
-            disabled={!selectedField || !selectedOperator || !filterValue}
-          >
-            Apply Filters
-          </Button>
+          <Box display="flex" justifyContent="space-between">
+            <Button variant="contained" onClick={applyFilter}>Apply</Button>
+            <Button variant="outlined" onClick={clearFilter} startIcon={<ClearIcon />}>Clear</Button>
+          </Box>
         </Box>
       </Popover>
 
-      {/* Popover القائمة المنسدلة للأعمدة */}
+      {/* قائمة الأعمدة */}
       <Popover
         open={Boolean(columnAnchorEl)}
         anchorEl={columnAnchorEl}
         onClose={handleCloseColumnMenu}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        PaperProps={{ sx: { width: 300, padding: 2 } }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
-        <List>
-          {columns.map((column) => (
-            <ListItem
-              key={column.field}
-              component="div"
-              onClick={() => toggleColumnVisibility(column.field)}
-            >
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={visibleColumns[column.field]}
-                  tabIndex={-1}
-                  disableRipple
-                />
-              </ListItemIcon>
-              <ListItemText primary={column.headerName} />
-            </ListItem>
-          ))}
-        </List>
+        <Box p={2} width={250}>
+          <Typography variant="subtitle1" mb={1}>Toggle Columns</Typography>
+          <List>
+            {columns.map((col) => (
+              <ListItem key={col.field} dense disablePadding>
+                <ListItemButton onClick={() => toggleColumnVisibility(col.field)}>
+                  <ListItemIcon>
+                    <Checkbox edge="start" checked={visibleColumns[col.field]} tabIndex={-1} disableRipple />
+                  </ListItemIcon>
+                  <ListItemText primary={col.headerName || col.field} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Popover>
 
       <StructureTable
@@ -428,6 +366,7 @@ const GridTable: React.FC<GridTableProps> = ({
         onDelete={onDelete}
         isDeleting={isDeleting}
         isShowDetailse={isShowDetailse}
+        isLoading={GlobalLoading}
       />
     </Box>
   );

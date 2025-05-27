@@ -6,6 +6,7 @@ import qs from "qs"; // مكتبة لتنسيق الـ Query Parameters
 type QueryPayload = {
   pageNumber?: number;
   pageSize?: number;
+  keyword?: string;
   sort_SortBy?: string;
   sort_Ascending?: boolean;
   filter_Conditions?: Record<string, any>[];
@@ -18,6 +19,7 @@ type UseGlobalDataOptions<T> = {
   enabled?: boolean;
   pageNumber?: number;
   pageSize?: number;
+  keyword?: string;
   sort_SortBy?: string;
   sort_Ascending?: boolean;
   filter_Conditions?: Record<string, any>[];
@@ -40,6 +42,7 @@ const useGlobalData = function <T>({
   enabled = true,
   pageNumber = 1,
   pageSize = 10,
+  keyword,
   sort_SortBy,
   sort_Ascending,
   filter_Conditions = [],
@@ -55,6 +58,7 @@ const useGlobalData = function <T>({
     const queryPayload: QueryPayload = {
       pageNumber,
       pageSize,
+      keyword,
       sort_SortBy,
       sort_Ascending,
       filter_Logic,
@@ -121,6 +125,7 @@ const useGlobalData = function <T>({
     enabled,
     pageNumber,
     pageSize,
+    keyword,
     sort_SortBy,
     sort_Ascending,
     filter_Logic,
