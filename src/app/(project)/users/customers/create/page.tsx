@@ -1,6 +1,7 @@
 import React from 'react'
 import CardPersonDiynamec from '../../components/card-user'
 import CardWalletTransaction from '../../components/card-wallet';
+import DocumentGallery from '../../components/document-gallery';
 
 function CreateCustomar() {
     const user = {
@@ -41,6 +42,8 @@ function CreateCustomar() {
             unit: 'USD'
         }
     ];
+
+    
     return (
         <>
             <CardPersonDiynamec user={user} />
@@ -48,6 +51,9 @@ function CreateCustomar() {
             <CardWalletTransaction data={wtranszction} title='Wallet Transaction' urlDetailse='/users/customers' />
             <br />
             <CardWalletTransaction data={wtranszction} title='Wallet Transaction' urlDetailse='/users/customers' />
+            <br />
+            
+
         </>
     )
 }
