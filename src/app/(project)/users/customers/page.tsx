@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import GridTable from '@/components/data-table2'
 import { ComparisonOperator } from '@/components/data-table2/type/type';
 import React from 'react'
@@ -15,16 +16,19 @@ function Customers() {
 
     return (
         <>
-            <GridTable dataSourceName={dataSourceName}
-                columns={columns} isCreated={true}
-                toCreateURLPage='/users/customers/create'
-                isShowDetailse={false}
-                fixedFilter={{
-                    field: "roles.name",
-                    operator: ComparisonOperator.Equals,
-                    value: "user"
-                }} />
+            <Suspense fallback={<div>Loading...</div>}>
+                <GridTable dataSourceName={dataSourceName}
+                    columns={columns} isCreated={true}
+                    toCreateURLPage='/users/customers/create'
+                    isShowDetailse={false}
+                    fixedFilter={{
+                        field: "roles.name",
+                        operator: ComparisonOperator.Equals,
+                        value: "user"
+                    }} />
+            </Suspense >
         </>
+
     )
 }
 

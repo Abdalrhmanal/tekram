@@ -100,11 +100,11 @@ const useGlobalData = function <T>({
 
       const response = await axios.get(`${url}?${queryString}`, { headers });
 
-      setData(response.data);
+      setData(response.data as T);
     } catch (error) {
-      if (axios.isAxiosError(error)) {
+      /* if (axios.isAxiosError(error)) {
         setIsError(error.response?.data?.message || error.message);
-      } else if (error instanceof Error) {
+      } else */ if (error instanceof Error) {
         setIsError(error.message);
       } else {
         setIsError("An unknown error occurred.");

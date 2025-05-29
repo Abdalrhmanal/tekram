@@ -2,8 +2,11 @@ import React from "react";
 import { Typography, Chip, Grid, Avatar, Tooltip } from "@mui/material";
 
 export const renderCell = (field: string, value: any, row: any): React.ReactNode => {
-    const truncateText = (text: string, maxLength: number = 15) =>
-        text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    const truncateText = (text?: string, maxLength: number = 15) => {
+        if (!text) return "-";
+        return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    };
+
 
     switch (field) {
         case "name":

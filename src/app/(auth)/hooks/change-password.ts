@@ -19,13 +19,18 @@ const useChangePassword = (): UseChangePasswordResult => {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
 
+    type ChangePasswordResponse = {
+        message: string;
+        [key: string]: any;
+    };
+
     const changePassword = async (data: ChangePasswordData) => {
         setLoading(true);
         setError(null);
         setSuccess(null);
 
         try {
-            const response = await axios.post("http://145.223.116.44:9993/api/change-password", data, {
+            const response = await axios.post<ChangePasswordResponse>("http://145.223.116.44:9993/api/change-password", data, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -34,7 +39,7 @@ const useChangePassword = (): UseChangePasswordResult => {
             });
 
             setLoading(false);
-            setSuccess(response.data.message || "Password changed successfully!");
+            setSuccess(response?.data?.message || "Password changed successfully!");
 
         } catch (err: any) {
             setLoading(false);

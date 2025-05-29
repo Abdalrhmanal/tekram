@@ -30,7 +30,8 @@ const useGoogleLogin = (): UseGoogleLoginResult => {
         }
       );
       // console.log(response.data.data.url);
-      const URL = response.data.data.url;
+      const data = response.data as { data: { url: string } };
+      const URL = data.data.url;
       // console.log(URL);
 
       if (response.status === 200 && URL) {
@@ -46,7 +47,7 @@ const useGoogleLogin = (): UseGoogleLoginResult => {
         }
       );
 
-      const user = userResponse.data.user;
+      const user = (userResponse.data as { user: { name: string } }).user;
 
       if (user) {
         setUserName(user.name); // حفظ اسم المستخدم

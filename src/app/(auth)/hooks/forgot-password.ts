@@ -32,7 +32,8 @@ const useForgetPassword = (): UseForgetPasswordResult => {
             });
 
             setLoading(false);
-            setSuccess(response.data.message || "Password recovery link has been sent to your email!");
+            const responseData = response.data as { message?: string };
+            setSuccess(responseData.message || "Password recovery link has been sent to your email!");
 
         } catch (err: any) {
             setLoading(false);
