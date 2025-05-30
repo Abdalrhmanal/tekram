@@ -53,8 +53,8 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                 hour12: false
             }).format(new Date(row.date)) : '';
             return <Typography fontWeight="bold">{formattedDate}</Typography>;
-        case "idData":
-            const formattedDateFrom = row.date ? new Intl.DateTimeFormat('en-GB', {
+        case "idDate":
+            const formattedDateFrom = row.start_date ? new Intl.DateTimeFormat('en-GB', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -63,7 +63,7 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                 second: '2-digit',
                 hour12: false
             }).format(new Date(row.start_date)) : '';
-            const formattedDateTo = row.date ? new Intl.DateTimeFormat('en-GB', {
+            const formattedDateTo = row.end_date ? new Intl.DateTimeFormat('en-GB', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -72,7 +72,7 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                 second: '2-digit',
                 hour12: false
             }).format(new Date(row.end_date)) : '';
-            return <Typography fontWeight="bold">{formattedDateFrom + " to " + formattedDateTo}</Typography>;
+            return <Typography fontWeight="p">{formattedDateFrom + " to " + formattedDateTo}</Typography>;
         case "created_at":
             const formattedcreated_at = row.created_at ? new Intl.DateTimeFormat('en-GB', {
                 year: 'numeric',
@@ -98,7 +98,7 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                     src={row?.image}
                     width={75}
                     height={75}
-                    style={{ borderRadius: '2%' }}
+                    style={{ borderRadius: '15%' }}
                 />
             );
         default:

@@ -14,7 +14,7 @@ function WalletTransactions() {
         { headerName: "Type", field: "type", sortable: true },
         { headerName: "Direction", field: "direction", sortable: true },
         { headerName: "Description", field: "description", sortable: true },
-        { headerName: "Date", field: "idData", sortable: false },
+        { headerName: "Date", field: "idDate", sortable: false },
         { headerName: "Status", field: "status", sortable: true },
         { headerName: "Total Amount", field: "total_amount", sortable: true },
         { headerName: "Currency", field: "Idcurrency", sortable: false },
