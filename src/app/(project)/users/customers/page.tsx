@@ -21,7 +21,7 @@ function Customers() {
                     columns={columns}
                     isCreated={false}
                     toCreateURLPage='/users/customers/create'
-                    isShowDetailse={false}
+                    isShowDetailse={true}
                     fixedFilter={{
                         field: "roles.name",
                         operator: ComparisonOperator.Equals,

@@ -138,12 +138,17 @@ const StructureTable: React.FC<StructureTableProps> = ({
               </TableCell>
               {columns.map((column) => (<>
                 {isShowDetailse ? (<>
-                  <TableCell key={`${row.id}-${column.field}`} onClick={(e) => {
-                    const target = e.target as HTMLElement;
-                    if (target.closest("button") || target.closest("svg")) return;
+                  <TableCell
+                    key={`${row.id}-${index}`}
+                    onClick={(e) => {
+                      const target = e.target as HTMLElement;
+                      if (target.closest("button") || target.closest("svg")) return;
 
-                    router.push(`${pathname}/${row.id}`);
-                  }}>
+                      // تحويل بيانات الصف إلى query string
+                      const rowData = encodeURIComponent(JSON.stringify(row));
+                      router.push(`${pathname}/${row.id}?row=${rowData}`);
+                    }}
+                  >
                     {renderCell(column.field, row[column.field], row)}
                   </TableCell>
                 </>) : (<>

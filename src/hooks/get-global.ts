@@ -17,7 +17,7 @@ type UseGlobalDataResult<T> = {
   refetch: () => void;
 };
 
-const BASE_URL = "https://example.com";
+const BASE_URL = "http://145.223.116.44:9993";
 
 const useGlobalData = function <T>({
   dataSourceName,
@@ -45,6 +45,7 @@ const useGlobalData = function <T>({
         "Content-Type": "application/json",
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
+        
       };
 
       const url = `${BASE_URL}/${dataSourceName}`;

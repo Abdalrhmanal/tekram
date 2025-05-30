@@ -58,15 +58,37 @@ export const getStatusStyle = (status: string) => {
 
 export const getIcon = (type: string) => {
     switch (type) {
-        case 'Deposit':
+        case 'deposit':
             return <><Avatar sx={{ bgcolor: '#3bcf7a' }}><DownloadForOfflineOutlinedIcon /></Avatar></>;
-        case 'Withdrawal':
+        case 'withdraw':
             return <><Avatar sx={{ bgcolor: 'red' }}><RemoveCircleOutlineOutlinedIcon /></Avatar></>;
         case 'Refund':
             return <><Avatar sx={{ bgcolor: 'blue' }}><AssistantDirectionOutlinedIcon /></Avatar></>;
         case 'Deduction':
             return <><Avatar sx={{ bgcolor: '#000' }}><ArrowCircleUpOutlinedIcon /></Avatar></>;
+        case 'tour':
+            return <><Avatar sx={{ bgcolor: '#000' }}><ArrowCircleUpOutlinedIcon /></Avatar></>;
+        case 'car':
+            return <><Avatar sx={{ bgcolor: '#6548da' }}><ArrowCircleUpOutlinedIcon /></Avatar></>;
+        case 'cafe':
+            return <><Avatar sx={{ bgcolor: '#f18d51' }}><ArrowCircleUpOutlinedIcon /></Avatar></>;
         default:
             return <><Avatar ><CurrencyExchangeOutlinedIcon /></Avatar></>;
     }
 };
+
+export function formatDateTime(dateTimeStr: string) {
+    if (!dateTimeStr) return '';
+    // يدعم كل من "2025-05-26 13:00:00" أو "2025-05-26T13:00:00"
+    const dateObj = new Date(dateTimeStr.replace(' ', 'T'));
+    if (isNaN(dateObj.getTime())) return dateTimeStr;
+
+    const date = dateObj.toISOString().slice(0, 10);
+    let hours = dateObj.getHours();
+    const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours === 0 ? 12 : hours;
+
+    return `${date}  ${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+}
