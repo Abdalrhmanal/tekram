@@ -91,6 +91,16 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                     size="small"
                 />
             );
+        case "image":
+            return (
+                <img
+                    alt={row?.title || "User"}
+                    src={row?.image}
+                    width={75}
+                    height={75}
+                    style={{ borderRadius: '2%' }}
+                />
+            );
         default:
             return value ?? "-";
     }
