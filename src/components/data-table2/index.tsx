@@ -82,7 +82,7 @@ const GridTable: React.FC<GridTableProps> = ({
     }
   }, [filterData]);
 
-console.log(searchQuery, "searchQuery");
+  console.log(searchQuery, "searchQuery");
 
   const { data: GlobalData, isLoading: GlobalLoading, refetch, isError } = useGlobalData<GlobalDataType>({
     dataSourceName,
@@ -197,11 +197,11 @@ console.log(searchQuery, "searchQuery");
   }, [sortItem, pageNumber, pageSize, searchQuery, searchParams]);
 
   //if (GlobalLoading) return <Loding />;
- // if (!GlobalData) return <p>No Data Available</p>;
+  // if (!GlobalData) return <p>No Data Available</p>;
 
   // Get totalCount from GlobalData or fallback to filteredRows length
   const totalCount = GlobalData?.pagination?.totalCount ?? filteredRows.length;
-
+  const numberFillters = filterData.length - [fixedFilter].length;
   return (
     <Box sx={{ backgroundColor: theme.palette.background.paper, borderRadius: 2, padding: 2 }}>
       <Grid container spacing={2} sx={{ pl: 3, pr: 3 }}>
@@ -264,14 +264,13 @@ console.log(searchQuery, "searchQuery");
             </Grid>
             <Grid size={1.3}>
               <Box display="flex" justifyContent="space-between" mb={2}>
-                <Badge badgeContent={filterData.length} color="secondary">
+                <Badge badgeContent={numberFillters} color="secondary">
                   <IconButton onClick={handleOpenFilter} color="primary">
                     <FilterListIcon fontSize="large" />
                     <Typography variant="body2" color="textSecondary">
                       Filters
                     </Typography>
                   </IconButton>
-
                 </Badge>
               </Box>
             </Grid>

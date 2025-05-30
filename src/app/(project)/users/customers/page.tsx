@@ -18,7 +18,8 @@ function Customers() {
         <>
             <Suspense fallback={<div>Loading...</div>}>
                 <GridTable dataSourceName={dataSourceName}
-                    columns={columns} isCreated={true}
+                    columns={columns}
+                    isCreated={false}
                     toCreateURLPage='/users/customers/create'
                     isShowDetailse={false}
                     fixedFilter={{
