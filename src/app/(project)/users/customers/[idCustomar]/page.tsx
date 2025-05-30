@@ -13,14 +13,14 @@ function DetailseCustomar() {
 
     const { data: wallet_transactions, isLoading, isFetching, isError } = useGlobalData({
         dataSourceName: `api/wallet/transactions/${id}`,
-        pageSize : 5
+        pageSize: 5
     })
     const { data: bookings, isLoading: bookingsLod, isError: bookingsError } = useGlobalData({
         dataSourceName: `api/bookings/${id}`,
-        pageSize : 5
+        pageSize: 5
     })
 
-    
+
     let user = null;
     const rowData = searchParams.get('row');
     if (rowData) {
@@ -30,14 +30,15 @@ function DetailseCustomar() {
             user = null;
         }
     }
-
+    const urlAllDatawallet_transactions = `/users/customers/wallet_transactions/${id}`
+    const urlAllDatabookings = `/users/customers/bookings/${id}`
     return (
         <>
             <CardPersonDiynamec user={user} />
             <br />
-            <CardWalletTransaction data={wallet_transactions} title='Wallet Transaction' urlDetailse='/users/customers' />
+            <CardWalletTransaction data={wallet_transactions} title='Wallet Transaction' urlDetailse={urlAllDatawallet_transactions} />
             <br />
-            <CardWalletTransaction data={bookings} title='Wallet Transaction' urlDetailse='/users/customers' />
+            <CardWalletTransaction data={bookings} title='Wallet Transaction' urlDetailse={urlAllDatabookings} />
             <br />
 
 
