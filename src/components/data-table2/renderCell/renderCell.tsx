@@ -38,7 +38,10 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                     </Grid>
                 </>
             );
-
+        case "idCurrency":
+            return (
+                <Typography fontWeight="bold">{`from ${row.from_currency} to ${row.to_currency}`}</Typography>
+            );
         case "date":
             const formattedDate = row.date ? new Intl.DateTimeFormat('en-GB', {
                 year: 'numeric',
@@ -50,7 +53,26 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                 hour12: false
             }).format(new Date(row.date)) : '';
             return <Typography fontWeight="bold">{formattedDate}</Typography>;
-
+        case "idData":
+            const formattedDateFrom = row.date ? new Intl.DateTimeFormat('en-GB', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(new Date(row.start_date)) : '';
+            const formattedDateTo = row.date ? new Intl.DateTimeFormat('en-GB', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(new Date(row.end_date)) : '';
+            return <Typography fontWeight="bold">{formattedDateFrom + " to " + formattedDateTo}</Typography>;
         case "created_at":
             const formattedcreated_at = row.created_at ? new Intl.DateTimeFormat('en-GB', {
                 year: 'numeric',
@@ -60,6 +82,7 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
 
             return <>{formattedcreated_at}</>;
         case "is_active":
+        case "status":
             return (
                 <Chip
                     label={value ? "Active" : "Inactive"}

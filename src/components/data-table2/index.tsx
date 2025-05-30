@@ -32,10 +32,7 @@ const GridTable: React.FC<GridTableProps> = ({
   const theme = useTheme();
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [sortItem, setSortItem] = useState({
-    field: "is_active",
-    sort: "desc",
-  });
+  const [sortItem, setSortItem] = useState<{ field: string; sort: "asc" | "desc" } | undefined>();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredRows, setFilteredRows] = useState<any[]>([]);
@@ -90,8 +87,8 @@ const GridTable: React.FC<GridTableProps> = ({
     pageNumber,
     pageSize,
     keyword: searchQuery,
-    sort_SortBy: sortItem.field,
-    sort_Ascending: sortItem.sort === "asc",
+    sort_SortBy: sortItem?.field ?? "",
+    sort_Ascending: sortItem?.sort === "asc",
     filter_Conditions: filterData,
     filter_Logic: filterLogic,
     setOldDataAsPlaceholder: true,
