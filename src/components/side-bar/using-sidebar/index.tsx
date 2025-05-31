@@ -56,6 +56,7 @@ export const menuItemsAll: MenuItem[] = [
       { text: "Service Providers", href: "/users/service-providers", logo: <GroupWorkOutlined />, isActive: false, role: "site-admin" },
       { text: "Account SProv", href: "/users/account-s-prov", logo: <GroupWorkOutlined />, isActive: false, role: "site-admin" },
       { text: "VIP Service Providers", href: "/users/vip-s-prov", logo: <GroupWorkOutlined />, isActive: false, role: "site-admin" },
+      { text: "New Service Requests", href: "/users/new-request-service", logo: <GroupWorkOutlined />, isActive: false, role: "site-admin" },
     ],
   },
   {
