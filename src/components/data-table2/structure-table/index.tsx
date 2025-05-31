@@ -47,6 +47,7 @@ interface StructureTableProps {
   isDeleting?: boolean;
   isShowDetailse?: boolean;
   isLoading?: boolean;
+  isPassDataDetailse?: boolean;
 }
 
 const StructureTable: React.FC<StructureTableProps> = ({
@@ -63,6 +64,7 @@ const StructureTable: React.FC<StructureTableProps> = ({
   isDeleting = false,
   isShowDetailse = false,
   isLoading = false,
+  isPassDataDetailse = false,
 }) => {
   const [orderBy, setOrderBy] = useState<string | null>("created_at");
   const [orderDirection, setOrderDirection] = useState<"asc" | "desc">("desc");
@@ -143,10 +145,12 @@ const StructureTable: React.FC<StructureTableProps> = ({
                     onClick={(e) => {
                       const target = e.target as HTMLElement;
                       if (target.closest("button") || target.closest("svg")) return;
-
-                      // تحويل بيانات الصف إلى query string
                       const rowData = encodeURIComponent(JSON.stringify(row));
-                      router.push(`${pathname}/${row.id}?row=${rowData}`);
+                      if (isPassDataDetailse) {
+                        router.push(`${pathname}/${row.id}?row=${rowData}`);
+                      } else {
+                        router.push(`${pathname}/${row.id}`);
+                      }
                     }}
                   >
                     {renderCell(column.field, row[column.field], row)}
@@ -190,31 +194,35 @@ const StructureTable: React.FC<StructureTableProps> = ({
         </TableBody>)}
 
       </Table>
-      {isLoading ? (
-        <Box display="flex" justifyContent="flex-end" mt={1} px={2}>
-          <Skeleton variant="rectangular" width={200} height={36} />
-        </Box>
-      ) : (
-        <TablePagination
-          rowsPerPageOptions={pageSizeOptions}
-          component="div"
-          count={totalCount}
-          rowsPerPage={pageSize}
-          page={pageNumber}
-          onPageChange={(event, newPage) => onPageChange?.(newPage, pageSize)}
-          onRowsPerPageChange={(event) =>
-            onPageChange?.(0, parseInt(event.target.value, 10))
-          }
-        />
-      )}
+      {
+        isLoading ? (
+          <Box display="flex" justifyContent="flex-end" mt={1} px={2}>
+            <Skeleton variant="rectangular" width={200} height={36} />
+          </Box>
+        ) : (
+          <TablePagination
+            rowsPerPageOptions={pageSizeOptions}
+            component="div"
+            count={totalCount}
+            rowsPerPage={pageSize}
+            page={pageNumber}
+            onPageChange={(event, newPage) => onPageChange?.(newPage, pageSize)}
+            onRowsPerPageChange={(event) =>
+              onPageChange?.(0, parseInt(event.target.value, 10))
+            }
+          />
+        )
+      }
 
-      {selectedRows.length > 0 && (
-        <HeardTabelActions
-          selectedRows={selectedRows}
-          onDeselectAll={() => setSelectedRows([])}
-        />
-      )}
-    </Box>
+      {
+        selectedRows.length > 0 && (
+          <HeardTabelActions
+            selectedRows={selectedRows}
+            onDeselectAll={() => setSelectedRows([])}
+          />
+        )
+      }
+    </Box >
   );
 };
 

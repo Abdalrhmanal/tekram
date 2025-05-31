@@ -91,6 +91,25 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                     size="small"
                 />
             );
+
+        case "idservices":
+            if (Array.isArray(row.services)) {
+                return (
+                    <Grid container spacing={0.5}>
+                        {row.services.map((service: string, idx: number) => (
+                            <Grid key={idx}>
+                                <Chip
+                                    label={service}
+                                    color="primary"
+                                    variant="outlined"
+                                    size="small"
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                );
+            }
+            return "-";
         case "image":
             return (
                 <img

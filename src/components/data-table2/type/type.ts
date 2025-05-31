@@ -15,6 +15,7 @@ export interface GridTableProps {
   toCreateURLPage?: string;
   isShowDetailse?: boolean;
   fixedFilter? : FilterType;
+  isPassDataDetailse?:boolean;
 }
 export enum ComparisonOperator {
   Equals = "Equals",
