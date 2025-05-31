@@ -35,6 +35,7 @@ const DocumentGallery: React.FC<DocumentGalleryProps> = ({ documents }) => {
   const handleOpen = (url: string) => {
     window.open(url, '_blank');
   };
+  console.log("documents : ", documents);
 
   return (
     <Box sx={{ padding: 2 }}>
@@ -42,20 +43,20 @@ const DocumentGallery: React.FC<DocumentGalleryProps> = ({ documents }) => {
         Provided Documents
       </Typography>
       <Grid container spacing={2}>
-        {documents.map((doc) => (
-          <Grid key={doc.id} size={4} >
+        {documents && documents.map((doc) => (
+          <Grid key={doc.id} size={4}>
             <Card>
               <CardActionArea onClick={() => handleOpen(doc.url)}>
                 {isImage(doc.url) ? (
                   <CardMedia sx={{ height: 300, position: 'relative' }}>
                     <Image
-                      src={doc.url}
+                      src={`http://145.223.116.44:9993/${doc.url}`}
                       alt={doc.title}
                       fill
                       style={{ objectFit: 'contain' }}
                     />
                   </CardMedia>
-                ) : isPDF(doc.url) ? (
+                ) : isPDF(`http://145.223.116.44:9993/${doc.url}`) ? (
                   <Box
                     sx={{
                       height: 300,

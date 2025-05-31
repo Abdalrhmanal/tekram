@@ -12,15 +12,10 @@ import {
 import React from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Image from 'next/image';
+import { truncateText } from '../helpers';
 
 function CardPersonDynamic({ user }: { user?: any }) {
     console.log("dd", user?.avatar);
-
-    const truncateText = (text: string, maxLength: number = 25) =>
-        text != null
-            ? (text.length > maxLength ? text.substring(0, maxLength) + "..." : text)
-            : "";
-
         return (
             <Box dir="rtl" mr={2}>
                 <Accordion defaultExpanded>

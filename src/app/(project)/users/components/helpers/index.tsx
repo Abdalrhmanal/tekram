@@ -92,3 +92,8 @@ export function formatDateTime(dateTimeStr: string) {
 
     return `${date}  ${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
 }
+
+export const truncateText = (text: string, maxLength: number = 25) =>
+    text != null
+        ? (text.length > maxLength ? text.substring(0, maxLength) + "..." : text)
+        : "";

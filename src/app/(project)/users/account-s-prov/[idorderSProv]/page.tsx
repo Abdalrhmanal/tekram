@@ -1,36 +1,65 @@
-import { Box, Button, Checkbox, Chip, Divider, FormControlLabel, Grid, Typography } from '@mui/material'
+"use client";
+import { Box, Button, Checkbox, Chip, Divider, FormControlLabel, Grid, TextField, Typography } from '@mui/material'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import ContactMailOutlinedIcon from '@mui/icons-material/ContactMailOutlined';
 import DocumentGallery from '../../components/document-gallery';
+import { useParams, useRouter } from 'next/navigation';
+import useGlobalData from '@/hooks/get-global';
+import { truncateText } from '../../components/helpers';
+import useCreateData from '@/hooks/post-global';
 
 function DetailsOrderSProv() {
-    const user = {
-        fullName: 'Amer Ahmed Al-Mohammad',
-        email: 'kareem.happal@gmail.com',
-        mobile: '0934565412',
-        city: 'Aleppo',
-        address: 'Al-Zahra Association',
-        registerDate: '2025/05/10',
-        image: '/images/image.png',
+    const route = useRouter()
+    const params = useParams()
+    const id = params?.idorderSProv;
+    type HostDataType = {
+        data?: any;
     };
-    const typeServe = {
-        title: 'Service Type',
-        type: [
-            { name: 'Delivery', value: 'delivery' },
-            { name: 'Pickup', value: 'pickup' },
-            { name: 'In-Store', value: 'in-store' },
-            { name: 'Online', value: 'online' }
-        ]
-    };
-    const documents = [
-        { id: '1', url: '/imagis/image.png', title: 'documint 1' },
-        { id: '2', url: '/imagis/image.png', title: 'documint 2' },
-        { id: '3', url: '/imagis/image.png', title: 'documint 3' },
 
-    ]
-    const truncateText = (text: string, maxLength: number = 25) =>
-        text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    const { data: hostData, isLoading, isFetching, isError } = useGlobalData<HostDataType>({
+        dataSourceName: `api/host-requests/${id}`,
+    });
+    const [approvedServices, setApprovedServices] = useState<string[]>([]);
+    const [showRejectReason, setShowRejectReason] = useState(false);
+    const [rejectReason, setRejectReason] = useState('');
+
+    // عند تأكيد الرفض
+    const handleRejectConfirm = () => {
+        if (!rejectReason.trim()) {
+            // يمكنك عرض رسالة تنبيه هنا إذا أردت
+            return;
+        }
+        rejectData({ admin_notes: rejectReason });
+        route.push('/users/account-s-prov')
+    };
+    // عند تغيير الشيكبوكس
+    const handleServiceCheck = (serviceId: string, checked: boolean) => {
+        setApprovedServices((prev) =>
+            checked
+                ? [...prev, serviceId]
+                : prev.filter((id) => id !== serviceId)
+        );
+    };
+
+    // عند الضغط على زر Approve
+    const handleApprove = () => {
+        if (approvedServices.length === 0) {
+            // يمكنك عرض رسالة تنبيه هنا إذا أردت
+            return;
+        }
+        approveData({ services: approvedServices });
+        route.push('/users/account-s-prov')
+    };
+
+    const { isLoading: approveLod, isError: approveError, success: approveSucces, createData: approveData } = useCreateData({
+        dataSourceName: `api/host-requests/${id}/approve`
+    })
+
+    const { isLoading: rejectLod, isError: rejectError, success: rejectSucces, createData: rejectData } = useCreateData({
+        dataSourceName: `api/host-requests/${id}/reject`
+    })
+
     return (
         <>
             <Box >
@@ -53,9 +82,9 @@ function DetailsOrderSProv() {
                                 <Grid size={4} display="flex" justifyContent="center" alignItems="center">
                                     <Grid container spacing={2} alignItems="center">
                                         <Grid size={12} display="flex" justifyContent="center" alignItems="center">
-                                            <Image
-                                                alt={user.fullName}
-                                                src={user.image.trim()}
+                                            <img
+                                                alt={hostData?.data?.name}
+                                                src={hostData?.data?.image.trim()}
                                                 width={150}
                                                 height={150}
                                                 style={{ borderRadius: '5%' }}
@@ -63,7 +92,7 @@ function DetailsOrderSProv() {
                                         </Grid>
                                         <Grid size={12} display="flex" justifyContent="center" alignItems="center">
                                             <Typography variant="h5" fontWeight="bold" align="center">
-                                                {user.fullName}
+                                                {hostData?.data?.name}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -78,35 +107,35 @@ function DetailsOrderSProv() {
                                                     <Typography color="textSecondary" align="right">
                                                         Email
                                                     </Typography>
-                                                    <Typography align="right">{truncateText(user.email)}</Typography>
+                                                    <Typography align="right">{truncateText(hostData?.data?.email)}</Typography>
                                                 </Grid>
 
                                                 <Grid size={4}>
                                                     <Typography color="textSecondary" align="right">
                                                         Mobile Number
                                                     </Typography>
-                                                    <Typography align="right">{user.mobile}</Typography>
+                                                    <Typography align="right">{hostData?.data?.phone}</Typography>
                                                 </Grid>
 
                                                 <Grid size={4}>
                                                     <Typography color="textSecondary" align="right">
                                                         City
                                                     </Typography>
-                                                    <Typography align="right">{user.city}</Typography>
+                                                    <Typography align="right">{hostData?.data?.city}</Typography>
                                                 </Grid>
 
                                                 <Grid size={4}>
                                                     <Typography color="textSecondary" align="right">
                                                         Address
                                                     </Typography>
-                                                    <Typography align="right">{truncateText(user.address)}</Typography>
+                                                    <Typography align="right">{truncateText(hostData?.data?.address)}</Typography>
                                                 </Grid>
 
                                                 <Grid size={4}>
                                                     <Typography color="textSecondary" align="right">
-                                                        Registration Date
+                                                        Bio
                                                     </Typography>
-                                                    <Typography align="right">{user.registerDate}</Typography>
+                                                    <Typography align="right">{hostData?.data?.bio}</Typography>
                                                 </Grid>
                                             </Grid>
                                         </Grid>
@@ -118,14 +147,14 @@ function DetailsOrderSProv() {
                     <Grid size={4}>
                         <Box sx={{ mb: 4, bgcolor: '#fff', padding: 2, borderRadius: 2 }}>
                             <Typography variant="h5" fontWeight="bold" align="left" >
-                                {typeServe.title}
+                                Service Type
                             </Typography>
                             <Divider />
                             <Grid container spacing={2} sx={{ p: 2 }}>
-                                {typeServe.type.map((item, index) => (
-                                    <Grid key={index} display="flex" justifyContent="center">
+                                {hostData?.data?.services.map((item: any) => (
+                                    <Grid key={item.id} display="flex" justifyContent="center">
                                         <Chip
-                                            label={item.name}
+                                            label={item.type}
                                             color="primary"
                                             variant="outlined"
                                             sx={{ margin: '0 5px' }}
@@ -140,21 +169,21 @@ function DetailsOrderSProv() {
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <ContactMailOutlinedIcon />
                                 <Typography variant="h5" fontWeight="bold" align="left">
-                                    Order Details
+                                    Documents provided
                                 </Typography>
                             </Box>
                             <Divider />
                         </Box>
                     </Grid>
                     <Grid size={12}>
-                        <DocumentGallery documents={documents} />
+                        <DocumentGallery documents={hostData?.data?.license_files} />
                     </Grid>
                     <Grid size={12}>
                         <Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <ContactMailOutlinedIcon />
                                 <Typography variant="h5" fontWeight="bold" align="left">
-                                    Order Details
+                                    Procedures
                                 </Typography>
                             </Box>
                             <Divider />
@@ -166,25 +195,24 @@ function DetailsOrderSProv() {
                         </Typography>
 
                         <Grid container spacing={2} justifyContent="flex-end">
-                            {[
-                                "Car Rental",
-                                "Hotel Room Rental",
-                                "Chalet Rental",
-                                "Farm Rental",
-                                "Swimming Pool Rental",
-                                "House Rental",
-                            ].map((label, index) => (
-                                <Grid size={3} key={index}>
+                            {hostData?.data?.services.map((service: any) => (
+                                <Grid size={3} key={service.id}>
                                     <FormControlLabel
-                                        control={<Checkbox defaultChecked={label === "Car Rental" || label === "Farm Rental"} />}
-                                        label={label}
+                                        control={
+                                            <Checkbox
+                                                checked={approvedServices.includes(service.id)}
+                                                onChange={(e) =>
+                                                    handleServiceCheck(service.id, e.target.checked)
+                                                }
+                                            />
+                                        }
+                                        label={service.type}
                                         sx={{ justifyContent: "end", width: "100%", m: 0 }}
                                         labelPlacement="start"
                                     />
                                 </Grid>
                             ))}
                         </Grid>
-
                         <Box mt={3}>
                             <Button
                                 fullWidth
@@ -196,8 +224,10 @@ function DetailsOrderSProv() {
                                     borderRadius: 2,
                                     py: 1.2,
                                 }}
+                                onClick={handleApprove}
+                                disabled={approveLod}
                             >
-                                Approve
+                                {approveLod ? "plees white..." : "Approve"}
                             </Button>
                         </Box>
 
@@ -211,16 +241,43 @@ function DetailsOrderSProv() {
                             The order is not compatible, delete the order
                         </Typography>
 
-                        <Box mt={2}>
-                            <Button
-                                fullWidth
-                                variant="contained"
-                                color="error"
-                                sx={{ fontWeight: "bold", borderRadius: 2, py: 1.2 }}
-                            >
-                                Delete Order Completely
-                            </Button>
-                        </Box>
+                        {!showRejectReason && (
+                            <Box mt={2}>
+                                <Button
+                                    fullWidth
+                                    variant="contained"
+                                    color="error"
+                                    sx={{ fontWeight: "bold", borderRadius: 2, py: 1.2 }}
+                                    onClick={() => setShowRejectReason(true)}
+                                >
+                                    رفض الطلب
+                                </Button>
+                            </Box>
+                        )}
+
+                        {showRejectReason && (
+                            <Box mt={2}>
+                                <TextField
+                                    label="Reason for rejection"
+                                    value={rejectReason}
+                                    onChange={e => setRejectReason(e.target.value)}
+                                    fullWidth
+                                    multiline
+                                    rows={2}
+                                    sx={{ mb: 2 }}
+                                />
+                                <Button
+                                    fullWidth
+                                    variant="contained"
+                                    color="error"
+                                    sx={{ fontWeight: "bold", borderRadius: 2, py: 1.2 }}
+                                    onClick={handleRejectConfirm}
+                                    disabled={rejectLod}
+                                >
+                                    {rejectLod ? "Sending..." : "Confirm Rejection"}
+                                </Button>
+                            </Box>
+                        )}
                     </Grid>
                 </Grid>
             </Box>
