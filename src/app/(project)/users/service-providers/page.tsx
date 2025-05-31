@@ -21,7 +21,7 @@ function ServiceProviders() {
                 <GridTable dataSourceName={dataSourceName}
                     columns={columns} isCreated={true}
                     toCreateURLPage='/users/service-providers/create'
-                    isShowDetailse={false}
+                    isShowDetailse={true}
                     fixedFilter={{
                         field: "roles.name",
                         operator: ComparisonOperator.Equals,

@@ -6,17 +6,17 @@ import DocumentGallery from '../../components/document-gallery';
 import { useParams, useSearchParams } from 'next/navigation';
 import useGlobalData from '@/hooks/git-global';
 
-function DetailseCustomar() {
+function DetailseServiceProvider() {
     const params = useParams()
     const searchParams = useSearchParams();
-    const id = params?.idCustomar;
+    const id = params?.idSerProvider;
 
     const { data: wallet_transactions, isLoading, isFetching, isError } = useGlobalData({
         dataSourceName: `api/wallet/transactions/${id}`,
         pageSize: 5
     })
     const { data: bookings, isLoading: bookingsLod, isError: bookingsError } = useGlobalData({
-        dataSourceName: `api/bookings/${id}`,
+        dataSourceName: `api/hosts/bookings/${id}`,
         pageSize: 5
     })
 
@@ -44,4 +44,4 @@ function DetailseCustomar() {
     )
 }
 
-export default DetailseCustomar;
+export default DetailseServiceProvider;
