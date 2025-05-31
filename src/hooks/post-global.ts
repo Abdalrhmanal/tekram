@@ -13,7 +13,7 @@ type UseCreateDataResult<T> = {
     createData: (data: T) => Promise<void>;
 };
 
-const BASE_URL = "https://tawsella.online";
+const BASE_URL = "http://145.223.116.44:9993";
 
 const useCreateData = function <T>({
     dataSourceName,

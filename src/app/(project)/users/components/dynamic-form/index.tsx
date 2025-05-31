@@ -9,21 +9,28 @@ import {
   Grid,
   Avatar,
 } from '@mui/material';
+import useGlobalData from '@/hooks/get-global';
 
 export interface FormData {
-  city: string;
-  name: string;
-  address: string;
+  full_name: string;
   email: string;
   phone: string;
+  password: string;
+  host_name: string;
+  bio: string;
+  logo?: File;
+  avatar?: File;
+  city: string;
+  location: string;
+  address: string;
   services: string[];
-  image?: File; // لإضافة ملف الصورة
+  image?: File;
 }
 
 interface DynamicFormProps {
-  mode: 'add' | 'edit'; // لتحديد ما إذا كان الكومبوننت في وضع الإضافة أو التعديل
-  initialData?: FormData; // بيانات البداية (لوضع التعديل)
-  onSubmit: (data: FormData) => void; // الدالة التي سيتم تنفيذها عند الضغط على حفظ التغييرات
+  mode: 'add' | 'edit';
+  initialData?: FormData;
+  onSubmit: (data: FormData) => void;
 }
 
 const DynamicForm: React.FC<DynamicFormProps> = ({
@@ -32,13 +39,19 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   onSubmit,
 }) => {
   const [formData, setFormData] = useState<FormData>({
-    city: initialData?.city || '',
-    name: initialData?.name || '',
-    address: initialData?.address || '',
+    full_name: initialData?.full_name || '',
     email: initialData?.email || '',
     phone: initialData?.phone || '',
+    password: initialData?.password || '',
+    host_name: initialData?.host_name || '',
+    bio: initialData?.bio || '',
+    logo: initialData?.logo,
+    avatar: initialData?.avatar,
+    city: initialData?.city || '',
+    location: initialData?.location || '',
+    address: initialData?.address || '',
     services: initialData?.services || [],
-    image: initialData?.image, // إذا كانت هناك صورة موجودة مسبقاً
+    image: initialData?.image,
   });
 
   const handleInputChange = (
@@ -65,12 +78,22 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
     }
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    field: 'logo' | 'avatar' | 'image'
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
-      setFormData((prevData) => ({ ...prevData, image: file }));
+      setFormData((prevData) => ({ ...prevData, [field]: file }));
     }
   };
+
+  type ServiceType = { id: string; type: string };
+  type ServiceDataResponse = { data: ServiceType[] };
+
+  const { data: serviceData } = useGlobalData<ServiceDataResponse>({
+    dataSourceName: `api/service_types`,
+  });
 
   const handleSubmit = () => {
     onSubmit(formData);
@@ -78,40 +101,53 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 
   return (
     <Box sx={{ p: 4 }}>
-      {/* صورة */}
-      <Box sx={{ display: 'flex', justifyContent: 'end', mb: 2 }}>
-        {formData.image && (
+      {/* Images */}
+      <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+        <Box>
+          <Typography variant="caption">Logo</Typography>
           <Avatar
-            alt="صورة الملف"
-            src={URL.createObjectURL(formData.image)}
-            sx={{ mr: 2 }}
+            alt="Logo"
+            src={formData.logo ? URL.createObjectURL(formData.logo) : undefined}
+            sx={{ width: 56, height: 56, mb: 1 }}
           />
-        )}
-        <Button variant="contained" color="error" size="small">
-          حذف الصورة
-        </Button>
-        <Button variant="outlined" color="primary" size="small" sx={{ ml: 2 }}>
-          اختيار ملف
-          <input
-            type="file"
-            accept="image/*"
-            style={{ display: 'none' }}
-            onChange={handleImageChange}
-            id="image-upload"
+          <Button variant="outlined" component="label" size="small">
+            Choose Logo
+            <input type="file" accept="image/*" hidden onChange={e => handleFileChange(e, 'logo')} />
+          </Button>
+        </Box>
+        <Box>
+          <Typography variant="caption">Avatar</Typography>
+          <Avatar
+            alt="Avatar"
+            src={formData.avatar ? URL.createObjectURL(formData.avatar) : undefined}
+            sx={{ width: 56, height: 56, mb: 1 }}
           />
-          <label htmlFor="image-upload">
-            <span style={{ cursor: 'pointer' }}>اختر صورة</span>
-          </label>
-        </Button>
+          <Button variant="outlined" component="label" size="small">
+            Choose Avatar
+            <input type="file" accept="image/*" hidden onChange={e => handleFileChange(e, 'avatar')} />
+          </Button>
+        </Box>
+        <Box>
+          <Typography variant="caption">Image</Typography>
+          <Avatar
+            alt="Image"
+            src={formData.image ? URL.createObjectURL(formData.image) : undefined}
+            sx={{ width: 56, height: 56, mb: 1 }}
+          />
+          <Button variant="outlined" component="label" size="small">
+            Choose Image
+            <input type="file" accept="image/*" hidden onChange={e => handleFileChange(e, 'image')} />
+          </Button>
+        </Box>
       </Box>
 
-      {/* الحقول النصية */}
+      {/* Text Fields */}
       <Grid container spacing={2}>
         <Grid size={6}>
           <TextField
-            label="المدينة"
-            name="city"
-            value={formData.city}
+            label="Full Name"
+            name="full_name"
+            value={formData.full_name}
             onChange={handleInputChange}
             fullWidth
             required
@@ -119,27 +155,16 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
         </Grid>
         <Grid size={6}>
           <TextField
-            label="الاسم بالكامل"
-            name="name"
-            value={formData.name}
+            label="Host Name"
+            name="host_name"
+            value={formData.host_name}
             onChange={handleInputChange}
             fullWidth
-            required
           />
         </Grid>
         <Grid size={6}>
           <TextField
-            label="العنوان"
-            name="address"
-            value={formData.address}
-            onChange={handleInputChange}
-            fullWidth
-            required
-          />
-        </Grid>
-        <Grid size={6}>
-          <TextField
-            label="البريد الإلكتروني"
+            label="Email"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
@@ -149,7 +174,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
         </Grid>
         <Grid size={6}>
           <TextField
-            label="رقم الموبايل"
+            label="Phone"
             name="phone"
             value={formData.phone}
             onChange={handleInputChange}
@@ -157,88 +182,79 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
             required
           />
         </Grid>
+        <Grid size={6}>
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            fullWidth
+            required={mode === 'add'}
+          />
+        </Grid>
+        <Grid size={6}>
+          <TextField
+            label="City"
+            name="city"
+            value={formData.city}
+            onChange={handleInputChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={6}>
+          <TextField
+            label="Location"
+            name="location"
+            value={formData.location}
+            onChange={handleInputChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={6}>
+          <TextField
+            label="Address"
+            name="address"
+            value={formData.address}
+            onChange={handleInputChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={12}>
+          <TextField
+            label="Bio"
+            name="bio"
+            value={formData.bio}
+            onChange={handleInputChange}
+            fullWidth
+            multiline
+            rows={2}
+          />
+        </Grid>
       </Grid>
 
-      {/* خدمات */}
+      {/* Services */}
       <Box sx={{ mt: 2 }}>
-        <Typography variant="subtitle1">أنواع الخدمات</Typography>
+        <Typography variant="subtitle1">Service Types</Typography>
         <Grid container spacing={2}>
-          <Grid size={4}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formData.services.includes('أجار شاليهات')}
-                  onChange={handleCheckboxChange}
-                  name="أجار شاليهات"
-                />
-              }
-              label="أجار شاليهات"
-            />
-          </Grid>
-          <Grid size={4}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formData.services.includes('أجار غرف فندقية')}
-                  onChange={handleCheckboxChange}
-                  name="أجار غرف فندقية"
-                />
-              }
-              label="أجار غرف فندقية"
-            />
-          </Grid>
-          <Grid size={4}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formData.services.includes('أجار سيارات')}
-                  onChange={handleCheckboxChange}
-                  name="أجار سيارات"
-                />
-              }
-              label="أجار سيارات"
-            />
-          </Grid>
-          <Grid size={4}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formData.services.includes('أجار بيوت')}
-                  onChange={handleCheckboxChange}
-                  name="أجار بيوت"
-                />
-              }
-              label="أجار بيوت"
-            />
-          </Grid>
-          <Grid size={4}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formData.services.includes('أجار مسابح')}
-                  onChange={handleCheckboxChange}
-                  name="أجار مسابح"
-                />
-              }
-              label="أجار مسابح"
-            />
-          </Grid>
-          <Grid size={4}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formData.services.includes('أجار مزارع')}
-                  onChange={handleCheckboxChange}
-                  name="أجار مزارع"
-                />
-              }
-              label="أجار مزارع"
-            />
-          </Grid>
+          {serviceData?.data?.map((service: any) => (
+            <Grid size={4} key={service.id}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formData.services.includes(service.id)}
+                    onChange={handleCheckboxChange}
+                    name={service.id}
+                  />
+                }
+                label={service.type}
+              />
+            </Grid>
+          ))}
         </Grid>
       </Box>
 
-      {/* زر حفظ التغييرات */}
+      {/* Save Button */}
       <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end' }}>
         <Button
           variant="contained"
@@ -246,7 +262,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           onClick={handleSubmit}
           sx={{ px: 4 }}
         >
-          حفظ التغييرات
+          Save Changes
         </Button>
       </Box>
     </Box>
