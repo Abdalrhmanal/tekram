@@ -8,11 +8,13 @@ import {
   Typography,
   Grid,
   Avatar,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import useGlobalData from '@/hooks/get-global';
 
-export interface FormData {
-  full_name: string;
+export interface CustomerFormData {
+  name: string;
   email: string;
   phone: string;
   password: string;
@@ -29,29 +31,38 @@ export interface FormData {
 
 interface DynamicFormProps {
   mode: 'add' | 'edit';
-  initialData?: FormData;
-  onSubmit: (data: FormData) => void;
+  initialData?: CustomerFormData;
+  onSubmit: (data: CustomerFormData | CustomerFormData) => void;
 }
+
+const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+const maxFileSize = 5 * 1024 * 1024; // 5MB
 
 const DynamicForm: React.FC<DynamicFormProps> = ({
   mode,
   initialData,
   onSubmit,
 }) => {
-  const [formData, setFormData] = useState<FormData>({
-    full_name: initialData?.full_name || '',
+  const [formData, setFormData] = useState<CustomerFormData>({
+    name: initialData?.name || '',
     email: initialData?.email || '',
     phone: initialData?.phone || '',
     password: initialData?.password || '',
     host_name: initialData?.host_name || '',
     bio: initialData?.bio || '',
-    logo: initialData?.logo,
-    avatar: initialData?.avatar,
+    logo: undefined,
+    avatar: undefined,
     city: initialData?.city || '',
     location: initialData?.location || '',
     address: initialData?.address || '',
     services: initialData?.services || [],
-    image: initialData?.image,
+    image: undefined,
+  });
+
+  const [alert, setAlert] = useState<{ open: boolean; message: string; severity: 'error' | 'success' }>({
+    open: false,
+    message: '',
+    severity: 'success',
   });
 
   const handleInputChange = (
@@ -84,6 +95,22 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+      if (!allowedTypes.includes(file.type)) {
+        setAlert({
+          open: true,
+          message: 'Please select an image of type JPEG or PNG.',
+          severity: 'error',
+        });
+        return;
+      }
+      if (file.size > maxFileSize) {
+        setAlert({
+          open: true,
+          message: 'File size must be less than 5MB!',
+          severity: 'error',
+        });
+        return;
+      }
       setFormData((prevData) => ({ ...prevData, [field]: file }));
     }
   };
@@ -96,11 +123,89 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   });
 
   const handleSubmit = () => {
-    onSubmit(formData);
+    // تحقق من الحقول المطلوبة
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.password ||
+      !formData.logo ||
+      !formData.avatar ||
+      !formData.image
+    ) {
+      setAlert({
+        open: true,
+        message: 'All fields and images are required.',
+        severity: 'error',
+      });
+      return;
+    }
+    // تحقق من نوع الصور
+    if (
+      !allowedTypes.includes(formData.logo.type) ||
+      !allowedTypes.includes(formData.avatar.type) ||
+      !allowedTypes.includes(formData.image.type)
+    ) {
+      setAlert({
+        open: true,
+        message: 'Logo, Avatar, and Image must be jpeg, jpg, or png.',
+        severity: 'error',
+      });
+      return;
+    }
+    // تحقق من حجم الصور
+    if (
+      formData.logo.size > maxFileSize ||
+      formData.avatar.size > maxFileSize ||
+      formData.image.size > maxFileSize
+    ) {
+      setAlert({
+        open: true,
+        message: 'Image size must be less than 5MB.',
+        severity: 'error',
+      });
+      return;
+    }
+
+    const formDataToSend = new FormData();
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('phone', formData.phone);
+    formDataToSend.append('password', formData.password);
+    formDataToSend.append('host_name', formData.host_name);
+    formDataToSend.append('bio', formData.bio);
+    formDataToSend.append('city', formData.city);
+    formDataToSend.append('location', formData.location);
+    formDataToSend.append('address', formData.address);
+
+    formDataToSend.append('logo', formData.logo);
+    formDataToSend.append('avatar', formData.avatar);
+    formDataToSend.append('image', formData.image);
+
+    formData.services.forEach((serviceId, idx) => {
+      formDataToSend.append(`services[${idx}]`, serviceId);
+    });
+
+    onSubmit(formDataToSend);
   };
 
   return (
     <Box sx={{ p: 4 }}>
+      <Snackbar
+        open={alert.open}
+        autoHideDuration={6000}
+        onClose={() => setAlert((a) => ({ ...a, open: false }))}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setAlert((a) => ({ ...a, open: false }))}
+          severity={alert.severity}
+          sx={{ width: '100%' }}
+        >
+          {alert.message}
+        </Alert>
+      </Snackbar>
+
       {/* Images */}
       <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
         <Box>
@@ -112,7 +217,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           />
           <Button variant="outlined" component="label" size="small">
             Choose Logo
-            <input type="file" accept="image/*" hidden onChange={e => handleFileChange(e, 'logo')} />
+            <input type="file" accept="image/jpeg,image/png,image/jpg" hidden onChange={e => handleFileChange(e, 'logo')} />
           </Button>
         </Box>
         <Box>
@@ -124,7 +229,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           />
           <Button variant="outlined" component="label" size="small">
             Choose Avatar
-            <input type="file" accept="image/*" hidden onChange={e => handleFileChange(e, 'avatar')} />
+            <input type="file" accept="image/jpeg,image/png,image/jpg" hidden onChange={e => handleFileChange(e, 'avatar')} />
           </Button>
         </Box>
         <Box>
@@ -136,7 +241,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           />
           <Button variant="outlined" component="label" size="small">
             Choose Image
-            <input type="file" accept="image/*" hidden onChange={e => handleFileChange(e, 'image')} />
+            <input type="file" accept="image/jpeg,image/png,image/jpg" hidden onChange={e => handleFileChange(e, 'image')} />
           </Button>
         </Box>
       </Box>
@@ -146,8 +251,8 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
         <Grid size={6}>
           <TextField
             label="Full Name"
-            name="full_name"
-            value={formData.full_name}
+            name="name"
+            value={formData.name}
             onChange={handleInputChange}
             fullWidth
             required
