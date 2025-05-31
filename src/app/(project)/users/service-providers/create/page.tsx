@@ -31,7 +31,8 @@ function CreateCustomar() {
 
     return (
         <>
-            <DynamicForm mode="add" onSubmit={handleSubmit} />
+            {/* <DynamicForm mode="add" onSubmit={handleSubmit} /> */}
+        <DynamicForm mode="add" initialData={initialData} onSubmit={handleSubmit} />
         </>
     );
 }
