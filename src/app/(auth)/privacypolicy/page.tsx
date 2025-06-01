@@ -71,7 +71,7 @@ function PrivacyPolicy() {
                     5. Your Rights
                 </Typography>
                 <Typography variant="body1" paragraph>
-                    You may request to access, update, or delete your personal information at any time by contacting us at <a href="mailto:support@tekram.app">support@tekram.app</a>.
+                    You may request to access, update, or delete your personal information at any time by contacting us at <a href="mailto:support@tekram.com">support@tekram.com</a>.
                 </Typography>
             </Paper>
 
@@ -92,7 +92,7 @@ function PrivacyPolicy() {
                     For questions or concerns regarding this Privacy Policy or your data, please contact us:
                 </Typography>
                 <ul>
-                    <li>Email: <a href="mailto:support@tekram.app">support@tekram.app</a></li>
+                    <li>Email: <a href="mailto:support@tekram.com">support@tekram.com</a></li>
                     <li>Phone: <a href="tel:+1234567890">+1 234 567 890</a></li>
                 </ul>
             </Paper>
