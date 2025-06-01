@@ -32,7 +32,7 @@ export interface CustomerFormData {
 interface DynamicFormProps {
   mode: 'add' | 'edit';
   initialData?: CustomerFormData;
-  onSubmit: (data: CustomerFormData | CustomerFormData) => void;
+  onSubmit: (data: CustomerFormData | FormData) => void | Promise<void>;
 }
 
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];

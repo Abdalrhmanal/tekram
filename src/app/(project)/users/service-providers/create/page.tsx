@@ -12,19 +12,24 @@ function CreateCustomar() {
     const router = useRouter();
     const token = Cookies.get("a_user");
 
-    const handleSubmit = async (data: CustomerFormData) => {
+    const handleSubmit = async (data: CustomerFormData | FormData) => {
         try {
             setIsLoading(true);
-            const formData = new FormData();
-            Object.entries(data).forEach(([key, value]) => {
-                if (Array.isArray(value)) {
-                    value.forEach((item, idx) => {
-                        formData.append(`${key}[${idx}]`, item);
-                    });
-                } else if (value !== undefined && value !== null) {
-                    formData.append(key, value as string);
-                }
-            });
+            let formData: FormData;
+            if (data instanceof FormData) {
+                formData = data;
+            } else {
+                formData = new FormData();
+                Object.entries(data).forEach(([key, value]) => {
+                    if (Array.isArray(value)) {
+                        value.forEach((item, idx) => {
+                            formData.append(`${key}[${idx}]`, item);
+                        });
+                    } else if (value !== undefined && value !== null) {
+                        formData.append(key, value as string);
+                    }
+                });
+            }
             const response = await fetch("http://145.223.116.44:9993/api/hosts", {
                 method: "POST",
                 body: formData,

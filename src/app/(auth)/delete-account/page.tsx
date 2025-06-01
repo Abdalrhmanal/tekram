@@ -2,21 +2,7 @@ import React from 'react';
 import { Container, Typography, Button, Box, Paper } from '@mui/material';
 
 const DeleteAccount: React.FC = () => {
-    const handleDeleteAccount = async () => {
-        if (!confirm("Are you sure you want to permanently delete your account?")) return;
-
-        try {
-            // Replace this with your real API call
-            // Example: await axios.delete('/api/account');
-            console.log("Account deletion request sent.");
-            alert("Your account has been deleted.");
-            // Redirect or logout logic here
-        } catch (error) {
-            console.error("Error deleting account:", error);
-            alert("Something went wrong. Please try again.");
-        }
-    };
-
+   
     return (
         <Container component="main" maxWidth="sm" dir="ltr">
             <Paper elevation={3} style={{ padding: '20px', borderRadius: '8px' }}>
@@ -102,7 +88,7 @@ const DeleteAccount: React.FC = () => {
                 </Box>
 
                 <Box textAlign="center" marginTop={4}>
-                    <Button variant="contained" color="error" onClick={handleDeleteAccount}>
+                    <Button variant="contained" color="error" >
                         Permanently Delete My Account
                     </Button>
                 </Box>
