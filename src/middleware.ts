@@ -10,7 +10,9 @@ const publicRoutes = [
   "/change-password",
   "/contact",
   "/about",
-  "/welcome"
+  "/welcome",
+  "/privacypolicy",
+  "/delete-account"
 ];
 
 
