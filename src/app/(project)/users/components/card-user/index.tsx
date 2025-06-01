@@ -36,7 +36,7 @@ function CardPersonDynamic({ user }: { user?: any }) {
                                     <Grid container spacing={2} alignItems="center">
                                         <Grid size={12} display="flex" justifyContent="center" alignItems="center">
                                             <img
-                                                alt={user?.fullName || "User"}
+                                                alt={user?.name || "User"}
                                                 src={user?.avatar}
                                                 width={150}
                                                 height={150}
@@ -45,7 +45,7 @@ function CardPersonDynamic({ user }: { user?: any }) {
                                         </Grid>
                                         <Grid size={12} display="flex" justifyContent="center" alignItems="center">
                                             <Typography variant="h5" fontWeight="bold" align="center">
-                                                {user.fullName}
+                                                {user?.name}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -60,35 +60,35 @@ function CardPersonDynamic({ user }: { user?: any }) {
                                                     <Typography color="textSecondary" align="right">
                                                         Email
                                                     </Typography>
-                                                    <Typography align="right">{truncateText(user.email)}</Typography>
+                                                    <Typography align="right">{truncateText(user?.email)}</Typography>
                                                 </Grid>
 
                                                 <Grid size={4}>
                                                     <Typography color="textSecondary" align="right">
                                                         Mobile Number
                                                     </Typography>
-                                                    <Typography align="right">{user.mobile}</Typography>
+                                                    <Typography align="right">{user?.phone}</Typography>
                                                 </Grid>
 
                                                 <Grid size={4}>
                                                     <Typography color="textSecondary" align="right">
                                                         City
                                                     </Typography>
-                                                    <Typography align="right">{user.city}</Typography>
+                                                    <Typography align="right">{user?.city}</Typography>
                                                 </Grid>
 
                                                 <Grid size={4}>
                                                     <Typography color="textSecondary" align="right">
                                                         Address
                                                     </Typography>
-                                                    <Typography align="right">{truncateText(user.address)}</Typography>
+                                                    <Typography align="right">{truncateText(user?.address)}</Typography>
                                                 </Grid>
 
                                                 <Grid size={4}>
                                                     <Typography color="textSecondary" align="right">
                                                         Registration Date
                                                     </Typography>
-                                                    <Typography align="right">{user.registerDate}</Typography>
+                                                    <Typography align="right">{user?.registerDate}</Typography>
                                                 </Grid>
                                             </Grid>
                                         </Grid>

@@ -84,7 +84,7 @@ function DetailsOrderSProv() {
                                         <Grid size={12} display="flex" justifyContent="center" alignItems="center">
                                             <img
                                                 alt={hostData?.data?.name}
-                                                src={hostData?.data?.image.trim()}
+                                                src={hostData?.data?.image}
                                                 width={150}
                                                 height={150}
                                                 style={{ borderRadius: '5%' }}

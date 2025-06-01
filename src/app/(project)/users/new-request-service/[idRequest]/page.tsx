@@ -143,20 +143,10 @@ function DetailsNewRequest() {
                             </Typography>
                             <Divider />
                             <Grid container spacing={2} sx={{ p: 2 }}>
-                                {/* {hostRSData?.data?.requested_services.map((item: any) => (
+                                {hostRSData?.data?.requested_services.map((item: any) => (
                                     <Grid key={item.id} display="flex" justifyContent="center">
                                         <Chip
                                             label={item.type}
-                                            color="primary"
-                                            variant="outlined"
-                                            sx={{ margin: '0 5px' }}
-                                        />
-                                    </Grid>
-                                ))} */}
-                                {hostRSData?.data?.requested_services.map((service: string) => (
-                                    <Grid key={service} display="flex" justifyContent="center">
-                                        <Chip
-                                            label={service}
                                             color="primary"
                                             variant="outlined"
                                             sx={{ margin: '0 5px' }}

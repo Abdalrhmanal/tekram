@@ -64,7 +64,7 @@ const StructureTable: React.FC<StructureTableProps> = ({
   isDeleting = false,
   isShowDetailse = false,
   isLoading = false,
-  isPassDataDetailse = false,
+  isPassDataDetailse = true,
 }) => {
   const [orderBy, setOrderBy] = useState<string | null>("created_at");
   const [orderDirection, setOrderDirection] = useState<"asc" | "desc">("desc");
@@ -138,10 +138,10 @@ const StructureTable: React.FC<StructureTableProps> = ({
                   onChange={() => handleSelectRow(row)}
                 />
               </TableCell>
-              {columns.map((column) => (<>
-                {isShowDetailse ? (<>
+              {columns.map((column) => (
+                isShowDetailse ? (
                   <TableCell
-                    key={`${row.id}-${index}`}
+                    key={`${row.id}-${column.field}`}
                     onClick={(e) => {
                       const target = e.target as HTMLElement;
                       if (target.closest("button") || target.closest("svg")) return;
@@ -155,13 +155,12 @@ const StructureTable: React.FC<StructureTableProps> = ({
                   >
                     {renderCell(column.field, row[column.field], row)}
                   </TableCell>
-                </>) : (<>
-                  <TableCell key={`${row.id}-${column.field}`} >
+                ) : (
+                  <TableCell key={`${row.id}-${column.field}`}>
                     {renderCell(column.field, row[column.field], row)}
                   </TableCell>
-                </>)}
-
-              </>))}
+                )
+              ))}
               {hasActions && (
                 <TableCell>
                   <Box display="flex" gap={1}>
