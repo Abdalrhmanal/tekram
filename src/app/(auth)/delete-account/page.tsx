@@ -28,21 +28,15 @@ const DeleteAccount: React.FC = () => {
                 </Typography>
                 <Box component="ol" sx={{ paddingLeft: 2 }}>
                     <li>
-                        <Typography variant="h5">Open the app and go to your profile page.</Typography>
+                        <Typography variant="h5">Open the app and go to your profile page and Choose the "Delete Account" option.</Typography>
                         <Box display="flex" justifyContent="center">
-                            <img src="/images/step1.png" alt="Step 1" style={{ width: '300px', height: '600px', borderRadius: '8px' }} />
-                        </Box>
-                    </li>
-                    <li>
-                        <Typography variant="h5">Choose the "Delete Account" option.</Typography>
-                        <Box display="flex" justifyContent="center">
-                            <img src="/images/step2.png" alt="Step 2" style={{ width: '300px', height: '600px', borderRadius: '8px' }} />
+                            <img src="/delete-account/image1.png" alt="Step 2" style={{ width: '300px', height: '600px', borderRadius: '8px' }} />
                         </Box>
                     </li>
                     <li>
                         <Typography variant="h5">Confirm the deletion by clicking the confirm button in the popup.</Typography>
                         <Box display="flex" justifyContent="center">
-                            <img src="/images/step3.png" alt="Step 3" style={{ width: '300px', height: '600px', borderRadius: '8px' }} />
+                            <img src="/delete-account/image2.png" alt="Step 3" style={{ width: '300px', height: '600px', borderRadius: '8px' }} />
                         </Box>
                     </li>
                 </Box>
