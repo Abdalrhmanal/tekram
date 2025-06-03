@@ -1,11 +1,14 @@
+"use client";
 import React from "react";
 import { Typography, Chip, Grid, Avatar, Tooltip } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export const renderCell = (field: string, value: any, row: any): React.ReactNode => {
     const truncateText = (text?: string, maxLength: number = 15) => {
         if (!text) return "-";
         return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
     };
+    const router = useRouter();
 
 
     switch (field) {
@@ -42,6 +45,50 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
             return (
                 <Typography fontWeight="bold">{`from ${row.from_currency} to ${row.to_currency}`}</Typography>
             );
+        case "namehostid":
+            return (<>
+                <Typography
+                    fontWeight="bold"
+                    sx={{ cursor: "pointer", color: "primary.main" }}
+                    onClick={() => {
+                        if (row.host?.id) {
+                            router.push(`/reservations/profile-host/${row.host.id}`);
+                        }
+                    }}
+                >
+                    {row.host?.name ?? "-"}
+                </Typography>
+            </>
+            );
+        case "nameguestid":
+            return (<>
+                <Typography
+                    fontWeight="bold"
+                    sx={{ cursor: "pointer", color: "primary.main" }}
+                    onClick={() => {
+                        if (row.guest?.id) {
+                            router.push(`/reservations/profile-customar/${row.guest.id}`);
+                        }
+                    }}
+                >
+                    {row.guest?.name ?? "-"}
+                </Typography>
+            </>
+
+            );
+        case "serviceId":
+            return (
+                <Typography fontWeight="bold">
+                    {row.service?.name ?? "-"}
+                </Typography>
+            );
+        case "unitId":
+            return (
+                <Typography fontWeight="bold">
+                    {row.unit?.title ?? "-"}
+                </Typography>
+            );
+
         case "date":
             const formattedDate = row.date ? new Intl.DateTimeFormat('en-GB', {
                 year: 'numeric',

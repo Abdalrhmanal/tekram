@@ -1,10 +1,9 @@
 "use client";
 import React from 'react'
-import CardPersonDiynamec from '../../components/card-user'
 import CardWalletTransaction from '../../components/card-wallet';
-import DocumentGallery from '../../components/document-gallery';
 import { useParams, useSearchParams } from 'next/navigation';
 import useGlobalData from '@/hooks/git-global';
+import CardPersonDynamic from '../../components/card-user';
 
 function DetailseCustomar() {
     const params = useParams()
@@ -34,7 +33,7 @@ function DetailseCustomar() {
     const urlAllDatabookings = `/users/bookings/${id}`
     return (
         <>
-            <CardPersonDiynamec user={user} />
+            <CardPersonDynamic user={user} />
             <br />
             <CardWalletTransaction data={wallet_transactions} title='Wallet Transaction' urlDetailse={urlAllDatawallet_transactions} />
             <br />

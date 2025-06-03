@@ -37,7 +37,7 @@ type UseGlobalDataResult<T> = {
 
 const BASE_URL = "http://145.223.116.44:9993";
 
-const useGlobalData = function <T>({
+const useGlobalDataT = function <T>({
   dataSourceName,
   enabled = true,
   pageNumber = 1,
@@ -139,4 +139,4 @@ const useGlobalData = function <T>({
   return { data, isLoading, isFetching, isError, refetch };
 };
 
-export default useGlobalData;
+export default useGlobalDataT;

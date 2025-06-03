@@ -14,6 +14,7 @@ import { useTheme } from "@mui/material/styles";
 import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
 import { ComparisonOperator, FilterType, GlobalDataType, GridTableProps } from "./type/type";
 import Loding from "./loading/loding-body";
+import useGlobalDataT from "@/hooks/git-global";
 
 const GridTable: React.FC<GridTableProps> = ({
   dataSourceName,
@@ -82,7 +83,7 @@ const GridTable: React.FC<GridTableProps> = ({
 
   console.log(searchQuery, "searchQuery");
 
-  const { data: GlobalData, isLoading: GlobalLoading, refetch, isError } = useGlobalData<GlobalDataType>({
+  const { data: GlobalData, isLoading: GlobalLoading, refetch, isError } = useGlobalDataT<GlobalDataType>({
     dataSourceName,
     enabled: true,
     pageNumber,

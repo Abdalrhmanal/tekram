@@ -66,7 +66,7 @@ export const menuItemsAll: MenuItem[] = [
     isExpanded: false,
     role: "all",
     children: [
-      { text: "All Reservations", href: "/", logo: <CalendarMonthOutlined />, isActive: false, role: "site-admin" },
+      { text: "All Reservations", href: "/reservations", logo: <CalendarMonthOutlined />, isActive: false, role: "site-admin" },
       { text: "Manual reservation", href: "/", logo: <EditOutlined />, isActive: false, role: "site-admin" },
       { text: "Late delivery to (user)", href: "/", logo: <AccessTimeOutlined />, isActive: false, role: "site-admin" },
       { text: "Late delivery to (SProv)", href: "/", logo: <AccessTimeOutlined />, isActive: false, role: "site-admin" },
