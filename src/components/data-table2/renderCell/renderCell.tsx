@@ -83,7 +83,7 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                     sx={{ cursor: "pointer", color: "primary.main" }}
                     onClick={() => {
                         if (row.unit?.id) {
-                            router.push(`/reservations/profile-customar/${row.unit.id}`);
+                            router.push(`/reservations/details-service/${row.unit.id}`);
                         }
                     }}
                 >

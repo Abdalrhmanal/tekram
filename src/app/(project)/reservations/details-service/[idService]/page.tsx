@@ -1,3 +1,4 @@
+"use client";
 import Tabber from '@/components/tabber'
 import React from 'react'
 import DImages from '../components/d-images'
@@ -36,13 +37,13 @@ function DetailsService() {
                 >
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid size={6} display="flex" justifyContent="center">
-                            <Typography variant="caption" color="primary" fontWeight="bold">
+                            <Typography variant="h6" fontWeight="bold" color="primary" >
                                 حجز سيارة
                             </Typography>
                         </Grid>
                         <Grid size={6} display="flex" justifyContent="center">
                             <Box display="flex" alignItems="center">
-                                <Typography variant="body2">
+                                <Typography variant="h6" fontWeight="bold">
                                     حلب - الفرقان - شارع الاكسبريس
                                 </Typography>
                                 <LocationOnIcon fontSize="small" color="action" />
@@ -55,7 +56,7 @@ function DetailsService() {
                         </Grid>
                         <Grid size={6} display="flex" justifyContent="center">
                             <Box display="flex" alignItems="center">
-                                <Typography variant="body2">
+                                <Typography variant="h6" fontWeight="bold">
                                     مزود الخدمة: شركة العامري
                                 </Typography>
                                 <InfoOutlinedIcon fontSize="small" color="action" />
@@ -70,27 +71,27 @@ function DetailsService() {
                     {
                         label: "Details Order",
                         icon: <Deblur />,
-                        component: <DOrder />,
+                        component: <DOrder id={id}/>,
                     },
                     {
                         label: "Details Service",
                         icon: <Deblur />,
-                        component: <DService />,
+                        component: <DService id={id}/>,
                     },
                     {
                         label: "Images",
                         icon: <Deblur />,
-                        component: <DImages />,
+                        component: <DImages id={id}/>,
                     },
                     {
                         label: "QUistions",
                         icon: <Deblur />,
-                        component: <DQuistions />,
+                        component: <DQuistions id={id}/>,
                     },
                     {
                         label: "Policy",
                         icon: <Deblur />,
-                        component: <DPolicy />,
+                        component: <DPolicy id={id}/>,
                     },
 
                 ]}
