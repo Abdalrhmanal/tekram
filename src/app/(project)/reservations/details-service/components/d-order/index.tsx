@@ -19,8 +19,19 @@ function getAvailabilityColor(status: string) {
   return "default";
 }
 
+type ByDayInfo = {
+  price: number;
+  currency: string;
+};
+
+type OrderDetailsData = {
+  by_days?: Record<string, ByDayInfo>;
+  available_times?: Record<string, string>;
+  notes?: string;
+};
+
 function DOrder({ id }: { id: any; }) {
-  const { data, isLoading, isFetching, isError, refetch } = useGlobalData({
+  const { data, isLoading, isFetching, isError, refetch } = useGlobalData<{ data: OrderDetailsData }>({
     dataSourceName: `api/service-units/${id}/order-details`
   });
 
