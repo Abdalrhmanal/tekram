@@ -78,7 +78,15 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
             );
         case "serviceId":
             return (
-                <Typography fontWeight="bold">
+                <Typography
+                    fontWeight="bold"
+                    sx={{ cursor: "pointer", color: "primary.main" }}
+                    onClick={() => {
+                        if (row.unit?.id) {
+                            router.push(`/reservations/profile-customar/${row.unit.id}`);
+                        }
+                    }}
+                >
                     {row.service?.name ?? "-"}
                 </Typography>
             );
@@ -100,6 +108,30 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                 hour12: false
             }).format(new Date(row.date)) : '';
             return <Typography fontWeight="bold">{formattedDate}</Typography>;
+
+        case "idsDate":
+            const startDate = row.start_date ? new Intl.DateTimeFormat('en-GB', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(new Date(row.start_date)) : '';
+            return <Typography fontWeight="bold">{startDate}</Typography>;
+        case "iddDate":
+            const endDate = row.end_date ? new Intl.DateTimeFormat('en-GB', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(new Date(row.end_date)) : '';
+            return <Typography fontWeight="bold">{endDate}</Typography>;
+
         case "idDate":
             const formattedDateFrom = row.start_date ? new Intl.DateTimeFormat('en-GB', {
                 year: 'numeric',
