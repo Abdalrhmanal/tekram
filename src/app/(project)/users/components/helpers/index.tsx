@@ -97,3 +97,10 @@ export const truncateText = (text: string, maxLength: number = 25) =>
     text != null
         ? (text.length > maxLength ? text.substring(0, maxLength) + "..." : text)
         : "";
+export function getCurrentDateString() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1; // الأشهر تبدأ من 0
+    const day = now.getDate();
+    return `${year}-${month}-${day}`;
+}

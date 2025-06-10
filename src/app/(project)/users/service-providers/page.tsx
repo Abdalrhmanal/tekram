@@ -22,11 +22,11 @@ function ServiceProviders() {
                     columns={columns} isCreated={true}
                     toCreateURLPage='/users/service-providers/create'
                     isShowDetailse={true}
-                    fixedFilter={{
+                    fixedFilter={[{
                         field: "roles.name",
                         operator: ComparisonOperator.Equals,
                         value: "host"
-                    }}
+                    }]}
                 />
             </Suspense>
         </>

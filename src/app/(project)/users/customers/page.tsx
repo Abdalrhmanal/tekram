@@ -22,11 +22,11 @@ function Customers() {
                     isCreated={false}
                     toCreateURLPage='/users/customers/create'
                     isShowDetailse={true}
-                    fixedFilter={{
+                    fixedFilter={[{
                         field: "roles.name",
                         operator: ComparisonOperator.Equals,
                         value: "user"
-                    }} />
+                    }]} />
             </Suspense >
         </>
 

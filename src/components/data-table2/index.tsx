@@ -69,8 +69,7 @@ const GridTable: React.FC<GridTableProps> = ({
     }
 
     setFilterData(
-      [fixedFilter, ...dynamicFilters]
-        .filter((f): f is FilterType => !!f && typeof f === "object" && "field" in f && "operator" in f && "value" in f)
+      ([fixedFilter, ...dynamicFilters].flat().filter(Boolean) as FilterType[])
     );
   }, [searchParams]);
   useEffect(() => {
@@ -136,7 +135,9 @@ const GridTable: React.FC<GridTableProps> = ({
       ];
 
       router.push(`${pathname}?${newParams.toString()}`);
-      setFilterData(newFilterData.filter((f): f is FilterType => !!f && typeof f === "object" && "field" in f && "operator" in f && "value" in f));
+      setFilterData(
+        (newFilterData.flat().filter(Boolean) as FilterType[])
+      );
       setFilterLogic(newFilterData.length > 2 ? "OR" : "AND");
 
       refetch();
@@ -150,7 +151,11 @@ const GridTable: React.FC<GridTableProps> = ({
     setSelectedField(null);
     setSelectedOperator(null);
     setFilterValue("");
-    setFilterData([fixedFilter].filter((f): f is FilterType => !!f && typeof f === "object" && "field" in f && "operator" in f && "value" in f));
+    setFilterData(
+      fixedFilter && typeof fixedFilter === "object" && "field" in fixedFilter && "operator" in fixedFilter && "value" in fixedFilter
+        ? [fixedFilter as FilterType]
+        : []
+    );
 
     const newParams = new URLSearchParams(searchParams);
     newParams.delete("field");
