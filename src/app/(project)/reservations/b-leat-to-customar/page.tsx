@@ -30,7 +30,7 @@ function BokingLeatToCustomar() {
                     isPassDataDetailse={false}
                     fixedFilter={[{
                         field: "start_date",
-                        operator: ComparisonOperator.Contains,
+                        operator: ComparisonOperator.Between,
                         value: today
                     }, {
                         field: "start_date",

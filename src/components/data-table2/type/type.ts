@@ -29,6 +29,7 @@ export enum ComparisonOperator {
   NotIn = "NotIn",
   GreaterThanOrEqual = "GreaterThanOrEqual",
   LessThanOrEqual = "LessThanOrEqual",
+  Between = "<=",
 }
 
 export  interface GlobalDataType {
