@@ -22,7 +22,7 @@ export default function Tabber({
   };
 
   return (
-    <Box sx={{ width: "100%", direction: "rtl" }}>
+    <Box sx={{ width: "100%" }}>
       <AppBar
         position="static"
         sx={{
