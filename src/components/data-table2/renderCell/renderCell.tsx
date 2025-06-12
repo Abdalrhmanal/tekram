@@ -45,6 +45,17 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
             return (
                 <Typography fontWeight="bold">{`from ${row.from_currency} to ${row.to_currency}`}</Typography>
             );
+        case "idPrice":
+            return (
+                <Typography fontWeight="bold">{`from ${row.price}  ${row.currency}`}</Typography>
+            );
+        case "iddetails":
+            return (
+                <div
+                    style={{ marginBottom: 24 }}
+                    dangerouslySetInnerHTML={{ __html: row.details }}
+                />
+            );
         case "namehostid":
             return (<>
                 <Typography

@@ -80,9 +80,9 @@ export const menuItemsAll: MenuItem[] = [
     isExpanded: false,
     role: "all",
     children: [
-      { text: "All Published", href: "/", logo: <PublishOutlined />, isActive: false, role: "site-admin" },
-      { text: "Paused", href: "/", logo: <PauseCircleOutline />, isActive: false, role: "site-admin" },
-      { text: "Publish Request", href: "/", logo: <PublishOutlined />, isActive: false, role: "site-admin" },
+      { text: "All Published", href: "/service-deplye", logo: <PublishOutlined />, isActive: false, role: "site-admin" },
+      { text: "Paused", href: "/service-deplye/paused", logo: <PauseCircleOutline />, isActive: false, role: "site-admin" },
+      /* { text: "Publish Request", href: "/service-deplye/publish-request", logo: <PublishOutlined />, isActive: false, role: "site-admin" }, */
     ],
   },
   {
