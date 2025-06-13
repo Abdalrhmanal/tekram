@@ -12,9 +12,9 @@ function Profile() {
             <ProfileUsers
                 id={`${id}`}
                 dataSourceNameWallet={`api/wallet/transactions`}
-                dataSourceNameBookings={`api/bookings`}
+                dataSourceNameBookings={`api/hosts-bookings`}
                 urlAllDatawallet_transactions={'api/wallet/transactions'}
-                urlAllDatabookings={'api/bookings'}
+                urlAllDatabookings={'api/hosts-bookings'}
             />
         </>
     )

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Typography, Chip, Grid, Avatar, Tooltip } from "@mui/material";
+import { Typography, Chip, Grid, Avatar, Tooltip, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 export const renderCell = (field: string, value: any, row: any): React.ReactNode => {
@@ -10,8 +10,70 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
     };
     const router = useRouter();
 
-
     switch (field) {
+        case "name_host":
+            return (
+                <>
+                    <Grid container spacing={2} alignItems="center">
+                        <Box onClick={() => {
+                            if (row.host?.id) {
+                                router.push(`/profil-user/${row.host.id}`);
+                            }
+                        }}>
+                            <Grid size={2}>
+                                <Avatar alt={row.name} src={`http://145.223.116.44:9993/${row.host.logo}`} />
+                            </Grid>
+
+                            <Grid size={10}>
+                                <Grid container spacing={0.5}>
+                                    <Grid size={12}>
+                                        <Tooltip title={row.host.name} arrow>
+                                            <Typography fontWeight="bold">
+                                                {truncateText(row.host.name)}
+                                            </Typography>
+                                        </Tooltip>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Grid>
+                </>
+            );
+        case "name_customer":
+            return (
+                <>
+                    <Grid container spacing={2} alignItems="center">
+                        <Box onClick={() => {
+                            if (row.customer?.id) {
+                                router.push(`/profil-user/${row.customer.user_id}`);
+                            }
+                        }}>
+                            <Grid size={2}>
+                                <Avatar alt={row.name} src={`http://145.223.116.44:9993/${row.customer.avatar}`} />
+                            </Grid>
+
+                            <Grid size={10}>
+                                <Grid container spacing={0.5}>
+                                    <Grid size={12}>
+                                        <Tooltip title={row.customer.name} arrow>
+                                            <Typography fontWeight="bold">
+                                                {truncateText(row.customer.name)}
+                                            </Typography>
+                                        </Tooltip>
+                                    </Grid>
+                                    <Grid size={12}>
+                                        <Tooltip title={row.customer.gender} arrow>
+                                            <Typography fontWeight="bold">
+                                                {truncateText(row.customer.gender)}
+                                            </Typography>
+                                        </Tooltip>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Grid>
+                </>
+            );
         case "name":
             return (
                 <>

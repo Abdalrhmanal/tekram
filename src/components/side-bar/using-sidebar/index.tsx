@@ -86,13 +86,13 @@ export const menuItemsAll: MenuItem[] = [
     ],
   },
   {
-    text: "Portfolio management",
+    text: "Wallets",
     logo: <DashboardOutlined />,
     isActive: false,
     isExpanded: false,
     role: "all",
     children: [
-      { text: "Skyline", href: "/", logo: <ApartmentOutlined />, isActive: false, role: "site-admin" },
+      { text: "Skyline", href: "/wallets", logo: <ApartmentOutlined />, isActive: false, role: "site-admin" },
       { text: "Customers", href: "/", logo: <PersonOutline />, isActive: false, role: "site-admin" },
       { text: "Service Providers", href: "/", logo: <GroupWorkOutlined />, isActive: false, role: "site-admin" },
     ],
