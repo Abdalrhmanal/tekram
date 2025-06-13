@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import useGlobalData from '@/hooks/get-global';
 import { Box, Grid, Card, CardContent, Typography, Divider, Button } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -9,6 +9,7 @@ import GridTable from '@/components/data-table2';
 import { ContactEmergency, Deblur } from '@mui/icons-material';
 import Tabber from '@/components/tabber';
 import Transactions from './component/w-tranaction';
+import useCreateData from '@/hooks/post-global';
 
 // Define expected data type from the API
 interface WalletStatistics {
@@ -30,6 +31,7 @@ interface WalletStatistics {
 }
 
 function Wallets() {
+    
     const { data, isLoading, isFetching, isError, refetch } = useGlobalData<WalletStatistics>({
         dataSourceName: 'api/wallets-statistics/financial',
     });
@@ -73,6 +75,7 @@ function Wallets() {
         { headerName: "total amount", field: "total_amount", sortable: true },
 
     ];
+   
 
     return (
         <Box sx={{ flexGrow: 1, pr: 2, }}>
@@ -170,15 +173,7 @@ function Wallets() {
                                 toCreateURLPage=' '
                                 isShowDetailse={false}
                                 isPassDataDetailse={false}
-                    /* fixedFilter={[{
-                        field: "start_date",
-                        operator: ComparisonOperator.Between,
-                        value: today
-                    }, {
-                        field: "start_date",
-                        operator: ComparisonOperator.Equals,
-                        value: "0"
-                    }]} */ />,
+                            />,
                         },
                         {
                             label: "Draw record",
