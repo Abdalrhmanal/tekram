@@ -3,7 +3,7 @@ import React from 'react'
 import ProfileUsers from './structure-profil'
 import { usePathname } from 'next/navigation';
 
-function Profile({id}: {id?: string}) {
+function Profile({id}: {id?: string | any}) {
  /*    const pathname = usePathname();
     const id = pathname.split('/').pop(); */
 

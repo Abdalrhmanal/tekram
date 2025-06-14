@@ -2,34 +2,9 @@
 import useGlobalData from "@/hooks/get-global";
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import { formatDate, getWalletName } from "@/app/(project)/users/components/helpers";
 
 // Translate wallet name based on currency
-const getWalletName = (currency: string) => {
-  switch (currency) {
-    case "USD":
-      return "Cash USD Wallet";
-    case "TRY":
-      return "Cash TRY Wallet";
-    case "SYP":
-      return "ShamCash Wallet";
-    default:
-      return currency;
-  }
-};
-
-// Format date using Intl.DateTimeFormat
-const formatDate = (dateString: string) => {
-  if (!dateString) return "";
-  return new Intl.DateTimeFormat("en-GB", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  }).format(new Date(dateString));
-};
 
 type Transaction = {
   id: string;

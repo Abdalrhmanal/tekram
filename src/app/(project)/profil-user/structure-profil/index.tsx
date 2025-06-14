@@ -7,7 +7,7 @@ import useGlobalData from '@/hooks/get-global';
 import useGlobalDataT from '@/hooks/git-global';
 
 interface IProfileUsers {
-    id?: string;
+    id?: string | any;
     dataSourceNameWallet?: string;
     dataSourceNameBookings?: string;
     urlAllDatawallet_transactions: string;
