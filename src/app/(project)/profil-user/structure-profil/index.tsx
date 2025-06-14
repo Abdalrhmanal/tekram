@@ -42,7 +42,7 @@ function ProfileUsers({ id, dataSourceNameWallet, dataSourceNameBookings, urlAll
             <br />
             <CardWalletTransaction data={wallet_transactions} title='Wallet Transaction' urlDetailse={urlAllDatawallet_transactionsTO} />
             <br />
-            <CardWalletTransaction data={bookings} title='Wallet Transaction' urlDetailse={urlAllDatabookingsTO} />
+            <CardWalletTransaction data={bookings} title='Bookings' urlDetailse={urlAllDatabookingsTO} />
             <br />
         </>
     )
