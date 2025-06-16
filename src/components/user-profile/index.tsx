@@ -2,35 +2,17 @@
 
 import React, { useState } from "react";
 import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  Typography,
-  Grid,
-  useTheme,
+  Avatar, Box, Button, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography, Grid, useTheme,
 } from "@mui/material";
 import {
-  Person,
-  Settings,
-  Close,
-  Brightness7,
-  Brightness4,
-  KeyboardArrowDown,
-  LogoutOutlined,
+  Person, Settings, Close, Brightness7, Brightness4, KeyboardArrowDown, LogoutOutlined,
 } from "@mui/icons-material";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
 import { useThemeContext } from "@/theme/context-them";
 import { useRouter } from "next/navigation";
 import useLogout from "@/hooks/logout";
+import FormatTextdirectionRToL from "@mui/icons-material/FormatTextdirectionRToL";
+import FormatTextdirectionLToR from "@mui/icons-material/FormatTextdirectionLToR";
 
 export default function UserProfile({ data }: { data: any }) {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -155,18 +137,21 @@ export default function UserProfile({ data }: { data: any }) {
           </Box>
           <Divider sx={{ my: 2 }} />
 
-          {/* أزرار RTL/LTR */}
           <Box sx={{ p: 1, bgcolor: "background.paper", borderRadius: 2 }}>
             <Stack direction="row" spacing={2} justifyContent="center">
               <Button
                 variant={direction === "rtl" ? "contained" : "outlined"}
                 onClick={() => setDirection("rtl")}
+                sx={{ borderRadius: 2 }}
+                startIcon={<FormatTextdirectionRToL />}
               >
                 RTL
               </Button>
               <Button
                 variant={direction === "ltr" ? "contained" : "outlined"}
                 onClick={() => setDirection("ltr")}
+                sx={{ borderRadius: 2 }}
+                startIcon={<FormatTextdirectionLToR />}
               >
                 LTR
               </Button>
