@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import Header from "../../components/header-dashboard";
 import Sidebar from "../../components/side-bar";
 import Box from "@mui/material/Box";
+import BreadcrumbsDash from "@/components/breadcrumbs";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -27,7 +28,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
       }}
     >
       <Header />
-
+      
       <Box sx={{ display: "flex", flex: 1, overflow: "hidden", pt: "80px" }}>
         <Sidebar />
 
@@ -39,6 +40,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             overflowY: "auto",
           }}
         >
+          <BreadcrumbsDash />
           {children}
         </Box>
       </Box>

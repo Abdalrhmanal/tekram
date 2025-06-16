@@ -3,8 +3,10 @@ import { Box } from "@mui/material";
 import HomePage from "./(project)/home/page";
 import Sidebar from "@/components/side-bar";
 import Header from "@/components/header-dashboard";
+import { ReactNode } from "react";
 
-export default function Home() {
+
+export default function Home({ children }:{ children: ReactNode }) {
   return (
      <Box
       sx={{
@@ -27,7 +29,7 @@ export default function Home() {
             overflowY: "auto",
           }}
         >
-          {/* {children} */}<HomePage />
+          {children}{/* <HomePage /> */}
         </Box>
       </Box>
     </Box>
