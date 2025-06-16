@@ -39,7 +39,7 @@ export interface MenuItem {
 
 export const menuItemsAll: MenuItem[] = [
   {
-    text: "Home",
+    text: "الرئيسية",
     href: "/",
     logo: <HomeOutlined />,
     isActive: false,

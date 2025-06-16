@@ -61,20 +61,21 @@ const Sidebar = () => {
 
       return (
         <Box key={item.id}>
-          <Tooltip title={!open ? item.title : ""} placement="right">
+          <Tooltip title={!open ? item.title : ""} placement="right" >
             <ListItem
               onClick={() =>
                 hasChildren ? toggleExpand(item.id) : handleNavigate(item.url)
               }
               sx={{
+                textAlign: theme.direction === "rtl" ? "right" : "left",
                 borderRadius: 2,
                 mb: "4px",
                 position: "relative",
                 bgcolor: isActive
                   ? theme.palette.primary.light
                   : isParentHighlighted || expandedItems[parentId || ""]
-                  ? theme.palette.action.selected
-                  : "transparent",
+                    ? theme.palette.action.selected
+                    : "transparent",
                 color: isActive
                   ? theme.palette.primary.contrastText
                   : theme.palette.text.primary,
