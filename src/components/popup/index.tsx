@@ -25,8 +25,7 @@ function PopUp({
                 bgcolor: 'background.paper',
                 borderRadius: 2,
                 boxShadow: 24,
-                minWidth: 350,
-                maxWidth: 400,
+                width: 680,
                 p: 0,
             }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2 }}>

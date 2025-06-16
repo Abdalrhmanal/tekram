@@ -26,7 +26,7 @@ function Withdraw({ onSuccess, onCancel }: WithdrawProps) {
     const [amount, setAmount] = useState<number>(0);
 
     const { isLoading, isError, success, createData } = useCreateData({
-        dataSourceName: `api/wallet/withdraw/9016c431-b02b-48c0-8aeb-50385057c36e`,
+        dataSourceName: `api/wallet/withdraw/${id}`,
     });
 
     const handleWithdraw = () => {
@@ -49,7 +49,7 @@ function Withdraw({ onSuccess, onCancel }: WithdrawProps) {
     }, [success]);
 
     return (
-        <Box maxWidth={400} mx="auto" mt={4}>
+        <Box mx="auto" mt={1}>
             <Stack spacing={2}>
                 <Typography variant="h6" textAlign="right">
                     أدخل الرقم الذي سحبته من المحفظة
@@ -67,11 +67,12 @@ function Withdraw({ onSuccess, onCancel }: WithdrawProps) {
                     الحد الأعلى للسحب: ${MAX_WITHDRAW} والباقي سيتم إضافته كدين
                 </Alert>
 
-                <Box display="flex" justifyContent="space-between">
+                <Box >
                     <Button
                         variant="outlined"
                         color="primary"
                         onClick={onCancel}
+                        sx={{ m: 1 }}
                     >
                         إلغاء
                     </Button>
@@ -81,6 +82,7 @@ function Withdraw({ onSuccess, onCancel }: WithdrawProps) {
                         color="primary"
                         onClick={handleWithdraw}
                         disabled={isLoading || !amount}
+                        sx={{ m: 1 }}
                     >
                         موافق
                     </Button>
