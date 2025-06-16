@@ -30,7 +30,7 @@ function DetailsNewRequest() {
             return;
         }
         rejectData({ admin_notes: rejectReason });
-        route.push('/users/account-s-prov')
+        route.push('/account-s-prov')
     };
     // عند تغيير الشيكبوكس
     const handleServiceCheck = (serviceId: string, checked: boolean) => {
@@ -48,7 +48,7 @@ function DetailsNewRequest() {
             return;
         }
         approveData({ services: approvedServices });
-        route.push('/users/account-s-prov')
+        route.push('/account-s-prov')
     };
 
     const { isLoading: approveLod, isError: approveError, success: approveSucces, createData: approveData } = useCreateData({

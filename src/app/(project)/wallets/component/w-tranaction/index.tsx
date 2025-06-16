@@ -2,7 +2,7 @@
 import useGlobalData from "@/hooks/get-global";
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { formatDate, getWalletName } from "@/app/(project)/users/components/helpers";
+import { formatDate, getWalletName } from "@/app/(project)/components/helpers";
 
 // Translate wallet name based on currency
 

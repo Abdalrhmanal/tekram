@@ -48,9 +48,9 @@ function CreateCustomar() {
         <>
             <CardPersonDiynamec user={user} />
             <br />
-            <CardWalletTransaction data={wtranszction} title='Wallet Transaction' urlDetailse='/users/customers' />
+            <CardWalletTransaction data={wtranszction} title='Wallet Transaction' urlDetailse='/customers' />
             <br />
-            <CardWalletTransaction data={wtranszction} title='Wallet Transaction' urlDetailse='/users/customers' />
+            <CardWalletTransaction data={wtranszction} title='Wallet Transaction' urlDetailse='/customers' />
             <br />
             
 

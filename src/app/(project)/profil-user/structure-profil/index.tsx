@@ -1,8 +1,8 @@
 "use client";
 import React from 'react'
 import { useSearchParams } from 'next/navigation';
-import CardWalletTransaction from '@/app/(project)/users/components/card-wallet';
-import CardPersonDynamic from '@/app/(project)/users/components/card-user';
+import CardWalletTransaction from '@/app/(project)/(users)/components/card-wallet';
+import CardPersonDynamic from '@/app/(project)/(users)/components/card-user';
 import useGlobalData from '@/hooks/get-global';
 import useGlobalDataT from '@/hooks/git-global';
 

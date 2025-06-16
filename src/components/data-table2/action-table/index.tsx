@@ -32,10 +32,10 @@ const HeardTabelActions: React.FC<HeardTabelActionsProps> = ({ selectedRows, onD
 
   let sourceName = "";
   switch (pathname) {
-    case '/users/customers':
+    case '/customers':
       sourceName = "api/customers";
       break;
-    case '/users/service-providers':
+    case '/service-providers':
       sourceName = "api/hosts";
       break;
     default:

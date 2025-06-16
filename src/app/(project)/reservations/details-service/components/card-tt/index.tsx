@@ -6,7 +6,7 @@ import React from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowRightAltOutlinedIcon from '@mui/icons-material/ArrowRightAltOutlined';
 import { useRouter } from "next/navigation";
-import { formatDateTime, getIcon } from '@/app/(project)/users/components/helpers';
+import { formatDateTime, getIcon } from '@/app/(project)/(users)/components/helpers';
 function CardTT({ data, title, urlDetailse }: { data?: any; title?: string, urlDetailse?: string }) {
     const router = useRouter();
     return (

@@ -28,7 +28,7 @@ function WalletTransactions() {
                 <GridTable dataSourceName={dataSourceName}
                     columns={columns}
                     isCreated={false}
-                    toCreateURLPage='/users/WalletTransactions/create'
+                    toCreateURLPage='/WalletTransactions/create'
                     isShowDetailse={false}
                     /* fixedFilter={{
                         field: "roles.name",

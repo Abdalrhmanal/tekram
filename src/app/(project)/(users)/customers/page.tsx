@@ -20,7 +20,7 @@ function Customers() {
                 <GridTable dataSourceName={dataSourceName}
                     columns={columns}
                     isCreated={false}
-                    toCreateURLPage='/users/customers/create'
+                    toCreateURLPage='/customers/create'
                     isShowDetailse={true}
                     fixedFilter={[{
                         field: "roles.name",

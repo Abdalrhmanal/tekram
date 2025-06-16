@@ -1,7 +1,7 @@
 import GridTable from '@/components/data-table2';
 import { ComparisonOperator } from '@/components/data-table2/type/type';
 import React, { Suspense } from 'react'
-import { getCurrentDateString } from '../../users/components/helpers';
+import { getCurrentDateString } from '../../(users)/components/helpers';
 
 function BokingLeatToProviderServices() {
 

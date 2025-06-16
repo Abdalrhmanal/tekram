@@ -20,7 +20,7 @@ function ServiceProviders() {
             <Suspense fallback={<div>Loading...</div>}>
                 <GridTable dataSourceName={dataSourceName}
                     columns={columns} isCreated={true}
-                    toCreateURLPage='/users/service-providers/create'
+                    toCreateURLPage='/service-providers/create'
                     isShowDetailse={true}
                     fixedFilter={[{
                         field: "roles.name",

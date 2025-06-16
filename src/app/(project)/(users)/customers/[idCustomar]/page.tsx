@@ -29,8 +29,8 @@ function DetailseCustomar() {
             user = null;
         }
     }
-    const urlAllDatawallet_transactions = `/users/wallet_transactions/${id}`
-    const urlAllDatabookings = `/users/bookings/${id}`
+    const urlAllDatawallet_transactions = `/wallet_transactions/${id}`
+    const urlAllDatabookings = `/bookings/${id}`
     return (
         <>
             <CardPersonDynamic user={user} />
