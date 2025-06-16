@@ -22,7 +22,8 @@ declare module "@mui/material/styles" {
 
 const getTheme = (
   color: "blue" | "green" | "red" | "yellow" | "purple" | "darkBlue",
-  mode: "light" | "dark"
+  mode: "light" | "dark",
+  direction: "rtl" | "ltr" = "ltr"
 ) => {
   const colors = {
     blue: {
@@ -76,6 +77,7 @@ const getTheme = (
   };
 
   const baseTheme: ThemeOptions = {
+    direction,
     palette: {
       mode,
       primary: colors[color],

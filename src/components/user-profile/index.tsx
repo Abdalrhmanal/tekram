@@ -34,7 +34,7 @@ import useLogout from "@/hooks/logout";
 
 export default function UserProfile({ data }: { data: any }) {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const { toggleDarkMode, changeColor, mode } = useThemeContext();
+  const { toggleDarkMode, changeColor, mode, direction, setDirection } = useThemeContext();
   const { logout, loading, error } = useLogout();
   const router = useRouter();
   const theme = useTheme();
@@ -153,7 +153,25 @@ export default function UserProfile({ data }: { data: any }) {
               </Button>
             </Stack>
           </Box>
+          <Divider sx={{ my: 2 }} />
 
+          {/* أزرار RTL/LTR */}
+          <Box sx={{ p: 1, bgcolor: "background.paper", borderRadius: 2 }}>
+            <Stack direction="row" spacing={2} justifyContent="center">
+              <Button
+                variant={direction === "rtl" ? "contained" : "outlined"}
+                onClick={() => setDirection("rtl")}
+              >
+                RTL
+              </Button>
+              <Button
+                variant={direction === "ltr" ? "contained" : "outlined"}
+                onClick={() => setDirection("ltr")}
+              >
+                LTR
+              </Button>
+            </Stack>
+          </Box>
           <Divider sx={{ my: 2 }} />
 
           <Box sx={{ p: 1, bgcolor: "background.paper", borderRadius: 2 }}>

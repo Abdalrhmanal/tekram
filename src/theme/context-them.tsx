@@ -4,11 +4,15 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import getTheme from "@/theme/theme";
 
+type Direction = "rtl" | "ltr";
+
 type ThemeContextType = {
-  mode: "light" | "dark"; // وضع الثيم (ضوئي أو داكن)
-  color: "blue" | "green" | "red" | "yellow" | "purple" | "darkBlue"; // اللون الأساسي للثيم
-  toggleDarkMode: () => void; // تغيير الوضع بين الضوئي والداكن
-  changeColor: (color: "blue" | "green" | "red" | "yellow" | "purple" | "darkBlue") => void; // تغيير اللون الأساسي
+  mode: "light" | "dark";
+  color: "blue" | "green" | "red" | "yellow" | "purple" | "darkBlue";
+  direction: Direction;
+  toggleDarkMode: () => void;
+  changeColor: (color: ThemeContextType["color"]) => void;
+  setDirection: (dir: Direction) => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -22,45 +26,47 @@ export const useThemeContext = () => {
 };
 
 export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // الحالة الأولية للوضع (ضوئي أو داكن)
   const [mode, setMode] = useState<"light" | "dark">("light");
-
-  // الحالة الأولية للون الأساسي
   const [color, setColor] = useState<"blue" | "green" | "red" | "yellow" | "purple" | "darkBlue">("blue");
+  const [direction, setDirection] = useState<Direction>("ltr");
 
-  // استرجاع الإعدادات من localStorage عند تشغيل التطبيق
   useEffect(() => {
     const savedMode = localStorage.getItem("themeMode") as "light" | "dark" | null;
-    const savedColor = localStorage.getItem("themeColor") as "blue" | "green" | "red" | "yellow" | null;
-
+    const savedColor = localStorage.getItem("themeColor") as ThemeContextType["color"] | null;
+    const savedDirection = localStorage.getItem("themeDirection") as Direction | null;
     if (savedMode) setMode(savedMode);
     if (savedColor) setColor(savedColor);
+    if (savedDirection) setDirection(savedDirection);
   }, []);
 
-  // حفظ الإعدادات في localStorage عند تغييرها
   useEffect(() => {
     localStorage.setItem("themeMode", mode);
     localStorage.setItem("themeColor", color);
-  }, [mode, color]);
+    localStorage.setItem("themeDirection", direction);
+    // غيّر اتجاه الصفحة فعلياً
+    if (typeof window !== "undefined") {
+      document.body.dir = direction;
+      document.documentElement.dir = direction;
+    }
+  }, [mode, color, direction]);
 
-  // تغيير الوضع بين الضوئي والداكن
   const toggleDarkMode = () => {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   };
 
-  // تغيير اللون الأساسي
-  const changeColor = (newColor: "blue" | "green" | "red" | "yellow" | "purple" | "darkBlue") => {
+  const changeColor = (newColor: ThemeContextType["color"]) => {
     setColor(newColor);
   };
 
-  // إنشاء الثيم بناءً على الوضع الحالي واللون الأساسي
-  const theme = getTheme(color, mode);
+  const theme = getTheme(color, mode, direction);
 
   return (
-    <ThemeContext.Provider value={{ mode, color, toggleDarkMode, changeColor }}>
+    <ThemeContext.Provider value={{ mode, color, direction, toggleDarkMode, changeColor, setDirection }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {children}
+        <div dir={direction} style={{ width: "100%" }}>
+          {children}
+        </div>
       </ThemeProvider>
     </ThemeContext.Provider>
   );
