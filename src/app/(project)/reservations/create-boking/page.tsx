@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React from 'react';
 import {
@@ -9,7 +9,6 @@ import {
     Typography,
     Autocomplete,
 } from '@mui/material';
-import useGlobalData from '@/hooks/get-global';
 import useGlobalDataT from '@/hooks/git-global';
 
 interface Option {
@@ -18,9 +17,9 @@ interface Option {
 }
 
 const durations: Option[] = [
-    { label: '1 ساعة', value: '1' },
-    { label: '2 ساعة', value: '2' },
-    { label: '3 ساعة', value: '3' },
+    { label: '1 hour', value: '1' },
+    { label: '2 hours', value: '2' },
+    { label: '3 hours', value: '3' },
 ];
 
 const CreateBooking = () => {
@@ -35,7 +34,7 @@ const CreateBooking = () => {
         [key: string]: any;
     }
 
-    const { data: data, isLoading, isFetching, isError, refetch } = useGlobalDataT<GlobalDataResponse>({
+    const { data, isLoading, isFetching, isError, refetch } = useGlobalDataT<GlobalDataResponse>({
         dataSourceName: 'api/customers',
         pageSize: 100000,
     });
@@ -51,40 +50,37 @@ const CreateBooking = () => {
         (user: any) => user.host_id !== null && user.host_id !== undefined && user.host_id !== ""
     );
     const servicesData = (dataServices?.data || []);
-    console.log("servicesData", servicesData);
 
     return (
         <Box p={4} bgcolor="#EEECF9" borderRadius={2}>
             <Typography variant="h6" mb={3} textAlign="right">
-                إنشاء طلب حجز يدوي
+                Create Manual Booking Request
             </Typography>
 
             <Grid container spacing={3}>
-                {/* المستخدم */}
+                {/* User */}
                 <Grid size={6}>
                     <Autocomplete
                         options={customarData}
                         value={selectedUser}
                         onChange={(_, newValue) => setSelectedUser(newValue)}
                         getOptionLabel={(option: any) => option.name || ""}
-                        renderInput={(params) => <TextField {...params} label="المستخدم" />}
+                        renderInput={(params) => <TextField {...params} label="User" />}
                     />
                 </Grid>
 
-
-
-                {/* مزود الخدمة */}
+                {/* Provider */}
                 <Grid size={6}>
                     <Autocomplete
                         options={hostData}
                         value={selectedProvider}
                         onChange={(_, newValue) => setSelectedProvider(newValue)}
                         getOptionLabel={(option: any) => option.name || ""}
-                        renderInput={(params) => <TextField {...params} label="مزود الخدمة" />}
+                        renderInput={(params) => <TextField {...params} label="Provider" />}
                     />
                 </Grid>
 
-                {/* الخدمة */}
+                {/* Service */}
                 <Grid size={12}>
                     <Autocomplete
                         options={servicesData}
@@ -93,18 +89,18 @@ const CreateBooking = () => {
                         getOptionLabel={(option: any) => option?.title || ""}
                         renderOption={(props, option: any) => (
                             <li {...props}>
-                                {option.title} {/* يمكنك إضافة تفاصيل أخرى هنا إذا رغبت */}
+                                {option.title}
                             </li>
                         )}
-                        renderInput={(params) => <TextField {...params} label="الخدمة" />}
+                        renderInput={(params) => <TextField {...params} label="Service" />}
                     />
                 </Grid>
 
-                {/* تاريخ بدء الحجز */}
+                {/* Booking Date */}
                 <Grid size={6}>
                     <TextField
                         fullWidth
-                        label="تاريخ بدء الحجز"
+                        label="Booking Date"
                         type="date"
                         InputLabelProps={{ shrink: true }}
                         value={bookingDate}
@@ -112,17 +108,17 @@ const CreateBooking = () => {
                     />
                 </Grid>
 
-                {/* مدة الحجز */}
+                {/* Duration */}
                 <Grid size={6}>
                     <Autocomplete
                         options={durations}
                         value={selectedDuration}
                         onChange={(_, newValue) => setSelectedDuration(newValue)}
-                        renderInput={(params) => <TextField {...params} label="مدة الحجز" />}
+                        renderInput={(params) => <TextField {...params} label="Duration" />}
                     />
                 </Grid>
 
-                {/* السعر النهائي */}
+                {/* Final Price */}
                 <Grid size={12}>
                     <Box
                         textAlign="center"
@@ -132,12 +128,12 @@ const CreateBooking = () => {
                         fontWeight="bold"
                     >
                         <Typography variant="h6">
-                            السعر النهائي: <span style={{ color: '#000' }}>${finalPrice}</span>
+                            Final Price: <span style={{ color: '#000' }}>${finalPrice}</span>
                         </Typography>
                     </Box>
                 </Grid>
 
-                {/* زر الإنشاء */}
+                {/* Create Button */}
                 <Grid size={12}>
                     <Button
                         fullWidth
@@ -150,7 +146,7 @@ const CreateBooking = () => {
                             py: 1.5,
                         }}
                     >
-                        موافق وإنشاء
+                        Confirm & Create
                     </Button>
                 </Grid>
             </Grid>
