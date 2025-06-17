@@ -1,5 +1,6 @@
 import GridTable from '@/components/data-table2';
 import { ComparisonOperator } from '@/components/data-table2/type/type';
+import GridCard from '@/components/grid-card';
 import React, { Suspense } from 'react'
 
 function BookingsProvider() {
@@ -17,11 +18,11 @@ function BookingsProvider() {
         { headerName: "total amount", field: "total_amount", sortable: true },
 
     ];
-
+    
     return (
         <>
             <Suspense fallback={<div>Loading...</div>}>
-                <GridTable dataSourceName={dataSourceName}
+                <GridCard dataSourceName={dataSourceName}
                     columns={columns}
                     isCreated={false}
                     toCreateURLPage=' '

@@ -21,34 +21,7 @@ import HeardTabelActions from "../action-table";
 import { usePathname, useRouter } from "next/navigation";
 import LodingBody from "../loading/loding-body";
 import LodingHead from "../loading/loding-head";
-
-interface Column {
-  field: string;
-  headerName: string;
-  sortable?: boolean;
-}
-
-interface RowData {
-  id: string;
-  [key: string]: any;
-}
-
-interface StructureTableProps {
-  rows: RowData[];
-  columns: Column[];
-  totalCount: number;
-  onSort?: (field: string, order: "asc" | "desc") => void;
-  onPageChange?: (page: number, pageSize: number) => void;
-  pageNumber: number;
-  pageSize: number;
-  pageSizeOptions?: number[];
-  onActionClick?: (row: RowData) => void;
-  onDelete?: (id: string | number) => void;
-  isDeleting?: boolean;
-  isShowDetailse?: boolean;
-  isLoading?: boolean;
-  isPassDataDetailse?: boolean;
-}
+import { RowData, StructureTableProps } from "../type/type";
 
 const StructureTable: React.FC<StructureTableProps> = ({
   rows,
