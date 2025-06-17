@@ -6,7 +6,7 @@ import Header from "@/components/header-dashboard";
 import { ReactNode } from "react";
 
 
-export default function Home({ children }:{ children: ReactNode }) {
+export default function Home() {
   return (
      <Box
       sx={{
@@ -29,7 +29,7 @@ export default function Home({ children }:{ children: ReactNode }) {
             overflowY: "auto",
           }}
         >
-          {children}{/* <HomePage /> */}
+          {/* {children} */} <HomePage /> 
         </Box>
       </Box>
     </Box>

@@ -1,3 +1,4 @@
+
 import GridTable from '@/components/data-table2';
 import { ComparisonOperator } from '@/components/data-table2/type/type';
 import React, { Suspense } from 'react'
