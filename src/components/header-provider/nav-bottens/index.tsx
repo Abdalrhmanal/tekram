@@ -13,7 +13,7 @@ export const nav = [
   { label: "Dashboard", icon: <DashboardOutlinedIcon fontSize="medium" />, href: "/dashboard" },
   { label: "Wallet", icon: <AccountBalanceWalletOutlinedIcon fontSize="medium" />, href: "/wallet" },
   { label: "Reservation Requests", icon: <EventAvailableOutlinedIcon fontSize="medium" />, href: "/reservation-requests" },
-  { label: "Reservations", icon: <BookOnlineOutlinedIcon fontSize="medium" />, href: "/reservations" },
+  { label: "Reservations", icon: <BookOnlineOutlinedIcon fontSize="medium" />, href: "/bookings" },
   { label: "Community", icon: <GroupsOutlinedIcon fontSize="medium" />, href: "/community" },
   { label: "My Services", icon: <MiscellaneousServicesOutlinedIcon fontSize="medium" />, href: "/my-services" },
 ];

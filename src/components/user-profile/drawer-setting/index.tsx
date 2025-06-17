@@ -31,7 +31,7 @@ function DrawerSettingUser({ avatar, fullName, email, onCloseDrawer }: { avatar?
     ];
     return (
         <>
-            <Box>
+            <Box width={300} p={2}>
                 <IconButton onClick={onCloseDrawer} sx={{ alignSelf: "flex-end", mb: 1 }}>
                     <Close />
                 </IconButton>

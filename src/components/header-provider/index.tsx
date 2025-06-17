@@ -92,7 +92,7 @@ const HeaderProvider: FC = () => {
                             >
                                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                                     <IconButton onClick={handleDrawerToggle}>
-                                        <SortOutlinedIcon />
+                                        <SortOutlinedIcon fontSize="large" />
                                     </IconButton>
                                     <Notification />
                                 </Box>
@@ -162,7 +162,7 @@ const HeaderProvider: FC = () => {
                                                 color: !isActive(item.href) ? "primary.main" : "white",
                                             },
                                             borderRadius: 1,
-                                            mx:0.75,
+                                            mx: 0.75,
                                             minWidth: 46.5,
                                         }}
                                     />
@@ -170,7 +170,7 @@ const HeaderProvider: FC = () => {
                             </BottomNavigation>
                         </Box>
                     </Box>
-                ) : (
+                ) : (<>
                     <Grid
                         container
                         spacing={2}
@@ -189,7 +189,9 @@ const HeaderProvider: FC = () => {
                             }}
                         >
                             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                                <SortOutlinedIcon />
+                                <IconButton onClick={handleDrawerToggle}>
+                                    <SortOutlinedIcon fontSize="large" />
+                                </IconButton>
                                 <Notification />
                             </Box>
                         </Grid>
@@ -230,7 +232,13 @@ const HeaderProvider: FC = () => {
                             </Box>
                         </Grid>
                     </Grid>
-                )}
+                    <Drawer
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                    >
+                        <DrawerSettingUser fullName={fullName} email={email} avatar={avatar} onCloseDrawer={() => setMobileOpen(false)} />
+                    </Drawer>
+                </>)}
             </Toolbar>
         </AppBar>
     );
