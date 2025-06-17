@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import useLogout from "@/hooks/logout";
 import FormatTextdirectionRToL from "@mui/icons-material/FormatTextdirectionRToL";
 import FormatTextdirectionLToR from "@mui/icons-material/FormatTextdirectionLToR";
+import DrawerSettingUser from "./drawer-setting";
 
 export default function UserProfile({ data }: { data: any }) {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -73,132 +74,7 @@ export default function UserProfile({ data }: { data: any }) {
           },
         }}
       >
-        <Box>
-          <IconButton onClick={() => setOpenDrawer(false)} sx={{ alignSelf: "flex-end", mb: 1 }}>
-            <Close />
-          </IconButton>
-
-          <Stack alignItems="center" spacing={1} mb={2}>
-            <Avatar src={avatar} sx={{ width: 80, height: 80 }} />
-            <Typography variant="h6">{fullName}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {email}
-            </Typography>
-          </Stack>
-
-          <Divider />
-
-          <Box sx={{ p: 1, bgcolor: "background.paper", borderRadius: 2 }}>
-            <Grid container spacing={2}>
-              {colorOptions.map(({ color, value }, index) => (
-                <Grid size={4} key={index}>
-                  <Button
-                    onClick={() => changeColor(value)}
-                    sx={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 3,
-                      bgcolor: color,
-                      color: "white",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      "&:hover": { opacity: 0.8 },
-                    }}
-                  >
-                    <SpaceDashboardRoundedIcon />
-                  </Button>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-
-          <Divider sx={{ my: 2 }} />
-
-          <Box sx={{ p: 1, bgcolor: "background.paper", borderRadius: 2 }}>
-            <Stack direction="row" spacing={2} justifyContent="center">
-              <Button
-                onClick={() => mode !== "light" && toggleDarkMode()}
-                variant={mode === "light" ? "contained" : "outlined"}
-                startIcon={<Brightness7 />}
-                sx={{ borderRadius: 2 }}
-              >
-                Light
-              </Button>
-              <Button
-                onClick={() => mode !== "dark" && toggleDarkMode()}
-                variant={mode === "dark" ? "contained" : "outlined"}
-                startIcon={<Brightness4 />}
-                sx={{ borderRadius: 2 }}
-              >
-                Dark
-              </Button>
-            </Stack>
-          </Box>
-          <Divider sx={{ my: 2 }} />
-
-          <Box sx={{ p: 1, bgcolor: "background.paper", borderRadius: 2 }}>
-            <Stack direction="row" spacing={2} justifyContent="center">
-              <Button
-                variant={direction === "rtl" ? "contained" : "outlined"}
-                onClick={() => setDirection("rtl")}
-                sx={{ borderRadius: 2 }}
-                startIcon={<FormatTextdirectionRToL />}
-              >
-                RTL
-              </Button>
-              <Button
-                variant={direction === "ltr" ? "contained" : "outlined"}
-                onClick={() => setDirection("ltr")}
-                sx={{ borderRadius: 2 }}
-                startIcon={<FormatTextdirectionLToR />}
-              >
-                LTR
-              </Button>
-            </Stack>
-          </Box>
-          <Divider sx={{ my: 2 }} />
-
-          <Box sx={{ p: 1, bgcolor: "background.paper", borderRadius: 2 }}>
-            <List>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Person />
-                  </ListItemIcon>
-                  <ListItemText primary="Profile" />
-                </ListItemButton>
-              </ListItem>
-              <Divider />
-              <ListItem disablePadding>
-                <ListItemButton onClick={() => router.push("/settings")}>
-                  <ListItemIcon>
-                    <Settings />
-                  </ListItemIcon>
-                  <ListItemText primary="Account settings" />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </Box>
-        </Box>
-
-        <Box>
-          <Button
-            startIcon={<LogoutOutlined />}
-            variant="contained"
-            fullWidth
-            sx={{ borderRadius: 2, py: 2, justifyContent: "start", px: 3 }}
-            onClick={logout}
-            disabled={loading}
-          >
-            {loading ? "Logging out..." : "Logout"}
-          </Button>
-          {error && (
-            <Typography color="error.main" mt={2} textAlign="center">
-              {error}
-            </Typography>
-          )}
-        </Box>
+        <DrawerSettingUser fullName={fullName} email={email} avatar={avatar}  onCloseDrawer={() => setOpenDrawer(false)}/>
       </Drawer>
     </>
   );
