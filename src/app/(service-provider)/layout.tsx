@@ -43,7 +43,8 @@ const MainProviderLayout: FC<MainLayoutProps> = ({ children }) => {
                             overflowY: "auto",
                         }}
                     >
-                        <BreadcrumbsDash />
+                        <BreadcrumbsDash 
+                        isProvider={true} />
                         {children}
                     </Box>
                 </Container>

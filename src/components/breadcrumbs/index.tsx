@@ -11,12 +11,12 @@ const formatPart = (part: string) => {
   return decoded.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-const BreadcrumbsDash = () => {
+const BreadcrumbsDash = ({ isProvider }: { isProvider?: boolean; }) => {
   const pathname = usePathname(); // مثل: /blog/category/react-hooks
   const pathParts = pathname.split("/").filter(Boolean); // ['blog', 'category', 'react-hooks']
 
   const breadcrumbs = pathParts.map((part, index) => {
-    const href = "/" + pathParts.slice(0, index + 1).join("/");
+    const href =  pathParts.slice(0, index + 1).join("/");
     const label = formatPart(part);
     const isLast = index === pathParts.length - 1;
 
@@ -40,9 +40,15 @@ const BreadcrumbsDash = () => {
 
   return (
     <Breadcrumbs aria-label="breadcrumb" sx={{ my: 2 }}>
-      <MuiLink component={Link} href="/" underline="hover" color="inherit">
-        Home
-      </MuiLink>
+      {isProvider ? (
+        <MuiLink component={Link} href="/dashboard" underline="hover" color="inherit">
+          Dashboard
+        </MuiLink>
+      ) : (
+        <MuiLink component={Link} href="/" underline="hover" color="inherit">
+          Home
+        </MuiLink>
+      )}
       {breadcrumbs}
     </Breadcrumbs>
   );
