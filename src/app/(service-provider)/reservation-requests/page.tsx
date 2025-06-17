@@ -27,6 +27,7 @@ function ReservationRequestsProvider() {
                     toCreateURLPage=' '
                     isShowDetailse={false}
                     isPassDataDetailse={false}
+                    isProfileProvider={true}
                     fixedFilter={[{
                         field: "status",
                         operator: ComparisonOperator.Equals,

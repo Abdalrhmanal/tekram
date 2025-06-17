@@ -3,7 +3,7 @@ import React from "react";
 import { Typography, Chip, Grid, Avatar, Tooltip, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export const renderCell = (field: string, value: any, row: any): React.ReactNode => {
+export const renderCell = (field: string, value: any, row: any, isProfileProvider?: boolean): React.ReactNode => {
     const truncateText = (text?: string, maxLength: number = 15) => {
         if (!text) return "-";
         return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
@@ -119,19 +119,22 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                 />
             );
         case "namehostid":
-            return (<>
+            return (
                 <Typography
                     fontWeight="bold"
                     sx={{ cursor: "pointer", color: "primary.main" }}
                     onClick={() => {
                         if (row.host?.id) {
-                            router.push(`/reservations/profile-host/${row.host.id}`);
+                            if (isProfileProvider) {
+                                router.push(`/reservation-requests/${row.host.id}`);
+                            } else {
+                                router.push(`/profil-user/${row.host.id}`);
+                            }
                         }
                     }}
                 >
                     {row.host?.name ?? "-"}
                 </Typography>
-            </>
             );
         case "nameguestid":
             return (<>
@@ -140,7 +143,11 @@ export const renderCell = (field: string, value: any, row: any): React.ReactNode
                     sx={{ cursor: "pointer", color: "primary.main" }}
                     onClick={() => {
                         if (row.guest?.id) {
-                            router.push(`/reservations/profile-customar/${row.guest.id}`);
+                            if (isProfileProvider) {
+                                router.push(`/reservation-requests/${row.guest.id}`);
+                            } else {
+                                router.push(`/profil-user/${row.guest.id}`);
+                            }
                         }
                     }}
                 >

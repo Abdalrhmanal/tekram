@@ -38,6 +38,7 @@ const StructureTable: React.FC<StructureTableProps> = ({
   isShowDetailse = false,
   isLoading = false,
   isPassDataDetailse = true,
+  isProfileProvider = false,
 }) => {
   const [orderBy, setOrderBy] = useState<string | null>("created_at");
   const [orderDirection, setOrderDirection] = useState<"asc" | "desc">("desc");
@@ -126,11 +127,11 @@ const StructureTable: React.FC<StructureTableProps> = ({
                       }
                     }}
                   >
-                    {renderCell(column.field, row[column.field], row)}
+                    {renderCell(column.field, row[column.field], row ,isProfileProvider)}
                   </TableCell>
                 ) : (
                   <TableCell key={`${row.id}-${column.field}`}>
-                    {renderCell(column.field, row[column.field], row)}
+                    {renderCell(column.field, row[column.field], row ,isProfileProvider)}
                   </TableCell>
                 )
               ))}

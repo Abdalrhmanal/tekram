@@ -16,6 +16,7 @@ export interface GridTableProps {
   isShowDetailse?: boolean;
   fixedFilter?: FilterType[];
   isPassDataDetailse?: boolean;
+  isProfileProvider?: boolean;
 }
 export enum ComparisonOperator {
   Equals = "Equals",
@@ -68,4 +69,5 @@ export interface StructureTableProps {
   isShowDetailse?: boolean;
   isLoading?: boolean;
   isPassDataDetailse?: boolean;
+  isProfileProvider?: boolean;
 }

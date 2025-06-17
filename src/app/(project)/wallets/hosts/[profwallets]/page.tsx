@@ -1,7 +1,6 @@
 "use client";
-import Profile from '@/app/(project)/profil-user/page'
+import { getWalletName } from '@/app/(project)/(users)/components/helpers';
 import ProfileUsers from '@/app/(project)/profil-user/structure-profil';
-import { formatDate, getWalletName } from '@/app/(project)/components/helpers';
 import { Box, Divider, Typography } from '@mui/material';
 import { useParams, useSearchParams } from 'next/navigation';
 import React from 'react'

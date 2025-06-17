@@ -1,11 +1,11 @@
 "use client";
 import React from 'react'
-import ProfileUsers from './structure-profil'
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
+import ProfileUsers from '@/app/(project)/profil-user/structure-profil';
 
-function Profile({id}: {id?: string | any}) {
- /*    const pathname = usePathname();
-    const id = pathname.split('/').pop(); */
+function Profile() {
+    const params = useParams()
+    const id = params?.users;
 
     return (
         <>

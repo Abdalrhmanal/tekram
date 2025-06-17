@@ -26,7 +26,8 @@ const GridTable: React.FC<GridTableProps> = ({
   toCreateURLPage,
   isShowDetailse,
   fixedFilter,
-  isPassDataDetailse
+  isPassDataDetailse,
+  isProfileProvider
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -371,6 +372,7 @@ const GridTable: React.FC<GridTableProps> = ({
         isShowDetailse={isShowDetailse}
         isLoading={GlobalLoading}
         isPassDataDetailse={isPassDataDetailse}
+        isProfileProvider={isProfileProvider}
       />
     </Box>
   );
