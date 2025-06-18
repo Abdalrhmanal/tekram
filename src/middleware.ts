@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// List of public routes (accessible without authentication)
 const publicRoutes = [
   "/login",
   "/forgot-password",
@@ -12,40 +11,60 @@ const publicRoutes = [
   "/about",
   "/welcome",
   "/privacypolicy",
-  "/delete-account"
+  "/delete-account",
 ];
-
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
-  // Check if the route is protected (not public and not guest-viewable)
-  const isFullyProtectedRoute = !publicRoutes.includes(path);
-
-  // Get the 'a_user' cookie (which holds the token or user info)
   const authCookie = request.cookies.get("a_user")?.value;
+  const userDataCookie = request.cookies.get("user_data")?.value;
 
-  let isAuthenticated = !!authCookie; // Consider the user authenticated if the cookie exists
+  const isAuthenticated = !!authCookie;
 
-  // Case 1: If the user is authenticated and trying to access a public route
-  if (isAuthenticated && publicRoutes.includes(path)) {
-    // Redirect to the home page
-    return NextResponse.redirect(new URL("/", request.nextUrl));
+  let role: string | undefined = undefined;
+  if (userDataCookie) {
+    try {
+      const userData = JSON.parse(decodeURIComponent(userDataCookie));
+      role = userData.role;
+    } catch {
+      role = undefined;
+    }
   }
 
-  // Case 2: If trying to access a fully protected route without authentication
-  if (isFullyProtectedRoute && !isAuthenticated) {
-    // Redirect to the login page
-    return NextResponse.redirect(new URL("/login", request.nextUrl));
+  const isPublicRoute = publicRoutes.includes(path);
+  const isProtectedRoute = !isPublicRoute;
+
+  // ✅ إعادة توجيه حسب الدور عند الدخول إلى "/"
+  if (isAuthenticated && path === "/") {
+    if (role === "host") {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    } else if (role === "admin") {
+      return NextResponse.redirect(new URL("/admin", request.url)); // إذا أردت صفحة أخرى
+    } else if (role === "user") {
+      return NextResponse.redirect(new URL("/privacypolicy", request.url));
+    }
   }
 
+  // ✅ إذا المستخدم مسجل دخول ويحاول دخول صفحة عامة
+  if (isAuthenticated && isPublicRoute) {
+    if (role === "host") {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    } else if (role === "admin") {
+      return NextResponse.redirect(new URL("/", request.url));
+    } else if (role === "user") {
+      return NextResponse.redirect(new URL("/privacypolicy", request.url));
+    }
+  }
 
+  // ✅ إذا المستخدم غير مسجل ويحاول الدخول إلى صفحة محمية
+  if (!isAuthenticated && isProtectedRoute) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
-  // For all other cases, proceed with the request
   return NextResponse.next();
 }
 
-// Match all routes except those that should be excluded (e.g., API or static files)
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 };
