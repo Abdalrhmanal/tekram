@@ -24,9 +24,10 @@ function SlideTransition(props: any) {
 }
 
 function WithdrawalDeposit({ id, onSuccess }: { id: string | undefined; onSuccess?: (response?: any) => void }) {
-    const [open, setOpen] = React.useState(false);
-    const [depositAmount, setDepositAmount] = React.useState<number | undefined>();
-    const [paymentMethod, setPaymentMethod] = React.useState('USD');
+    const [depositOpen, setDepositOpen] = React.useState(false);
+    const [withdrawOpen, setWithdrawOpen] = React.useState(false);
+    const [amount, setAmount] = React.useState<number | undefined>();
+    const [currency, setCurrency] = React.useState('USD');
     const [description, setDescription] = React.useState('');
     const [alert, setAlert] = React.useState<{ open: boolean, type: 'success' | 'error', message: string }>({
         open: false,
@@ -39,62 +40,100 @@ function WithdrawalDeposit({ id, onSuccess }: { id: string | undefined; onSucces
         dataSourceName: `api/helper/currencies`
     });
 
-    const { createData } = useCreateData({
+    const { createData: depositData } = useCreateData({
         dataSourceName: `api/wallet/deposit/${id}`
     });
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const { createData: withdrawData } = useCreateData({
+        dataSourceName: `api/wallet/withdraw/${id}`
+    });
 
-    const handleSubmit = async () => {
-        if (!depositAmount || !paymentMethod) return;
+    const handleAlert = (type: 'success' | 'error', message: string) => {
+        setAlert({ open: true, type, message });
+    };
+
+    const handleSubmit = async (action: 'deposit' | 'withdraw') => {
+        if (!amount || !currency) return;
 
         const payload = {
-            amount: depositAmount,
-            currency: paymentMethod,
-            description: description 
+            amount,
+            currency,
+            description: description || (action === 'deposit' ? 'Recharge' : 'Cashout')
         };
 
         try {
-            await createData(payload).then((res) => {
+            const res = action === 'deposit'
+                ? await depositData(payload)
+                : await withdrawData(payload);
+
+            handleAlert('success', res?.message || 'Operation completed successfully');
             if (onSuccess) onSuccess();
-        });;
-            setAlert({
-                open: true,
-                type: 'success',
-                message: 'Deposit completed successfully'
-            });
-            handleClose();
-        } catch (error) {
-            setAlert({
-                open: true,
-                type: 'error',
-                message: 'Failed to complete the deposit, please try again later'
-            });
+            action === 'deposit' ? setDepositOpen(false) : setWithdrawOpen(false);
+        } catch (error: any) {
+            const message = error?.response?.data?.message || 'Operation failed, please try again later';
+            handleAlert('error', message);
         }
     };
+
+    const renderDialog = (open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, action: 'deposit' | 'withdraw') => (
+        <Dialog open={open} onClose={() => setOpen(false)}>
+            <DialogTitle>{action === 'deposit' ? 'Deposit to Wallet' : 'Withdraw from Wallet'}</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    {action === 'deposit' ? 'Choose the amount you want to deposit:' : 'Choose the amount you want to withdraw:'}
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="Amount"
+                    type="number"
+                    fullWidth
+                    variant="standard"
+                    value={amount}
+                    onChange={(e) => setAmount(Number(e.target.value))}
+                />
+
+                <DialogContentText>Currency</DialogContentText>
+                <Autocomplete
+                    fullWidth
+                    options={Array.isArray(dataCurrency?.data) ? dataCurrency.data : []}
+                    value={currency}
+                    onChange={(event, newValue) => setCurrency(newValue || '')}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Currency" variant="standard" />
+                    )}
+                />
+
+                <DialogContentText>Note</DialogContentText>
+                <TextField
+                    margin="dense"
+                    label="Description / Note"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                <Button onClick={() => handleSubmit(action)} color="primary">
+                    {action === 'deposit' ? 'Deposit' : 'Withdraw'}
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
 
     return (
         <>
             <Card
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: 4,
-                    p: 2,
-                    borderRadius: 2,
-                }}
+                sx={{ display: 'flex', justifyContent: 'center', gap: 4, p: 2, borderRadius: 2 }}
             >
                 <Button
                     variant="contained"
                     color="primary"
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        minWidth: 80,
-                        py: 2,
-                    }}
+                    sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 80, py: 2 }}
+                    onClick={() => setWithdrawOpen(true)}
                 >
                     <UploadIcon sx={{ mb: 0.5 }} />
                     Cash
@@ -103,66 +142,16 @@ function WithdrawalDeposit({ id, onSuccess }: { id: string | undefined; onSucces
                 <Button
                     variant="contained"
                     color="success"
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        minWidth: 80,
-                        py: 2,
-                    }}
-                    onClick={handleOpen}
+                    sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 80, py: 2 }}
+                    onClick={() => setDepositOpen(true)}
                 >
                     <DownloadIcon sx={{ mb: 0.5 }} />
                     Deposit
                 </Button>
             </Card>
 
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Deposit to Wallet</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Choose the amount you want to deposit:</DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="depositAmount"
-                        label="Deposit Amount"
-                        type="number"
-                        fullWidth
-                        variant="standard"
-                        value={depositAmount}
-                        onChange={(e) => setDepositAmount(Number(e.target.value))}
-                    />
-
-                    <DialogContentText>Payment Method</DialogContentText>
-                    <Autocomplete
-                        fullWidth
-                        options={Array.isArray(dataCurrency?.data) ? dataCurrency.data : []}
-                        value={paymentMethod}
-                        onChange={(event, newValue) => {
-                            setPaymentMethod(newValue || '');
-                        }}
-                        renderInput={(params) => (
-                            <TextField {...params} label="Currency" variant="standard" />
-                        )}
-                    />
-
-                    <DialogContentText>Note</DialogContentText>
-                    <TextField
-                        margin="dense"
-                        id="description"
-                        label="Description / Note"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleSubmit} color="primary">Deposit</Button>
-                </DialogActions>
-            </Dialog>
+            {renderDialog(depositOpen, setDepositOpen, 'deposit')}
+            {renderDialog(withdrawOpen, setWithdrawOpen, 'withdraw')}
 
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
