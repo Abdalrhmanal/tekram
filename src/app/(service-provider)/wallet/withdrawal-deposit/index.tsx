@@ -40,11 +40,11 @@ function WithdrawalDeposit({ id, onSuccess }: { id: string | undefined; onSucces
         dataSourceName: `api/helper/currencies`
     });
 
-    const { createData: depositData } = useCreateData({
+    const { createData: depositData, success, isError } = useCreateData({
         dataSourceName: `api/wallet/deposit/${id}`
     });
 
-    const { createData: withdrawData } = useCreateData({
+    const { createData: withdrawData, success: withdrawS, isError: withdrawERR } = useCreateData({
         dataSourceName: `api/wallet/withdraw/${id}`
     });
 
@@ -66,14 +66,20 @@ function WithdrawalDeposit({ id, onSuccess }: { id: string | undefined; onSucces
                 ? await depositData(payload)
                 : await withdrawData(payload);
 
-            handleAlert('success', res?.message || 'Operation completed successfully');
+            const message =  'Operation completed successfully';
+            handleAlert('success', message);
             if (onSuccess) onSuccess();
             action === 'deposit' ? setDepositOpen(false) : setWithdrawOpen(false);
         } catch (error: any) {
-            const message = error?.response?.data?.message || 'Operation failed, please try again later';
+            const apiMessage = error?.response?.data?.message;
+            const errorsArray = error?.response?.data?.errors;
+            const fallbackMessage = 'Operation failed, please try again later';
+            const message = apiMessage || (Array.isArray(errorsArray) && errorsArray[0]) || fallbackMessage;
+
             handleAlert('error', message);
         }
     };
+
 
     const renderDialog = (open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, action: 'deposit' | 'withdraw') => (
         <Dialog open={open} onClose={() => setOpen(false)}>
