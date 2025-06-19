@@ -4,6 +4,11 @@ import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOffli
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import AssistantDirectionOutlinedIcon from '@mui/icons-material/AssistantDirectionOutlined';
 import ArrowCircleUpOutlinedIcon from '@mui/icons-material/ArrowCircleUpOutlined';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows'; 
+import SouthIcon from '@mui/icons-material/South'; 
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'; 
+import NorthIcon from '@mui/icons-material/North';
+
 export const getStatusStyle = (status: string) => {
     switch (status) {
         case 'Scheduled':
@@ -106,28 +111,44 @@ export function getCurrentDateString() {
 }
 
 export const getWalletName = (currency: string) => {
-  switch (currency) {
-    case "USD":
-      return "Cash USD Wallet";
-    case "TRY":
-      return "Cash TRY Wallet";
-    case "SYP":
-      return "ShamCash Wallet";
-    default:
-      return currency;
-  }
+    switch (currency) {
+        case "USD":
+            return "Cash USD Wallet";
+        case "TRY":
+            return "Cash TRY Wallet";
+        case "SYP":
+            return "ShamCash Wallet";
+        default:
+            return currency;
+    }
 };
 
 // Format date using Intl.DateTimeFormat
 export const formatDate = (dateString: string) => {
-  if (!dateString) return "";
-  return new Intl.DateTimeFormat("en-GB", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  }).format(new Date(dateString));
+    if (!dateString) return "";
+    return new Intl.DateTimeFormat("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+    }).format(new Date(dateString));
+};
+
+
+export const iconByType = (type: string) => {
+    switch (type) {
+        case 'transfer':
+            return <CompareArrowsIcon color="success" />;
+        case 'withdraw':
+            return <SouthIcon color="primary" />;
+        case 'deduction':
+            return <RemoveCircleOutlineIcon color="error" />;
+        case 'deposit':
+            return <NorthIcon color="info" />;
+        default:
+            return null;
+    }
 };
