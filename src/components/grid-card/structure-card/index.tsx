@@ -40,6 +40,8 @@ const StructureCard: React.FC<StructureTableProps> = ({
   isLoading = false,
   isPassDataDetailse = true,
   isProfileProvider = false,
+  withCard,
+  onSuccess
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -65,7 +67,11 @@ const StructureCard: React.FC<StructureTableProps> = ({
     setAnchorEl(null);
     setMenuRowId(null);
   };
-
+  const handerSuccess = () => {
+    if (onSuccess) {
+      onSuccess();
+    }
+  }
   const handleNavigateToDetail = (row: RowData) => {
     if (!isShowDetailse) return;
     const rowData = encodeURIComponent(JSON.stringify(row));
@@ -84,7 +90,6 @@ const StructureCard: React.FC<StructureTableProps> = ({
       {/* Optional sorting example */}
       {onSort && (
         <Box mb={2} display="flex" justifyContent="flex-end" gap={1} alignItems="center">
-          <Typography variant="body2">ترتيب حسب:</Typography>
           <Select
             size="small"
             value=""
@@ -94,7 +99,7 @@ const StructureCard: React.FC<StructureTableProps> = ({
               onSort(field, "asc");
             }}
           >
-            <SelectMenuItem value="" disabled>اختر</SelectMenuItem>
+            <SelectMenuItem value="" disabled>Sort By</SelectMenuItem>
             {columns
               .filter((col) => col.sortable)
               .map((col) => (
@@ -110,74 +115,74 @@ const StructureCard: React.FC<StructureTableProps> = ({
       <Grid container spacing={2}>
         {isLoading
           ? [...Array(8)].map((_, idx) => (
-              <Grid size={4} key={idx}>
-                <Skeleton variant="rectangular" height={200} />
-              </Grid>
-            ))
+            <Grid size={withCard} key={idx}>
+              <Skeleton variant="rectangular" height={200} />
+            </Grid>
+          ))
           : rows.map((row) => (
-              <Grid size={4} key={row.id}>
-                <Card sx={{ borderRadius: 2, boxShadow: 3, height: "100%" }}>
-                  <CardHeader
-                    sx={{ bgcolor: "#fafafa" }}
-                    action={
-                      <>
-                        <IconButton onClick={(e) => handleMenuClick(e, row.id)}>
-                          <MoreVertIcon />
-                        </IconButton>
-                        <Menu
-                          anchorEl={anchorEl}
-                          open={Boolean(anchorEl) && menuRowId === row.id}
-                          onClose={handleMenuClose}
-                        >
-                          {onActionClick && (
-                            <MenuItem
-                              onClick={() => {
-                                onActionClick(row);
-                                handleMenuClose();
-                              }}
-                            >
-                              تعديل
-                            </MenuItem>
-                          )}
-                          {onDelete && (
-                            <MenuItem
-                              onClick={() => {
-                                onDelete(row.id);
-                                handleMenuClose();
-                              }}
-                            >
-                              {isDeleting ? (
-                                <CircularProgress size={16} />
-                              ) : (
-                                "حذف"
-                              )}
-                            </MenuItem>
-                          )}
-                        </Menu>
-                      </>
-                    }
-                    title={
-                      <Box display="flex" alignItems="center" justifyContent="space-between">
-                        <Checkbox
-                          checked={isSelected(row)}
-                          onChange={() => handleSelectRow(row)}
-                        />
-                      </Box>
-                    }
-                  />
-                  <CardContent
-                    onClick={() => handleNavigateToDetail(row)}
-                    sx={{ cursor: isShowDetailse ? "pointer" : "default" }}
-                  >
-                    {columns.map((col) => (
-                      <Box key={col.field} mb={1}>
-                        {renderCardCell(col.field, row[col.field], row,isProfileProvider)}
-                      </Box>
-                    ))}
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
+            <Grid size={withCard} key={row.id}>
+              <Card sx={{ borderRadius: 2, boxShadow: 3, height: "100%" }}>
+                <CardHeader
+                  sx={{ bgcolor: "#fafafa" }}
+                  action={
+                    <>
+                      <IconButton onClick={(e) => handleMenuClick(e, row.id)}>
+                        <MoreVertIcon />
+                      </IconButton>
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl) && menuRowId === row.id}
+                        onClose={handleMenuClose}
+                      >
+                        {onActionClick && (
+                          <MenuItem
+                            onClick={() => {
+                              onActionClick(row);
+                              handleMenuClose();
+                            }}
+                          >
+                            تعديل
+                          </MenuItem>
+                        )}
+                        {onDelete && (
+                          <MenuItem
+                            onClick={() => {
+                              onDelete(row.id);
+                              handleMenuClose();
+                            }}
+                          >
+                            {isDeleting ? (
+                              <CircularProgress size={16} />
+                            ) : (
+                              "حذف"
+                            )}
+                          </MenuItem>
+                        )}
+                      </Menu>
+                    </>
+                  }
+                  title={
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                      <Checkbox
+                        checked={isSelected(row)}
+                        onChange={() => handleSelectRow(row)}
+                      />
+                    </Box>
+                  }
+                />
+                <CardContent
+                  onClick={() => handleNavigateToDetail(row)}
+                  sx={{ cursor: isShowDetailse ? "pointer" : "default" }}
+                >
+                  {columns.map((col) => (
+                    <Box key={col.field} mb={1}>
+                      {renderCardCell(col.field, row[col.field], row, isProfileProvider, handerSuccess)}
+                    </Box>
+                  ))}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
       </Grid>
 
       {/* Pagination Controls */}
@@ -198,7 +203,7 @@ const StructureCard: React.FC<StructureTableProps> = ({
         >
           {pageSizeOptions.map((size) => (
             <SelectMenuItem key={size} value={size.toString()}>
-              {size} لكل صفحة
+              Page Size : {size}
             </SelectMenuItem>
           ))}
         </Select>

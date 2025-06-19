@@ -26,7 +26,8 @@ const GridCard: React.FC<GridTableProps> = ({
     toCreateURLPage,
     isShowDetailse,
     fixedFilter,
-    isPassDataDetailse
+    isPassDataDetailse,
+    withCard
 }) => {
     const router = useRouter();
     const pathname = usePathname();
@@ -207,12 +208,12 @@ const GridCard: React.FC<GridTableProps> = ({
     const totalCount = GlobalData?.pagination?.totalCount ?? filteredRows.length;
     const numberFillters = filterData.length - [fixedFilter].length;
     return (
-        <Box sx={{ backgroundColor: theme.palette.background.paper, borderRadius: 2, padding: 2 }}>
+        <Box sx={{ backgroundColor: theme.palette.background.paper, borderRadius: 2, p: 4,mb: 2 }}>
             <Grid container spacing={2} sx={{ pl: 3, pr: 3 }}>
-
                 {isCreated ? (
                     <>
-                        <Grid size={7.5}>
+                        {/* حقل البحث يأخذ كامل السطر على الجوال */}
+                        <Grid item xs={12} sm={7.5}>
                             <TextField
                                 label="Search in Table"
                                 variant="outlined"
@@ -220,11 +221,22 @@ const GridCard: React.FC<GridTableProps> = ({
                                 fullWidth
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                sx={{ mb: 2 }}
+                                sx={{ mb: { xs: 0, sm: 2 } }}
                             />
                         </Grid>
-                        <Grid size={1.3}>
-                            <Box display="flex" justifyContent="space-between" mb={2}>
+                        {/* الأزرار في سطر منفصل على الجوال */}
+                        <Grid
+                            item
+                            xs={12}
+                            sm={4.5}
+                            sx={{
+                                display: "flex",
+                                flexDirection: { xs: "row", sm: "row" },
+                                gap: 1,
+                                mt: { xs: 2, sm: 0 },
+                            }}
+                        >
+                            <Box flex={1} display="flex" justifyContent="space-between">
                                 <Badge badgeContent={filterData.length > 1 ? filterData.length - 1 : 0} color="secondary">
                                     <IconButton onClick={handleOpenFilter} color="primary">
                                         <FilterListIcon fontSize="large" />
@@ -232,30 +244,30 @@ const GridCard: React.FC<GridTableProps> = ({
                                             Filters
                                         </Typography>
                                     </IconButton>
-
                                 </Badge>
                             </Box>
-                        </Grid>
-                        <Grid size={1.3}>
-                            <Box display="flex" justifyContent="flex-end" mb={2}>
+                            <Box flex={1} display="flex" justifyContent="flex-end">
                                 <IconButton onClick={handleOpenColumnMenu} color="primary">
                                     <ViewColumnIcon fontSize="large" />
                                     <Typography variant="body2" color="textSecondary">
                                         Columns
                                     </Typography>
                                 </IconButton>
-
                             </Box>
-                        </Grid>
-                        <Grid size={1.9}>
-                            <Box display="flex" justifyContent="flex-end" mb={2}>
-                                <Button variant="contained" onClick={handleOpenCreateNew} endIcon={<ControlPointOutlinedIcon />}>
+                            <Box flex={1} display="flex" justifyContent="flex-end">
+                                <Button
+                                    variant="contained"
+                                    onClick={handleOpenCreateNew}
+                                    endIcon={<ControlPointOutlinedIcon />}
+                                >
                                     Create New
                                 </Button>
                             </Box>
                         </Grid>
-                    </>) : (<>
-                        <Grid size={9.4}>
+                    </>
+                ) : (
+                    <>
+                        <Grid item xs={12} sm={9.4}>
                             <TextField
                                 label="Search in Table"
                                 variant="outlined"
@@ -263,11 +275,21 @@ const GridCard: React.FC<GridTableProps> = ({
                                 fullWidth
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                sx={{ mb: 2 }}
+                                sx={{ mb: { xs: 0, sm: 2 } }}
                             />
                         </Grid>
-                        <Grid size={1.3}>
-                            <Box display="flex" justifyContent="space-between" mb={2}>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={2.6}
+                            sx={{
+                                display: "flex",
+                                flexDirection: { xs: "row", sm: "row" },
+                                gap: 1,
+                                mt: { xs: 2, sm: 0 },
+                            }}
+                        >
+                            <Box flex={1} display="flex" justifyContent="space-between">
                                 <Badge badgeContent={numberFillters} color="secondary">
                                     <IconButton onClick={handleOpenFilter} color="primary">
                                         <FilterListIcon fontSize="large" />
@@ -277,21 +299,18 @@ const GridCard: React.FC<GridTableProps> = ({
                                     </IconButton>
                                 </Badge>
                             </Box>
-                        </Grid>
-                        <Grid size={1.3}>
-                            <Box display="flex" justifyContent="flex-end" mb={2}>
+                            <Box flex={1} display="flex" justifyContent="flex-end">
                                 <IconButton onClick={handleOpenColumnMenu} color="primary">
                                     <ViewColumnIcon fontSize="large" />
                                     <Typography variant="body2" color="textSecondary">
                                         Columns
                                     </Typography>
                                 </IconButton>
-
                             </Box>
                         </Grid>
-                    </>)}
+                    </>
+                )}
             </Grid>
-
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
@@ -371,6 +390,8 @@ const GridCard: React.FC<GridTableProps> = ({
                 isShowDetailse={isShowDetailse}
                 isLoading={GlobalLoading}
                 isPassDataDetailse={isPassDataDetailse}
+                withCard={withCard}
+                onSuccess={refetch}
             />
         </Box>
     );

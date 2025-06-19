@@ -13,6 +13,7 @@ function ReservationRequestsProvider() {
         { headerName: "Service", field: "serviceId", sortable: true },
         { headerName: "Start Date", field: "idsDate", sortable: true },
         { headerName: "End Date", field: "iddDate", sortable: true },
+        
         { headerName: "Unit", field: "unitId", sortable: true },
         { headerName: "Status", field: "status", sortable: true },
         { headerName: "Duration", field: "duration", sortable: true },
@@ -30,6 +31,7 @@ function ReservationRequestsProvider() {
                     isShowDetailse={false}
                     isPassDataDetailse={false}
                     isProfileProvider={true}
+                    withCard={12}
                     fixedFilter={[{
                         field: "status",
                         operator: ComparisonOperator.Equals,

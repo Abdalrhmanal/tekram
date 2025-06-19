@@ -17,6 +17,7 @@ export interface GridTableProps {
   fixedFilter?: FilterType[];
   isPassDataDetailse?: boolean;
   isProfileProvider?: boolean;
+  withCard?: number;
 }
 export enum ComparisonOperator {
   Equals = "Equals",
@@ -70,4 +71,6 @@ export interface StructureTableProps {
   isLoading?: boolean;
   isPassDataDetailse?: boolean;
   isProfileProvider?: boolean;
+  withCard?: number;
+  onSuccess?: (response?: any) => void 
 }
