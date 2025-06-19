@@ -3,7 +3,7 @@ import React from "react";
 import { Typography, Chip, Grid, Avatar, Tooltip, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export const renderCardCell = (field: string, value: any, row: any): React.ReactNode => {
+export const renderCardCell = (field: string, value: any, row: any, isProfileProvider: boolean): React.ReactNode => {
     const truncateText = (text?: string, maxLength: number = 15) => {
         if (!text) return "-";
         return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
@@ -11,16 +11,16 @@ export const renderCardCell = (field: string, value: any, row: any): React.React
     const router = useRouter();
 
     switch (field) {
-        case "customarCard":
+        case "unitId":
             return (
                 <>
                     <Grid container spacing={2} alignItems="center">
                         <Grid size={2}>
-                            ff
+                            ff fff
                         </Grid>
 
                         <Grid size={10}>
-                            gg
+                            gg fff f
                         </Grid>
                     </Grid >
                 </>

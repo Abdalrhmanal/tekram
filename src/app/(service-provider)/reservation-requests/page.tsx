@@ -1,6 +1,7 @@
 
 import GridTable from '@/components/data-table2';
 import { ComparisonOperator } from '@/components/data-table2/type/type';
+import GridCard from '@/components/grid-card';
 import React, { Suspense } from 'react'
 
 function ReservationRequestsProvider() {
@@ -22,7 +23,7 @@ function ReservationRequestsProvider() {
     return (
         <>
             <Suspense fallback={<div>Loading...</div>}>
-                <GridTable dataSourceName={dataSourceName}
+                <GridCard dataSourceName={dataSourceName}
                     columns={columns}
                     isCreated={false}
                     toCreateURLPage=' '
