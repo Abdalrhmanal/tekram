@@ -17,6 +17,7 @@ import useGlobalData from '@/hooks/get-global';
 import Cookies from "js-cookie";
 import { Skeleton } from '@mui/material';
 import { formatDateTime, getIcon, iconByType } from '@/app/(project)/(users)/components/helpers';
+import WithdrawalDeposit from './withdrawal-deposit';
 
 
 
@@ -41,6 +42,10 @@ function WalletProvider() {
     });
     const wallets = (data as { data?: { wallets?: any[] } })?.data?.wallets || [];
 
+    const handleDataSuccess = () => {
+        refetch();
+        refRedord();
+    }
     return (
         <Box p={2} sx={{ direction: 'rtl', bgcolor: '#f8f9fa' }}>
             <Box
@@ -107,45 +112,7 @@ function WalletProvider() {
                     mt: -6
                 }}
             >
-                <Card
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: 4,
-                        p: 2,
-                        borderRadius: 2,
-                    }}
-                >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            minWidth: 80,
-                            py: 2,
-                        }}
-                    >
-                        <UploadIcon sx={{ mb: 0.5 }} />
-                        سحب
-                    </Button>
-
-                    <Button
-                        variant="contained"
-                        color="success"
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            minWidth: 80,
-                            py: 2,
-                        }}
-                    >
-                        <DownloadIcon sx={{ mb: 0.5 }} />
-                        إيداع
-                    </Button>
-                </Card>
+                <WithdrawalDeposit id={id} onSuccess={handleDataSuccess} />
             </Box>
 
             <Stack direction="row" justifyContent="space-between" mt={4} mb={1}>
