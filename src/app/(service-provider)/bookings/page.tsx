@@ -5,6 +5,7 @@ import GridCard from '@/components/grid-card';
 import Tabber from '@/components/tabber';
 import { Deblur } from '@mui/icons-material';
 import React, { Suspense } from 'react'
+import ServisecReserved from './component/services-reserved';
 
 function BookingsProvider() {
 
@@ -40,12 +41,17 @@ function BookingsProvider() {
             <Tabber
                 tabsData={[
                     {
-                        label: "Details Order",
+                        label: "Delivery and receipt times",
                         icon: <Deblur />,
                         component: <Calendar /> ,
                     },
                     {
-                        label: "Details Service",
+                        label: "Reserved services",
+                        icon: <Deblur />,
+                        component: <ServisecReserved />,
+                    },
+                    {
+                        label: "Booking times for each service",
                         icon: <Deblur />,
                         component: <Calendar />,
                     }

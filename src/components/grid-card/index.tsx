@@ -213,7 +213,7 @@ const GridCard: React.FC<GridTableProps> = ({
                 {isCreated ? (
                     <>
                         {/* حقل البحث يأخذ كامل السطر على الجوال */}
-                        <Grid item xs={12} sm={7.5}>
+                        <Grid size={7.5}>
                             <TextField
                                 label="Search in Table"
                                 variant="outlined"
@@ -226,9 +226,7 @@ const GridCard: React.FC<GridTableProps> = ({
                         </Grid>
                         {/* الأزرار في سطر منفصل على الجوال */}
                         <Grid
-                            item
-                            xs={12}
-                            sm={4.5}
+                            size={4.5}
                             sx={{
                                 display: "flex",
                                 flexDirection: { xs: "row", sm: "row" },
@@ -267,7 +265,7 @@ const GridCard: React.FC<GridTableProps> = ({
                     </>
                 ) : (
                     <>
-                        <Grid item xs={12} sm={9.4}>
+                        <Grid size={9.4}>
                             <TextField
                                 label="Search in Table"
                                 variant="outlined"
@@ -279,9 +277,7 @@ const GridCard: React.FC<GridTableProps> = ({
                             />
                         </Grid>
                         <Grid
-                            item
-                            xs={12}
-                            sm={2.6}
+                            size={2.6}
                             sx={{
                                 display: "flex",
                                 flexDirection: { xs: "row", sm: "row" },
