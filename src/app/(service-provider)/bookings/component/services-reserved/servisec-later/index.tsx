@@ -46,7 +46,7 @@ function ServisecLater() {
                 <Typography variant="h6" color="initial">Servisec Later</Typography>
                 <Grid container spacing={2} alignItems="center">
                     {GlobalData?.data.map((row, index) => (<>
-                        <Grid size={4} sx={{bgcolor:'white',p:2, borderRadius: 1}} key={index}>
+                        <Grid size={4} sx={{ bgcolor: 'white', p: 2, borderRadius: 1 }} key={index}>
                             <Grid container spacing={2} alignItems="center">
                                 <Grid size={12} >
                                     <Typography
@@ -63,12 +63,16 @@ function ServisecLater() {
                                     </Typography>
                                 </Grid >
                                 <Grid size={12}>
-                                    <img
-                                        src={row.image ?? ""}
-                                        width={'100%'}
-                                        height={'200px'}
-                                        alt='Audi A4 2012'
-                                    />
+                                    <Box onClick={() => {
+                                        router.push(`/bookings/details-service/${row.id}`);
+                                    }}>
+                                        <img
+                                            src={row.image ?? ""}
+                                            style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+                                            alt='Audi A4 2012'
+                                        />
+                                    </Box>
+
                                 </Grid>
                                 <Grid size={12}>
                                     <Typography

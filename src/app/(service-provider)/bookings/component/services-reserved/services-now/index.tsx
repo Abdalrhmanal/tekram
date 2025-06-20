@@ -8,7 +8,7 @@ import React from 'react'
 
 function ServisecNow() {
     const dataSourceName = "api/hosts-bookings";
-  
+
     const filterData = [
         {
             field: "is_started",
@@ -64,12 +64,15 @@ function ServisecNow() {
                                 </Typography>
                             </Grid >
                             <Grid size={12}>
-                                <img
-                                    src={row.image ?? ""}
-                                    width={'100%'}
-                                    height={'200px'}
-                                    alt='Audi A4 2012'
-                                />
+                                <Box onClick={() => {
+                                    router.push(`/bookings/details-service/${row.id}`);
+                                }}>
+                                    <img
+                                        src={row.image ?? ""}
+                                        style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+                                        alt='Audi A4 2012'
+                                    />
+                                </Box>
                             </Grid>
                             <Grid size={12}>
                                 <Typography
